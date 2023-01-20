@@ -13,7 +13,8 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "references": [{ "path": "packages/ui" }],
   "exclude": ["apps/**/dist/**", "packages/**/dist/**"]
