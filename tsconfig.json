@@ -16,5 +16,5 @@
     "noEmit": true
   },
   "references": [{ "path": "packages/ui" }],
-  "exclude": ["packages/**/dist/**"]
+  "exclude": ["apps/**/dist/**", "packages/**/dist/**"]
 }

@@ -6,6 +6,9 @@
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "install:all": "yarn workspaces focus --all"
+  },
   "devDependencies": {
     "typescript": "^4.9.4"
   }
