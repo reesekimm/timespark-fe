@@ -2,8 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "noEmit": true
+    "noEmit": false,
+    "composite": true,
+    "declaration": true
   },
-  "include": ["src", "jest.setup.ts"],
+  "include": ["src", "utils", "jest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
