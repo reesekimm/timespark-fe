@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "references": [{ "path": "packages/ui" }],
+  "references": [{ "path": "packages/components" }],
   "exclude": ["apps/**/dist/**", "packages/**/dist/**"]
 }

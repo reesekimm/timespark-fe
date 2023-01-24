@@ -3265,9 +3265,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@timespark/ui@workspace:^, @timespark/ui@workspace:packages/ui":
+"@timespark/components@workspace:^, @timespark/components@workspace:packages/components":
   version: 0.0.0-use.local
-  resolution: "@timespark/ui@workspace:packages/ui"
+  resolution: "@timespark/components@workspace:packages/components"
   dependencies:
     "@babel/core": ^7.20.12
     "@babel/preset-env": ^7.20.2
@@ -3326,7 +3326,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^14.4.3
-    "@timespark/ui": "workspace:^"
+    "@timespark/components": "workspace:^"
     "@types/jest": ^29.2.6
     "@types/node": ^18.11.18
     "@types/react": ^18.0.26
