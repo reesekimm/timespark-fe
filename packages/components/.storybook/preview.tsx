@@ -1,3 +1,4 @@
+import { withGlobalStyle } from "./decorators/withGlobalStyle.decorator";
 import { withTheme } from "./decorators/withTheme.decorator";
 
 export const parameters = {
@@ -10,4 +11,4 @@ export const parameters = {
   },
 };
 
-export const decorators = [withTheme];
+export const decorators = [withGlobalStyle, withTheme];

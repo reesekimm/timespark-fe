@@ -9175,6 +9175,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:14.4.3"],\
             ["@timespark/components", "workspace:packages/components"],\
+            ["@timespark/styles", "workspace:packages/styles"],\
             ["@types/jest", "npm:29.2.6"],\
             ["@types/node", "npm:18.11.18"],\
             ["@types/react", "npm:18.0.27"],\

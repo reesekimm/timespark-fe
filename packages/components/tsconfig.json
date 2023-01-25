@@ -6,11 +6,11 @@
     "declaration": true
   },
   "include": [
-    "../styles/src/styled.d.ts",
     ".storybook/**/*",
     "src/**/*",
     "utils/*",
-    "jest.setup.ts"
+    "jest.setup.ts",
+    "../styles/@types"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
