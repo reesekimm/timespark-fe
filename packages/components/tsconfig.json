@@ -5,6 +5,12 @@
     "composite": true,
     "declaration": true
   },
-  "include": ["src/**/*", "utils/*", "jest.setup.ts"],
+  "include": [
+    "../styles/src/styled.d.ts",
+    ".storybook/**/*",
+    "src/**/*",
+    "utils/*",
+    "jest.setup.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
