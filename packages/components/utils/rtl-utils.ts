@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 const render = (ui: ReactElement) => {
   const result = {
-    ...rtlRender(ui),
+    ...rtlRender(ui)
   }
 
   return result

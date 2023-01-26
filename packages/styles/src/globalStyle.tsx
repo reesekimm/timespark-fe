@@ -1,9 +1,9 @@
-import { createGlobalStyle } from "styled-components";
-import NanumSquareNeoLight from "../fonts/NanumSquareNeo-light.woff2";
-import NanumSquareNeo from "../fonts/NanumSquareNeo-regular.woff2";
-import NanumSquareNeoBold from "../fonts/NanumSquareNeo-bold.woff2";
-import NanumSquareNeoExtraBold from "../fonts/NanumSquareNeo-extrabold.woff2";
-import NanumSquareNeoHeavy from "../fonts/NanumSquareNeo-heavy.woff2";
+import { createGlobalStyle } from 'styled-components'
+import NanumSquareNeoLight from '../fonts/NanumSquareNeo-light.woff2'
+import NanumSquareNeo from '../fonts/NanumSquareNeo-regular.woff2'
+import NanumSquareNeoBold from '../fonts/NanumSquareNeo-bold.woff2'
+import NanumSquareNeoExtraBold from '../fonts/NanumSquareNeo-extrabold.woff2'
+import NanumSquareNeoHeavy from '../fonts/NanumSquareNeo-heavy.woff2'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -30,6 +30,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'NanumSquareNeo';
   }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle

@@ -2,6 +2,7 @@
   "presets": [
     ["@babel/env", { "shippedProposals": true }],
     ["@babel/preset-react", { "runtime": "automatic" }],
-    ["@babel/preset-typescript", { "onlyRemoveTypeImports": true }]
+    ["@babel/preset-typescript", { "onlyRemoveTypeImports": true
+    }]
   ]
 }
