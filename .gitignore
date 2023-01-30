@@ -33,3 +33,6 @@ coverage
 *.sln
 *.sw?
 .vscode
+
+# ESLint cache file
+.eslintcache

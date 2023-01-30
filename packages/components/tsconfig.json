@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    "declaration": true
+  },
+  "include": [
+    ".storybook/**/*",
+    "src/**/*",
+    "utils/*",
+    "jest.setup.ts",
+    "../styles/@types"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
