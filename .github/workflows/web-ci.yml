@@ -51,3 +51,23 @@ jobs:
       - name: 🔍 Check types
         run: |
           yarn type-check
+
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - name: ✅ Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 📌 Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🧪 Run unit test
+        run: |
+          yarn test
