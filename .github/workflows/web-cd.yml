@@ -6,8 +6,6 @@ on:
       - main
     types:
       - closed
-    paths:
-      - 'apps/web/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
