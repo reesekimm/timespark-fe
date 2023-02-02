@@ -2,6 +2,9 @@
   "name": "@timespark/styles",
   "packageManager": "yarn@3.3.1",
   "main": "src/index.ts",
+  "scripts": {
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
