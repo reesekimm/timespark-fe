@@ -28,7 +28,7 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           yarn config set nodeLinker 'node-modules'
-          yarn
+          yarn install --immutable --inline-builds
 
       - name: 🧱 Build Storybook
         run: yarn workspace @timespark/components run build-storybook
