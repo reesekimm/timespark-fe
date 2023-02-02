@@ -70,7 +70,7 @@ jobs:
 
       - name: 🧪 Run unit test
         run: |
-          yarn test
+          yarn unit-test
 
   build:
     runs-on: ubuntu-latest

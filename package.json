@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "type-check": "yarn workspaces foreach -pv run type-check",
-    "test": "yarn workspaces foreach -pv run test:coverage"
+    "unit-test": "yarn workspaces foreach -pv run test:coverage"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.49.0",
