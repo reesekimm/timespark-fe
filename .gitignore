@@ -39,3 +39,6 @@ coverage
 
 # Storybook
 storybook-static
+
+# Typescript build info
+*.tsbuildinfo

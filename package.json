@@ -7,8 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "install:all": "yarn workspaces focus --all",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx"
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "type-check": "yarn workspaces foreach -pv run type-check"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.49.0",
