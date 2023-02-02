@@ -24,7 +24,6 @@ jobs:
         with:
           node-version: 18
 
-      # https://github.com/chromaui/chromatic-cli/issues/443#issuecomment-969934949
       - name: 📦 Install dependencies
         run: |
           yarn config set nodeLinker 'node-modules'
