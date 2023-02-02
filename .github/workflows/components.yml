@@ -1,0 +1,39 @@
+name: timespark-components
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+    paths:
+      - 'packages/components/**'
+
+jobs:
+  publish-storybook:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 📌 Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        run: |
+          yarn config set nodeLinker 'node-modules'
+          yarn install --immutable --inline-builds
+
+      - name: 🧱 Build Storybook
+        run: yarn workspace @timespark/components run build-storybook
+
+      - name: 🎨 Publish Storybook
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
+          workingDir: packages/components

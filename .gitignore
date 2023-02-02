@@ -36,3 +36,6 @@ coverage
 
 # ESLint cache file
 .eslintcache
+
+# Storybook
+storybook-static
