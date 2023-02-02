@@ -12647,7 +12647,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["core-js", [\
         ["npm:3.27.2", {\
-          "packageLocation": "./.yarn/unplugged/core-js-npm-3.27.2-99146711a6/node_modules/core-js/",\
+          "packageLocation": "./.yarn/cache/core-js-npm-3.27.2-99146711a6-718debd426.zip/node_modules/core-js/",\
           "packageDependencies": [\
             ["core-js", "npm:3.27.2"]\
           ],\
@@ -13438,7 +13438,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["esbuild", [\
         ["npm:0.16.17", {\
-          "packageLocation": "./.yarn/unplugged/esbuild-npm-0.16.17-89fa4ab0dd/node_modules/esbuild/",\
+          "packageLocation": "./.yarn/cache/esbuild-npm-0.16.17-89fa4ab0dd-4c2cc609ec.zip/node_modules/esbuild/",\
           "packageDependencies": [\
             ["esbuild", "npm:0.16.17"],\
             ["@esbuild/android-arm", "npm:0.16.17"],\
@@ -20086,14 +20086,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["styled-components", [\
         ["npm:5.3.6", {\
-          "packageLocation": "./.yarn/unplugged/styled-components-virtual-c4865e09cd/node_modules/styled-components/",\
+          "packageLocation": "./.yarn/cache/styled-components-npm-5.3.6-934fe4f344-68eac1e451.zip/node_modules/styled-components/",\
           "packageDependencies": [\
             ["styled-components", "npm:5.3.6"]\
           ],\
           "linkType": "SOFT"\
         }],\
         ["virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:5.3.6", {\
-          "packageLocation": "./.yarn/unplugged/styled-components-virtual-c4865e09cd/node_modules/styled-components/",\
+          "packageLocation": "./.yarn/__virtual__/styled-components-virtual-c4865e09cd/0/cache/styled-components-npm-5.3.6-934fe4f344-68eac1e451.zip/node_modules/styled-components/",\
           "packageDependencies": [\
             ["styled-components", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:5.3.6"],\
             ["@babel/helper-module-imports", "npm:7.18.6"],\
