@@ -4182,6 +4182,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:5.3.6"\
       ],\
       [\
+        "styled-normalize",\
+        "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:8.0.7"\
+      ],\
+      [\
         "supports-color",\
         "npm:9.3.1"\
       ],\
@@ -9891,6 +9895,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:18.2.0"],\
             ["styled-components", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:5.3.6"],\
+            ["styled-normalize", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:8.0.7"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"]\
           ],\
           "linkType": "SOFT"\
@@ -20119,6 +20124,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/react",\
             "react-dom",\
             "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["styled-normalize", [\
+        ["npm:8.0.7", {\
+          "packageLocation": "./.yarn/cache/styled-normalize-npm-8.0.7-76e7b6a203-afdb450407.zip/node_modules/styled-normalize/",\
+          "packageDependencies": [\
+            ["styled-normalize", "npm:8.0.7"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:8.0.7", {\
+          "packageLocation": "./.yarn/__virtual__/styled-normalize-virtual-888bdd1517/0/cache/styled-normalize-npm-8.0.7-76e7b6a203-afdb450407.zip/node_modules/styled-normalize/",\
+          "packageDependencies": [\
+            ["styled-normalize", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:8.0.7"],\
+            ["@types/styled-components", "npm:5.1.26"],\
+            ["styled-components", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:5.3.6"]\
+          ],\
+          "packagePeers": [\
+            "@types/styled-components",\
+            "styled-components"\
           ],\
           "linkType": "HARD"\
         }]\

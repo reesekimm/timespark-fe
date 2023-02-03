@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import { normalize } from 'styled-normalize'
 import NanumSquareNeoLight from '../fonts/NanumSquareNeo-light.woff2'
 import NanumSquareNeo from '../fonts/NanumSquareNeo-regular.woff2'
 import NanumSquareNeoBold from '../fonts/NanumSquareNeo-bold.woff2'
@@ -6,6 +7,8 @@ import NanumSquareNeoExtraBold from '../fonts/NanumSquareNeo-extrabold.woff2'
 import NanumSquareNeoHeavy from '../fonts/NanumSquareNeo-heavy.woff2'
 
 const GlobalStyle = createGlobalStyle`
+  ${normalize}
+
   @font-face {
     font-family: 'NanumSquareNeoLight';
     src: url(${NanumSquareNeoLight}) format('woff2');
@@ -27,9 +30,22 @@ const GlobalStyle = createGlobalStyle`
     src: url(${NanumSquareNeoHeavy}) format('woff2');
   }
 
-  body {
-    font-family: 'NanumSquareNeo';
+  html {
+    font-size: 10px;
   }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    letter-spacing: 0.1rem;
+    box-sizing: border-box;
+    font-family: 'NanumSquareNeo';
+    font-size: ${({ theme }) => theme.fontSize.md};
+  }
+
 `
 
 export default GlobalStyle

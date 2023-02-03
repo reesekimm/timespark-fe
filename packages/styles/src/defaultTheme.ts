@@ -17,6 +17,13 @@ const defaultTheme = {
       900: '#212f3c'
     }
   },
+  fontSize: {
+    xsm: '0.8rem',
+    sm: '1.2rem',
+    md: '1.6rem',
+    lg: '2rem',
+    xlg: '3rem'
+  },
   fontWeight: {
     thin: 100,
     extraLight: 200,
