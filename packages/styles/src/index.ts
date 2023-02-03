@@ -1,6 +1,5 @@
-import theme from './theme'
-import { ITheme } from './types'
+import defaultTheme from './defaultTheme'
 import GlobalStyle from './globalStyle'
 
-export type ThemeType = ITheme
-export { theme, GlobalStyle }
+export type ThemeType = typeof defaultTheme
+export { defaultTheme as theme, GlobalStyle }

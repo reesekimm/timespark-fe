@@ -1,7 +1,8 @@
-import { ITheme } from './types'
-
-const common = {
+const defaultTheme = {
   palette: {
+    primary: '#6b48ff',
+    bg: '#ffffff',
+    text: '#1b2631',
     black: '#1b2631',
     white: '#ffffff',
     gray: {
@@ -29,24 +30,4 @@ const common = {
   }
 }
 
-const light: ITheme = {
-  ...common,
-  palette: {
-    ...common.palette,
-    primary: '#6b48ff',
-    bg: common.palette.white,
-    text: common.palette.black
-  }
-}
-
-const dark: ITheme = {
-  ...common,
-  palette: {
-    ...common.palette,
-    primary: '#b0a2f2',
-    bg: common.palette.gray[800],
-    text: common.palette.white
-  }
-}
-
-export default { light, dark }
+export default defaultTheme
