@@ -48,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     letter-spacing: 0.1rem;
     box-sizing: border-box;
-    font-size: ${({ theme }) => theme.fontSize.medium};
+    font-size: ${({ theme }) => theme.fontSize.small};
   }
 
   a {

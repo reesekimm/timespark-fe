@@ -26,6 +26,7 @@ const StyledHeader = styled.header`
 const SiteTitle = styled.h1`
   font-family: ${({ theme }) => theme.fontFamily.heavy};
   font-size: ${({ theme }) => theme.fontSize.large};
+  padding-bottom: 0.5rem;
   margin: 0;
 
   a {
