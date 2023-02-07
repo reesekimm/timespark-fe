@@ -9,8 +9,8 @@ const icon = deepMerge(base, {
   },
   icon: {
     size: {
-      small: '12px',
-      medium: '22px',
+      small: '20px',
+      medium: '24px',
       large: '30px',
       xlarge: '48px'
     }
@@ -20,6 +20,7 @@ const icon = deepMerge(base, {
 const defaultTheme = {
   palette: {
     primary: '#6b48ff',
+    secondary: '#76FFB3',
     bg: '#ffffff',
     text: '#1b2631',
     black: '#1b2631',

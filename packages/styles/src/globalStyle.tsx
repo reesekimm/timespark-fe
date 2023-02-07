@@ -51,6 +51,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: ${({ theme }) => theme.fontSize.medium};
   }
 
+  a {
+    text-decoration: none;
+  }
+
 `
 
 export default GlobalStyle

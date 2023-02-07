@@ -4,6 +4,10 @@ import { Header } from './header'
 describe('Header', () => {
   it('default', () => {
     render(<Header />)
-    expect(screen.getByText('TimeSpark')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 1, name: /timespark/i })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /dashboard/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /settings/i })).toBeInTheDocument()
   })
 })
