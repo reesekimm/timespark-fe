@@ -17,22 +17,20 @@ export const Header: FC = ({ ...rest }) => {
 }
 
 const StyledHeader = styled.header`
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
 
 const SiteTitle = styled.h1`
-  font-family: ${({ theme }) => theme.fontFamily.heavy};
-  font-size: ${({ theme }) => theme.fontSize.large};
   padding-bottom: 0.5rem;
   margin: 0;
 
   a {
     color: ${({ theme }) => theme.palette.text};
     font-family: ${({ theme }) => theme.fontFamily.heavy};
-    font-size: ${({ theme }) => theme.fontSize.medium};
+    font-size: ${({ theme }) => theme.fontSize.large};
   }
 `
 
