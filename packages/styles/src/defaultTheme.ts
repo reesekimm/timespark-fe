@@ -46,9 +46,9 @@ const defaultTheme = {
   },
   fontSize: {
     xsmall: '0.8rem',
-    small: '1.2rem',
-    medium: '1.6rem',
-    large: '2rem',
+    small: '1.4rem',
+    medium: '1.8rem',
+    large: '2.4rem',
     xlarge: '3rem'
   },
   breakPoints: {
