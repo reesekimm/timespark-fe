@@ -11,7 +11,7 @@
     "utils/*",
     "jest.setup.ts",
     "../styles/@types",
-    "../styles/src/types.ts"
+    "../styles/src/*"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

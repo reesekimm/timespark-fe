@@ -1,1 +1,1 @@
-export { Message } from './Message'
+export { Footer } from './Footer/footer'

@@ -1,5 +1,5 @@
 import styled, { ThemeProvider } from 'styled-components'
-import { Message } from '@timespark/components'
+import { Footer } from '@timespark/components'
 import { GlobalStyle, theme } from '@timespark/styles'
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <Wrapper>
         Hello World
         <br />
-        <Message message='hi' />
+        <Footer />
       </Wrapper>
     </ThemeProvider>
   )
@@ -18,5 +18,5 @@ function App() {
 export default App
 
 const Wrapper = styled.main`
-  color: ${({ theme }) => theme.light.palette.primary};
+  color: ${({ theme }) => theme.palette.primary};
 `
