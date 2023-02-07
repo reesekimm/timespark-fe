@@ -3446,6 +3446,7 @@ __metadata:
     "@types/react": ^18.0.27
     "@types/react-dom": ^18.0.10
     "@types/styled-components": ^5.1.26
+    grommet-icons: ^4.9.0
     react: ^18.2.0
     react-dom: ^18.2.0
     styled-components: ^5.3.6
@@ -7554,6 +7555,30 @@ __metadata:
   version: 1.0.4
   resolution: "grapheme-splitter@npm:1.0.4"
   checksum: 0c22ec54dee1b05cd480f78cf14f732cb5b108edc073572c4ec205df4cd63f30f8db8025afc5debc8835a8ddeacf648a1c7992fe3dcd6ad38f9a476d84906620
+  languageName: node
+  linkType: hard
+
+"grommet-icons@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "grommet-icons@npm:4.9.0"
+  dependencies:
+    grommet-styles: ^0.2.0
+  peerDependencies:
+    react: ^16.6.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
+    styled-components: ">= 5.x"
+  checksum: b978c087a16341d75f3f8e9f57484fab9c4fdf64ab7d89a46246d7bff024120cce50167e1af49048a492fb30cc3e59c7ffc0e8dbd25733521864147f071dc3d3
+  languageName: node
+  linkType: hard
+
+"grommet-styles@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "grommet-styles@npm:0.2.0"
+  peerDependencies:
+    react: ">= 16.4.1"
+    react-dom: ">= 16.4.1"
+    styled-components: ">= 4.X"
+  checksum: 7b29e6fd773a29a9f7b48e5b0a163e1c51b3b196891228d88a0e5b99faab4ece03b5410a97665105fe886402016a337237b956d5f46af06ec2e06e2b328a0757
   languageName: node
   linkType: hard
 

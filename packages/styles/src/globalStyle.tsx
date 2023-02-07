@@ -12,22 +12,27 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquareNeoLight';
     src: url(${NanumSquareNeoLight}) format('woff2');
+    font-weight: 100;
   }
   @font-face {
     font-family: 'NanumSquareNeo';
     src: url(${NanumSquareNeo}) format('woff2');
+    font-weight: 200;
   }
   @font-face {
     font-family: 'NanumSquareNeoBold';
     src: url(${NanumSquareNeoBold}) format('woff2');
+    font-weight: 500;
   }
   @font-face {
     font-family: 'NanumSquareNeoExtraBold';
     src: url(${NanumSquareNeoExtraBold}) format('woff2');
+    font-weight: 600;
   }
   @font-face {
     font-family: 'NanumSquareNeoHeavy';
     src: url(${NanumSquareNeoHeavy}) format('woff2');
+    font-weight: 700;
   }
 
   html {
@@ -37,13 +42,13 @@ const GlobalStyle = createGlobalStyle`
   html, body {
     margin: 0;
     padding: 0;
+    font-family: 'NanumSquareNeoBold';
   }
 
   * {
     letter-spacing: 0.1rem;
     box-sizing: border-box;
-    font-family: 'NanumSquareNeo';
-    font-size: ${({ theme }) => theme.fontSize.md};
+    font-size: ${({ theme }) => theme.fontSize.medium};
   }
 
 `

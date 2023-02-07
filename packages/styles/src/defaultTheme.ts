@@ -1,3 +1,22 @@
+import { base } from 'grommet-icons'
+import { deepMerge } from './utils'
+
+const icon = deepMerge(base, {
+  global: {
+    colors: {
+      icon: '#666666'
+    }
+  },
+  icon: {
+    size: {
+      small: '12px',
+      medium: '22px',
+      large: '30px',
+      xlarge: '48px'
+    }
+  }
+})
+
 const defaultTheme = {
   palette: {
     primary: '#6b48ff',
@@ -17,24 +36,28 @@ const defaultTheme = {
       900: '#212f3c'
     }
   },
-  fontSize: {
-    xsm: '0.8rem',
-    sm: '1.2rem',
-    md: '1.6rem',
-    lg: '2rem',
-    xlg: '3rem'
+  fontFamily: {
+    light: 'NanumSquareNeoLight',
+    regular: 'NanumSquareNeo',
+    bold: 'NanumSquareNeoBold',
+    extraBold: 'NanumSquareNeoExtraBold',
+    heavy: 'NanumSquareNeoHeavy'
   },
-  fontWeight: {
-    thin: 100,
-    extraLight: 200,
-    light: 300,
-    regular: 400,
-    medium: 500,
-    semiBold: 600,
-    bold: 700,
-    extraBold: 800,
-    black: 900
-  }
+  fontSize: {
+    xsmall: '0.8rem',
+    small: '1.2rem',
+    medium: '1.6rem',
+    large: '2rem',
+    xlarge: '3rem'
+  },
+  breakPoints: {
+    sm: '576px',
+    medium: '768px',
+    large: '992px',
+    xlarge: '1200px',
+    xxlarge: '1400px'
+  },
+  ...icon
 }
 
 export default defaultTheme
