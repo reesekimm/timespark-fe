@@ -11,11 +11,6 @@ const config: Config = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['node_modules', '\\.yarn', '<rootDir>.*/public'],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!<rootDir>/node_modules/**/*',
-    '!<rootDir>/src/test/**/*'
-  ],
   verbose: true
 }
 
