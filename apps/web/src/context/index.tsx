@@ -1,10 +1,13 @@
 import { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyle, theme } from '@timespark/styles'
+import { AuthProvider } from './auth-context'
 
-export const AppProviders = ({ children }: { children: ReactNode }) => (
-  <ThemeProvider theme={theme}>
-    <GlobalStyle />
-    {children}
-  </ThemeProvider>
-)
+export function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <AuthProvider>{children}</AuthProvider>
+    </ThemeProvider>
+  )
+}
