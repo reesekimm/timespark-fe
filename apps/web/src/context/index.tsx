@@ -1,11 +1,10 @@
-import { theme } from '@timespark/styles'
-import { FC, ReactElement } from 'react'
+import { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { GlobalStyle, theme } from '@timespark/styles'
 
-type Props = {
-  children?: ReactElement
-}
-
-export const AppProviders: FC = ({ children }: Props) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+export const AppProviders = ({ children }: { children: ReactNode }) => (
+  <ThemeProvider theme={theme}>
+    <GlobalStyle />
+    {children}
+  </ThemeProvider>
 )
