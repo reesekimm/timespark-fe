@@ -1,11 +1,13 @@
-import { theme } from '@timespark/styles'
-import { FC, ReactElement } from 'react'
+import { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { GlobalStyle, theme } from '@timespark/styles'
+import { AuthProvider } from './auth-context'
 
-type Props = {
-  children?: ReactElement
+export function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <AuthProvider>{children}</AuthProvider>
+    </ThemeProvider>
+  )
 }
-
-export const AppProviders: FC = ({ children }: Props) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
-)

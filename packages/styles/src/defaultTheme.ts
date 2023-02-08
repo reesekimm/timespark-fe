@@ -1,22 +1,3 @@
-import { base } from 'grommet-icons'
-import { deepMerge } from './utils'
-
-const icon = deepMerge(base, {
-  global: {
-    colors: {
-      icon: '#666666'
-    }
-  },
-  icon: {
-    size: {
-      small: '20px',
-      medium: '24px',
-      large: '30px',
-      xlarge: '48px'
-    }
-  }
-})
-
 const defaultTheme = {
   palette: {
     primary: '#6b48ff',
@@ -57,8 +38,7 @@ const defaultTheme = {
     large: '992px',
     xlarge: '1200px',
     xxlarge: '1400px'
-  },
-  ...icon
+  }
 }
 
 export default defaultTheme

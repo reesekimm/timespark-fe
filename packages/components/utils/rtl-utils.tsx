@@ -3,13 +3,16 @@ import { render as rtlRender } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '@timespark/styles'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 type Props = {
   children?: ReactElement
 }
 
 const AppProviders: FC = ({ children }: Props) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <Router>
+    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  </Router>
 )
 
 const render = (ui: ReactElement) => {
