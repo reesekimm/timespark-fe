@@ -3389,7 +3389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@timespark/components@workspace:^, @timespark/components@workspace:packages/components":
+"@timespark/components@workspace:*, @timespark/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@timespark/components@workspace:packages/components"
   dependencies:
@@ -3417,7 +3417,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^14.4.3
-    "@timespark/styles": "workspace:^"
+    "@timespark/styles": "workspace:*"
     "@types/jest": ^29.2.6
     "@types/node": ^18.11.18
     "@types/react": ^18.0.26
@@ -3443,7 +3443,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@timespark/styles@workspace:^, @timespark/styles@workspace:packages/styles":
+"@timespark/styles@workspace:*, @timespark/styles@workspace:packages/styles":
   version: 0.0.0-use.local
   resolution: "@timespark/styles@workspace:packages/styles"
   dependencies:
@@ -3474,8 +3474,8 @@ __metadata:
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^14.4.3
-    "@timespark/components": "workspace:^"
-    "@timespark/styles": "workspace:^"
+    "@timespark/components": "workspace:*"
+    "@timespark/styles": "workspace:*"
     "@types/jest": ^29.2.6
     "@types/node": ^18.11.18
     "@types/react": ^18.0.26
