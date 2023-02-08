@@ -1,15 +1,14 @@
+import { ReactNode } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Footer } from '@timespark/components'
 import styled from 'styled-components'
 import Header from './Header'
 
-function Layout() {
+function Layout({ children }: { children?: ReactNode }) {
   return (
     <StyledLayout>
       <Header />
-      <main>
-        <Outlet />
-      </main>
+      <main>{children ?? <Outlet />}</main>
       <Footer />
     </StyledLayout>
   )
