@@ -1,4 +1,5 @@
 import { withGlobalStyle } from './decorators/withGlobalStyle.decorator'
+import { withRouter } from './decorators/withRouter.decorator'
 import { withTheme } from './decorators/withTheme.decorator'
 
 export const parameters = {
@@ -11,4 +12,4 @@ export const parameters = {
   }
 }
 
-export const decorators = [withGlobalStyle, withTheme]
+export const decorators = [withGlobalStyle, withTheme, withRouter]
