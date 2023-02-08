@@ -12,8 +12,8 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@timespark/components": "workspace:^",
-    "@timespark/styles": "workspace:^",
+    "@timespark/components": "workspace:*",
+    "@timespark/styles": "workspace:*",
     "@types/testing-library__jest-dom": "^5.14.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
