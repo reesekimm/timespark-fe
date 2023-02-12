@@ -1,8 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
-  "include": ["src", "jest.setup.ts", "../../packages/styles/@types"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}

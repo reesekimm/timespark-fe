@@ -1,0 +1,15 @@
+{
+  "name": "@timespark/infrastructure",
+  "packageManager": "yarn@3.3.1",
+  "main": "index.ts",
+  "scripts": {
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@timespark/domain": "workspace:*",
+    "axios": "^1.3.2"
+  }
+}
