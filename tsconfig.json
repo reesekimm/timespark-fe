@@ -17,8 +17,10 @@
     "jsx": "react-jsx"
   },
   "references": [
+    { "path": "domain" },
+    { "path": "infrastructure" },
     { "path": "packages/components" },
     { "path": "packages/styles" }
   ],
-  "exclude": ["apps/**/dist/**", "packages/**/dist/**"]
+  "exclude": ["views/**/dist/**", "packages/**/dist/**"]
 }

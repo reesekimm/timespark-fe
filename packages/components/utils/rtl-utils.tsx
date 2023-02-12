@@ -9,7 +9,7 @@ type Props = {
   children?: ReactElement
 }
 
-const AppProviders: FC = ({ children }: Props) => (
+const Wrapper: FC = ({ children }: Props) => (
   <Router>
     <ThemeProvider theme={theme}>{children}</ThemeProvider>
   </Router>
@@ -18,7 +18,7 @@ const AppProviders: FC = ({ children }: Props) => (
 const render = (ui: ReactElement) => {
   const result = {
     ...rtlRender(ui, {
-      wrapper: AppProviders
+      wrapper: Wrapper
     })
   }
 
