@@ -26,11 +26,16 @@ const defaultTheme = {
     heavy: 'NanumSquareNeoHeavy'
   },
   fontSize: {
-    xsmall: '0.8rem',
+    xsmall: '1.1rem',
     small: '1.4rem',
     medium: '1.8rem',
     large: '2.4rem',
     xlarge: '3rem'
+  },
+  spacing: {
+    small: '1rem',
+    medium: '1.3rem',
+    large: '1.5rem'
   },
   breakPoints: {
     sm: '576px',
