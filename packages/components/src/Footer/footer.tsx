@@ -8,8 +8,8 @@ export const Footer: FC = ({ ...rest }) => {
 }
 
 const StyledFooter = styled.footer`
-  background-color: ${({ theme }) => theme.palette.gray[400]};
-  color: ${({ theme }) => theme.palette.white};
+  color: ${({ theme }) => theme.palette.gray[300]};
+  background-color: ${({ theme }) => theme.palette.white};
   padding: 1.2rem;
   text-align: center;
 `
