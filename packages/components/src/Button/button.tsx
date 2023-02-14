@@ -41,6 +41,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
 
 const StyledButton = styled.button<Props>`
   border: none;
+  height: fit-content;
   background-color: ${({ theme, variant }) =>
     variant === 'primary' ? theme.palette.primary : theme.palette.white};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -48,10 +49,10 @@ const StyledButton = styled.button<Props>`
     variant === 'primary' ? theme.palette.white : theme.palette.primary};
   font-family: ${({ theme }) => theme.fontFamily.extraBold};
 
-  ${({ size }) => size && sizeMap[size]}
+  ${({ size }) => size && fontSizeMap[size]}
   ${({ size, variant }) =>
     variant !== 'text' && size && outlinedStyleSizeMap[size]};
-  transition: box-shadow 0.1s ease-in-out;
+  transition: box-shadow 0.15s ease-in-out;
 
   &:disabled {
     color: ${({ theme, variant }) =>
@@ -61,7 +62,7 @@ const StyledButton = styled.button<Props>`
   }
 `
 
-const sizeMap = {
+const fontSizeMap = {
   small: css`
     font-size: ${({ theme }) => theme.fontSize.xsmall};
   `,
@@ -78,34 +79,34 @@ const outlinedStyleSizeMap: { [key in ButtonSize]: any } = {
   small: css`
     padding: ${({ theme }) => theme.spacing.small};
     border-radius: 4px;
-    box-shadow: ${({ theme }) => `0 0 0 1.5px ${theme.palette.primary}`};
+    box-shadow: ${({ theme }) => `0 0 0 1.3px ${theme.palette.primary}`};
     &:hover {
       box-shadow: ${({ theme }) => `0 0 0 3px ${theme.palette.primary}`};
     }
     &:disabled {
-      box-shadow: ${({ theme }) => `0 0 0 1.5px ${theme.palette.gray[300]}`};
+      box-shadow: ${({ theme }) => `0 0 0 1.3px ${theme.palette.gray[300]}`};
     }
   `,
   medium: css`
     padding: ${({ theme }) => theme.spacing.medium};
     border-radius: 7px;
-    box-shadow: ${({ theme }) => `0 0 0 2px ${theme.palette.primary}`};
+    box-shadow: ${({ theme }) => `0 0 0 1.7px ${theme.palette.primary}`};
     &:hover {
       box-shadow: ${({ theme }) => `0 0 0 3.5px ${theme.palette.primary}`};
     }
     &:disabled {
-      box-shadow: ${({ theme }) => `0 0 0 2px ${theme.palette.gray[300]}`};
+      box-shadow: ${({ theme }) => `0 0 0 1.7px ${theme.palette.gray[300]}`};
     }
   `,
   large: css`
     padding: ${({ theme }) => theme.spacing.large};
     border-radius: 10px;
-    box-shadow: ${({ theme }) => `0 0 0 2.5px ${theme.palette.primary}`};
+    box-shadow: ${({ theme }) => `0 0 0 2.1px ${theme.palette.primary}`};
     &:hover {
       box-shadow: ${({ theme }) => `0 0 0 4px ${theme.palette.primary}`};
     }
     &:disabled {
-      box-shadow: ${({ theme }) => `0 0 0 2.5px ${theme.palette.gray[300]}`};
+      box-shadow: ${({ theme }) => `0 0 0 2.1px ${theme.palette.gray[300]}`};
     }
   `
 }

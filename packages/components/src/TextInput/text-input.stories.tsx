@@ -11,8 +11,9 @@ const meta: Meta<TextInputProps> = {
     }
   },
   args: {
-    inputSize: 'small',
-    placeholder: "Let's dive in!"
+    label: 'Task',
+    placeholder: "Let's dive in!",
+    inputSize: 'medium'
   }
 }
 

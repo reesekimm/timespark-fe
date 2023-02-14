@@ -7,19 +7,21 @@ import {
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import styled, { css } from 'styled-components'
+import Label from '../Label/label'
 
 type InputSize = 'small' | 'medium' | 'large'
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
+  label?: string
   name?: string
   value?: string
-  palceholder?: string
+  placeholder?: string
   inputSize?: InputSize
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { palceholder, inputSize = 'medium', onChange, ...rest }: Props,
+  { label, placeholder, inputSize = 'medium', onChange, ...rest }: Props,
   ref
 ) {
   const id = uuidv4()
@@ -38,22 +40,22 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
 
   return (
     <div>
-      <label htmlFor={id}>
-        <StyledInput
-          id={id}
-          ref={ref}
-          type='text'
-          placeholder={palceholder}
-          inputSize={inputSize}
-          onChange={handleChange}
-          {...rest}
-        />
-      </label>
+      {label ? <Label htmlFor={id} label={label} size={inputSize} /> : null}
+      <StyledInput
+        id={id}
+        ref={ref}
+        type='text'
+        placeholder={placeholder}
+        inputSize={inputSize}
+        onChange={handleChange}
+        {...rest}
+      />
     </div>
   )
 })
 
 const StyledInput = styled.input<Props>`
+  display: block;
   border: none;
   width: 100%;
   padding: 0;
@@ -66,10 +68,10 @@ const StyledInput = styled.input<Props>`
     outline: none;
   }
 
-  ${({ inputSize }) => inputSize && sizeMap[inputSize]}
+  ${({ inputSize }) => inputSize && styleMap[inputSize]}
 `
 
-const sizeMap = {
+export const styleMap = {
   small: css`
     font-size: ${({ theme }) => theme.fontSize.xsmall};
     padding: ${({ theme }) => theme.spacing.small};
