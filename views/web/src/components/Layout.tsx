@@ -23,6 +23,8 @@ const StyledLayout = styled.div`
 
   main {
     flex: 1;
-    padding: 1.5rem;
+    padding: 5rem 0;
+    width: 1200px;
+    margin: 0 auto;
   }
 `

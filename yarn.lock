@@ -3562,6 +3562,7 @@ __metadata:
     jest-environment-jsdom: ^29.3.1
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-hook-form: ^7.43.1
     react-router-dom: ^6.8.1
     react-test-renderer: ^18.2.0
     styled-components: ^5.3.6
@@ -11106,6 +11107,15 @@ __metadata:
     react: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
     react-dom: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
   checksum: c3907cc4c1d3e9ecc8ca7727058ebcba6ec89848d9e07bfd2c77ee8f28f1ad99bf55e38359dec8a1125de83d41ac09a2874f53c41415edc86ffa9840fa1b7856
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.43.1":
+  version: 7.43.1
+  resolution: "react-hook-form@npm:7.43.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: a15b672885cf9bb43c6691bf544b3ead59860bb8c6298c7607b8b82952707ec8dd9fd9d1346310abb8696e99319b1f78f6023941d129154815811ee64d750461
   languageName: node
   linkType: hard
 
