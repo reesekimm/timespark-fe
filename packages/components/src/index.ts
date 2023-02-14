@@ -1,2 +1,5 @@
 export { Anchor } from './Anchor/anchor'
+export { Button } from './Button/button'
 export { Footer } from './Footer/footer'
+export { Select } from './Select/select'
+export { TextInput } from './TextInput/text-input'
