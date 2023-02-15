@@ -1,3 +1,4 @@
+import { Task } from '@timespark/domain/models'
 import { CreateTaskDto, TaskRepository } from '@timespark/domain/repositories'
 import { Http } from '../types'
 import { httpAxios } from '../utils/http'
@@ -5,6 +6,7 @@ import { httpAxios } from '../utils/http'
 const client: Http = httpAxios
 
 export const taskRepository: TaskRepository = {
-  createTask: (taskData: CreateTaskDto) =>
-    client.post<boolean>('/task', { taskData })
+  createTask: async (taskData: CreateTaskDto) =>
+    await client.post<boolean>('/task', { taskData }),
+  getTasks: async () => await client.get<Task[]>('/tasks')
 }

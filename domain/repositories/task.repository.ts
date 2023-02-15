@@ -1,3 +1,5 @@
+import { Task } from '../models'
+
 export interface CreateTaskDto {
   categoryId: string
   title: string
@@ -6,4 +8,5 @@ export interface CreateTaskDto {
 
 export interface TaskRepository {
   createTask: (taskData: CreateTaskDto) => Promise<boolean>
+  getTasks: () => Promise<Task[]>
 }

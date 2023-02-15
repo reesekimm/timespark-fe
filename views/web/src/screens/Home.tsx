@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask } from '../utils/tasks'
+import { useCreateTask, useTasks } from '../utils/tasks'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -23,6 +23,7 @@ function Home() {
   })
 
   const createTask = useCreateTask()
+  const tasks = useTasks()
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
@@ -30,32 +31,46 @@ function Home() {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Select
-        {...register('categoryId')}
-        label='Category'
-        options={categories}
-        style={{ minWidth: '20rem' }}
-      />
-      <TextInput
-        {...register('title')}
-        label='Task'
-        placeholder="Let's dive in!"
-        style={{ minWidth: '68rem' }}
-      />
-      <Select
-        {...register('estimatedDuration', { valueAsNumber: true })}
-        label='Estimated Dur. (min)'
-        options={times}
-        style={{ minWidth: '15rem' }}
-      />
-      <Button
-        variant='primary'
-        label='Add'
-        disabled={!isValid}
-        style={{ width: '10rem' }}
-      />
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Select
+          {...register('categoryId')}
+          label='Category'
+          options={categories}
+          style={{ minWidth: '20rem' }}
+        />
+        <TextInput
+          {...register('title')}
+          label='Task'
+          placeholder="Let's dive in!"
+          style={{ minWidth: '68rem' }}
+        />
+        <Select
+          {...register('estimatedDuration', { valueAsNumber: true })}
+          label='Estimated Dur. (min)'
+          options={times}
+          style={{ minWidth: '15rem' }}
+        />
+        <Button
+          variant='primary'
+          label='Add'
+          disabled={!isValid}
+          style={{ width: '10rem' }}
+        />
+      </Form>
+      <ul>
+        {tasks?.map((task) => (
+          <li key={task.id}>
+            <span>
+              [
+              {categories.find(({ value }) => value === task.categoryId)?.label}
+              ]
+            </span>{' '}
+            <span>{task.title}</span> <span>{task.estimatedDuration} min</span>
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }
 

@@ -18,6 +18,9 @@ export const MemoryDatabase = (() => {
     createTask: (taskData: CreateTaskDto) => {
       tasks.push({ ...defaultTask, ...taskData, id: tasks.length + 1 })
       return Promise.resolve(true)
+    },
+    getTasks: () => {
+      return Promise.resolve(tasks)
     }
   }
 })()
