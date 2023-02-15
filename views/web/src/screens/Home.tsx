@@ -16,7 +16,8 @@ function Home() {
   const {
     register,
     handleSubmit,
-    formState: { isValid }
+    formState: { isValid },
+    reset
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   })
@@ -25,6 +26,7 @@ function Home() {
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
+    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
   }
 
   return (
