@@ -7,12 +7,6 @@ export const useCreateTask = () =>
     mutationFn: (taskData: CreateTaskDto) =>
       port.taskPort(adapter.taskRepositoryDev).createTask(taskData),
     onMutate: (variables) => {
-      console.log('createTask variables: ', variables)
-      return { id: 'createTask' }
-    },
-    onSuccess: (result, variables, context) => {
-      console.log('createTask result: ', result)
-      console.log('createTask variables: ', variables)
-      console.log('createTask context: ', context)
+      console.log('createTask payload : ', variables)
     }
   })

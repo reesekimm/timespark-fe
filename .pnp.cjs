@@ -676,6 +676,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.1.3"\
       ],\
       [\
+        "@hookform/resolvers",\
+        "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:2.9.11"\
+      ],\
+      [\
         "@humanwhocodes/config-array",\
         "npm:0.11.8"\
       ],\
@@ -4666,6 +4670,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [\
         "yocto-queue",\
         "npm:0.1.0"\
+      ],\
+      [\
+        "zod",\
+        "npm:3.20.6"\
       ]\
     ],\
     "packageRegistryData": [\
@@ -7773,6 +7781,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@hookform/resolvers", [\
+        ["npm:2.9.11", {\
+          "packageLocation": "./.yarn/cache/@hookform-resolvers-npm-2.9.11-7f3666c2a7-977ea038bb.zip/node_modules/@hookform/resolvers/",\
+          "packageDependencies": [\
+            ["@hookform/resolvers", "npm:2.9.11"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:2.9.11", {\
+          "packageLocation": "./.yarn/__virtual__/@hookform-resolvers-virtual-23fe8dc211/0/cache/@hookform-resolvers-npm-2.9.11-7f3666c2a7-977ea038bb.zip/node_modules/@hookform/resolvers/",\
+          "packageDependencies": [\
+            ["@hookform/resolvers", "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:2.9.11"],\
+            ["@types/react-hook-form", null],\
+            ["react-hook-form", "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:7.43.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-hook-form",\
+            "react-hook-form"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@humanwhocodes/config-array", [\
         ["npm:0.11.8", {\
           "packageLocation": "./.yarn/cache/@humanwhocodes-config-array-npm-0.11.8-7955bfecc2-0fd6b3c54f.zip/node_modules/@humanwhocodes/config-array/",\
@@ -10114,6 +10144,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/core", "npm:7.20.12"],\
             ["@babel/preset-env", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:7.20.2"],\
             ["@babel/preset-react", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:7.18.6"],\
+            ["@hookform/resolvers", "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:2.9.11"],\
             ["@tanstack/react-query", "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:4.24.6"],\
             ["@tanstack/react-query-devtools", "virtual:2d3684401ba0f897837ad2f81d9bee54553117431f500678f177479e9ec21634a03aad9f22489c5811982aa64fd78600ea80e3cd5a53297afc3f44180c3aadf7#npm:4.24.6"],\
             ["@testing-library/dom", "npm:8.20.0"],\
@@ -10143,7 +10174,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.0.5"],\
             ["ts-node", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:10.9.1"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
-            ["vite", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:4.0.4"]\
+            ["vite", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:4.0.4"],\
+            ["zod", "npm:3.20.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -21981,6 +22013,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yocto-queue-npm-0.1.0-c6c9a7db29-f77b3d8d00.zip/node_modules/yocto-queue/",\
           "packageDependencies": [\
             ["yocto-queue", "npm:0.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["zod", [\
+        ["npm:3.20.6", {\
+          "packageLocation": "./.yarn/cache/zod-npm-3.20.6-d9ed055758-804b1934b8.zip/node_modules/zod/",\
+          "packageDependencies": [\
+            ["zod", "npm:3.20.6"]\
           ],\
           "linkType": "HARD"\
         }]\

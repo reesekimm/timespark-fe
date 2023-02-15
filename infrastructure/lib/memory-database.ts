@@ -7,7 +7,7 @@ export const MemoryDatabase = (() => {
   const defaultTask = {
     id: 1,
     createdTime: new Date(),
-    categoryId: 1,
+    categoryId: '1',
     tags: [],
     title: '',
     estimatedDuration: 0,

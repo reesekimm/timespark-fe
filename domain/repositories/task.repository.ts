@@ -1,5 +1,5 @@
 export interface CreateTaskDto {
-  categoryId: number
+  categoryId: string
   title: string
   estimatedDuration: number
 }

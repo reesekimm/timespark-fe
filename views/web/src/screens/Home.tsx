@@ -2,10 +2,24 @@ import { Button, Select, TextInput } from '@timespark/components'
 import { CreateTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateTask } from '../utils/tasks'
 
+const schema = z.object({
+  categoryId: z.string(),
+  title: z.string().min(1),
+  estimatedDuration: z.number()
+})
+
 function Home() {
-  const { register, handleSubmit } = useForm<CreateTaskDto>()
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid }
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema)
+  })
 
   const createTask = useCreateTask()
 
@@ -28,12 +42,17 @@ function Home() {
         style={{ minWidth: '68rem' }}
       />
       <Select
-        {...register('estimatedDuration')}
-        label='Estimated Time (min)'
+        {...register('estimatedDuration', { valueAsNumber: true })}
+        label='Estimated Dur. (min)'
         options={times}
         style={{ minWidth: '15rem' }}
       />
-      <Button variant='primary' label='Add' style={{ width: '10rem' }} />
+      <Button
+        variant='primary'
+        label='Add'
+        disabled={!isValid}
+        style={{ width: '10rem' }}
+      />
     </Form>
   )
 }
@@ -48,10 +67,10 @@ const Form = styled.form`
 `
 
 const categories = [
-  { value: '', label: 'None' },
-  { value: 'workout', label: '운동' },
-  { value: 'meditation', label: '명상' },
-  { value: 'study', label: '공부' }
+  { value: '1', label: 'None' },
+  { value: '2', label: '운동' },
+  { value: '3', label: '명상' },
+  { value: '4', label: '공부' }
 ]
 
 const times = [
