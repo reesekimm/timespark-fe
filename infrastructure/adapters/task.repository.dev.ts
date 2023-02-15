@@ -1,8 +1,8 @@
-import { TaskRepository } from '@timespark/domain/repositories'
+import { CreateTaskDto, TaskRepository } from '@timespark/domain/repositories'
 import { MemoryDatabase } from '../lib/memory-database'
 
 export const taskRepositoryDev: TaskRepository = {
-  getTasks: async () => {
-    return MemoryDatabase.getTasks()
+  createTask: async (taskData: CreateTaskDto) => {
+    return MemoryDatabase.createTask(taskData)
   }
 }

@@ -1,19 +1,23 @@
-import { TaskDto } from '../ports'
+import { Task } from '@timespark/domain/models'
+import { CreateTaskDto } from '@timespark/domain/repositories'
 
 export const MemoryDatabase = (() => {
-  const tasks = [
-    {
-      id: 'uuid',
-      created_at: new Date(),
-      category: 'dev',
-      tags: ['project'],
-      title: 'first task',
-      estimated_time: 30,
-      actual_time: 20
-    }
-  ] as TaskDto[]
+  const tasks = [] as Task[]
+
+  const defaultTask = {
+    id: 1,
+    createdTime: new Date(),
+    categoryId: 1,
+    tags: [],
+    title: '',
+    estimatedDuration: 0,
+    actualDuration: 0
+  }
 
   return {
-    getTasks: () => Promise.resolve(tasks)
+    createTask: (taskData: CreateTaskDto) => {
+      tasks.push({ ...defaultTask, ...taskData, id: tasks.length + 1 })
+      return Promise.resolve(true)
+    }
   }
 })()

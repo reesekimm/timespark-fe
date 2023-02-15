@@ -1,12 +1,11 @@
-import { TaskRepository } from '@timespark/domain/repositories'
-import { TaskDto } from '../ports'
+import { CreateTaskDto, TaskRepository } from '@timespark/domain/repositories'
 import { Http } from '../types'
 import { httpAxios } from '../utils/http'
 
 const client: Http = httpAxios
 
 export const taskRepository: TaskRepository = {
-  getTasks: async () => {
-    return client.get<TaskDto[]>('/tasks')
+  createTask: async (taskData: CreateTaskDto) => {
+    return client.post<boolean>('/task', { taskData })
   }
 }

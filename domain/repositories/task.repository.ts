@@ -1,5 +1,9 @@
-import { Task } from '../models'
+export interface CreateTaskDto {
+  categoryId: number
+  title: string
+  estimatedDuration: number
+}
 
 export interface TaskRepository {
-  getTasks: () => Promise<Task[]>
+  createTask: (taskData: CreateTaskDto) => Promise<boolean>
 }

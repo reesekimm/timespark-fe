@@ -1,30 +1,34 @@
 import { Button, Select, TextInput } from '@timespark/components'
+import { CreateTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { useCreateTask } from '../utils/tasks'
 
 function Home() {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm<CreateTaskDto>()
 
-  const onSubmit = (data: unknown) => {
-    alert(JSON.stringify(data))
+  const createTask = useCreateTask()
+
+  const onSubmit = (data: CreateTaskDto) => {
+    createTask.mutate(data)
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Select
-        {...register('category')}
+        {...register('categoryId')}
         label='Category'
         options={categories}
         style={{ minWidth: '20rem' }}
       />
       <TextInput
-        {...register('task')}
+        {...register('title')}
         label='Task'
         placeholder="Let's dive in!"
         style={{ minWidth: '68rem' }}
       />
       <Select
-        {...register('estimated_time')}
+        {...register('estimatedDuration')}
         label='Estimated Time (min)'
         options={times}
         style={{ minWidth: '15rem' }}
