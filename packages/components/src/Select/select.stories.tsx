@@ -12,8 +12,8 @@ const meta: Meta<SelectProps> = {
   },
   args: {
     label: 'Category',
-    placeholder: 'Category',
     options: [
+      { value: '', label: 'None' },
       { value: 'workout', label: 'Workout' },
       { value: 'meditation', label: 'Meditation' },
       { value: 'study', label: 'Study' }

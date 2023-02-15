@@ -14,7 +14,6 @@ function Home() {
       <Select
         {...register('category')}
         label='Category'
-        placeholder='None'
         options={categories}
         style={{ minWidth: '20rem' }}
       />
@@ -22,12 +21,11 @@ function Home() {
         {...register('task')}
         label='Task'
         placeholder="Let's dive in!"
-        style={{ minWidth: '71rem' }}
+        style={{ minWidth: '68rem' }}
       />
       <Select
         {...register('estimated_time')}
-        label='Estimated Time'
-        placeholder='minutes'
+        label='Estimated Time (min)'
         options={times}
         style={{ minWidth: '15rem' }}
       />
@@ -46,6 +44,7 @@ const Form = styled.form`
 `
 
 const categories = [
+  { value: '', label: 'None' },
   { value: 'workout', label: '운동' },
   { value: 'meditation', label: '명상' },
   { value: 'study', label: '공부' }
