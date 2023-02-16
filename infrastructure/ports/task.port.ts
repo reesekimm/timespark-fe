@@ -1,15 +1,6 @@
-import { TaskRepository } from '@timespark/domain/repositories'
-
-export interface TaskDto {
-  id: string
-  created_at: Date
-  category: string
-  tags: string[]
-  title: string
-  estimated_time: number
-  actual_time: number
-}
+import { CreateTaskDto, TaskRepository } from '@timespark/domain/repositories'
 
 export const taskPort = (repository: TaskRepository): TaskRepository => ({
+  createTask: (taskData: CreateTaskDto) => repository.createTask(taskData),
   getTasks: () => repository.getTasks()
 })

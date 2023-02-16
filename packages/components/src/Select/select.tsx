@@ -15,7 +15,6 @@ type SelectSize = 'small' | 'medium' | 'large'
 
 export type Props = SelectHTMLAttributes<HTMLSelectElement> & {
   label?: string
-  placeholder?: string
   options?: Option[]
   onChange?: ChangeEventHandler<HTMLSelectElement>
   name?: string
@@ -23,7 +22,7 @@ export type Props = SelectHTMLAttributes<HTMLSelectElement> & {
 }
 
 export const Select = forwardRef<HTMLSelectElement, Props>(function Select(
-  { label, placeholder, options, selectSize = 'medium', ...rest }: Props,
+  { label, options, selectSize = 'medium', ...rest }: Props,
   ref
 ) {
   const id = uuidv4()
@@ -34,7 +33,6 @@ export const Select = forwardRef<HTMLSelectElement, Props>(function Select(
       {label ? <Label htmlFor={id} label={label} size={selectSize} /> : null}
       <div style={{ position: 'relative' }}>
         <StyledSelect id={id} ref={ref} selectSize={selectSize} {...rest}>
-          {placeholder ? <option value=''>{placeholder}</option> : null}
           {options?.map(({ value, label }, index) => (
             <option key={value.toString() + index} value={value}>
               {label}

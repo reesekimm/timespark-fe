@@ -1,38 +1,76 @@
 import { Button, Select, TextInput } from '@timespark/components'
+import { CreateTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useCreateTask, useTasks } from '../utils/tasks'
+
+const schema = z.object({
+  categoryId: z.string(),
+  title: z.string().min(1),
+  estimatedDuration: z.number()
+})
 
 function Home() {
-  const { register, handleSubmit } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+    reset
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema)
+  })
 
-  const onSubmit = (data: unknown) => {
-    alert(JSON.stringify(data))
+  const createTask = useCreateTask()
+  const tasks = useTasks()
+
+  const onSubmit = (data: CreateTaskDto) => {
+    createTask.mutate(data)
+    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Select
-        {...register('category')}
-        label='Category'
-        placeholder='None'
-        options={categories}
-        style={{ minWidth: '20rem' }}
-      />
-      <TextInput
-        {...register('task')}
-        label='Task'
-        placeholder="Let's dive in!"
-        style={{ minWidth: '71rem' }}
-      />
-      <Select
-        {...register('estimated_time')}
-        label='Estimated Time'
-        placeholder='minutes'
-        options={times}
-        style={{ minWidth: '15rem' }}
-      />
-      <Button variant='primary' label='Add' style={{ width: '10rem' }} />
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Select
+          {...register('categoryId')}
+          label='Category'
+          options={categories}
+          style={{ minWidth: '20rem' }}
+        />
+        <TextInput
+          {...register('title')}
+          label='Task'
+          placeholder="Let's dive in!"
+          style={{ minWidth: '68rem' }}
+        />
+        <Select
+          {...register('estimatedDuration', { valueAsNumber: true })}
+          label='Estimated Dur. (min)'
+          options={times}
+          style={{ minWidth: '15rem' }}
+        />
+        <Button
+          variant='primary'
+          label='Add'
+          disabled={!isValid}
+          style={{ width: '10rem' }}
+        />
+      </Form>
+      <ul>
+        {tasks?.map((task) => (
+          <li key={task.id}>
+            <span>
+              [
+              {categories.find(({ value }) => value === task.categoryId)?.label}
+              ]
+            </span>{' '}
+            <span>{task.title}</span> <span>{task.estimatedDuration} min</span>
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }
 
@@ -46,9 +84,10 @@ const Form = styled.form`
 `
 
 const categories = [
-  { value: 'workout', label: '운동' },
-  { value: 'meditation', label: '명상' },
-  { value: 'study', label: '공부' }
+  { value: '1', label: 'None' },
+  { value: '2', label: '운동' },
+  { value: '3', label: '명상' },
+  { value: '4', label: '공부' }
 ]
 
 const times = [
