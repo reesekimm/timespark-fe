@@ -17,3 +17,8 @@ export type Http = {
   ) => Promise<T | any>
   delete: <T>(path: string, params?: unknown, config?: any) => Promise<T | any>
 }
+
+export interface CustomError extends Error {
+  status?: number
+  code?: string
+}
