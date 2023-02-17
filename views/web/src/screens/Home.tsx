@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateTask, useTasks } from '../utils/tasks'
-import { getPeriodToday } from '../utils/misc'
+import { formatDate, getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -63,6 +63,7 @@ function Home() {
         {tasks ? (
           tasks.map((task) => (
             <li key={task.id}>
+              <span>{formatDate(task.createdTime)}</span>{' '}
               <span>
                 [
                 {

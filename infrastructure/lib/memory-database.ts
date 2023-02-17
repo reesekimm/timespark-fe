@@ -1,12 +1,12 @@
 import { Task } from '@timespark/domain/models'
 import { CreateTaskDto, GetTasksDto } from '@timespark/domain/repositories'
-import { isAfter, isBefore, sub } from 'date-fns'
+import { isAfter, isBefore, isEqual, parseISO } from 'date-fns'
 
 export const MemoryDatabase = (() => {
   const tasks = [
     {
       id: 1,
-      createdTime: sub(new Date(), { days: 1 }),
+      createdTime: '2023-02-15T15:05:00.000Z',
       categoryId: '1',
       tags: [],
       title: 'task 1 for yesterday',
@@ -15,7 +15,7 @@ export const MemoryDatabase = (() => {
     },
     {
       id: 2,
-      createdTime: sub(new Date(), { days: 1 }),
+      createdTime: '2023-02-16T20:32:00.000Z',
       categoryId: '1',
       tags: [],
       title: 'task 2 for yesterday',
@@ -24,25 +24,23 @@ export const MemoryDatabase = (() => {
     }
   ] as Task[]
 
-  const defaultTask = {
-    id: 0,
-    createdTime: new Date(),
-    categoryId: '1',
-    tags: [],
-    title: '',
-    estimatedDuration: 0,
-    actualDuration: 0
-  }
-
   return {
     createTask: (taskData: CreateTaskDto) => {
-      tasks.push({ ...defaultTask, ...taskData, id: tasks.length + 1 })
+      tasks.push({
+        id: tasks.length + 1,
+        createdTime: new Date().toISOString(),
+        actualDuration: 0,
+        tags: [],
+        ...taskData
+      })
       return Promise.resolve(true)
     },
     getTasks: ({ from, to }: GetTasksDto) => {
       const result = tasks.filter(
         ({ createdTime }) =>
-          isAfter(createdTime, from) && isBefore(createdTime, to)
+          (isEqual(parseISO(createdTime), parseISO(from)) ||
+            isAfter(parseISO(createdTime), parseISO(from))) &&
+          isBefore(parseISO(createdTime), parseISO(to))
       )
       return Promise.resolve(result)
     }

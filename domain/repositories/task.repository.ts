@@ -7,8 +7,8 @@ export interface CreateTaskDto {
 }
 
 export interface GetTasksDto {
-  from: Date
-  to: Date
+  from: string
+  to: string
 }
 
 export interface TaskRepository {
