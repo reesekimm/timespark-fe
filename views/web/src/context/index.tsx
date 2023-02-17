@@ -17,7 +17,7 @@ import { GlobalStyle, theme } from '@timespark/styles'
 import { HttpError } from '@timespark/infrastructure'
 import { AuthProvider } from './auth-context'
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       useErrorBoundary: (error) =>

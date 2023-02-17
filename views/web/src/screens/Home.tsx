@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateTask, useTasks } from '../utils/tasks'
+import { getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -22,8 +23,8 @@ function Home() {
     resolver: zodResolver(schema)
   })
 
-  const createTask = useCreateTask()
-  const tasks = useTasks()
+  const createTask = useCreateTask(getPeriodToday())
+  const tasks = useTasks(getPeriodToday())
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
@@ -59,16 +60,24 @@ function Home() {
         />
       </Form>
       <ul>
-        {tasks?.map((task) => (
-          <li key={task.id}>
-            <span>
-              [
-              {categories.find(({ value }) => value === task.categoryId)?.label}
-              ]
-            </span>{' '}
-            <span>{task.title}</span> <span>{task.estimatedDuration} min</span>
-          </li>
-        ))}
+        {tasks ? (
+          tasks.map((task) => (
+            <li key={task.id}>
+              <span>
+                [
+                {
+                  categories.find(({ value }) => value === task.categoryId)
+                    ?.label
+                }
+                ]
+              </span>{' '}
+              <span>{task.title}</span>{' '}
+              <span>{task.estimatedDuration} min</span>
+            </li>
+          ))
+        ) : (
+          <span>Add your first task!</span>
+        )}
       </ul>
     </>
   )

@@ -1984,6 +1984,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:3.0.2"\
       ],\
       [\
+        "date-fns",\
+        "npm:2.29.3"\
+      ],\
+      [\
         "debug",\
         "virtual:007f670de2e506a151fec572a83f2de9d546622ece352a4cf72e57296c0aa644478f43ac47fd07d8495ee7103d37c60645e444556d514defaeb66e67a086d21f#npm:4.3.4"\
       ],\
@@ -10117,6 +10121,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@timespark/infrastructure", "workspace:infrastructure"],\
             ["@timespark/domain", "workspace:domain"],\
             ["axios", "npm:1.3.2"],\
+            ["date-fns", "npm:2.29.3"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=ad5954"]\
           ],\
           "linkType": "SOFT"\
@@ -10171,6 +10176,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/testing-library__jest-dom", "npm:5.14.5"],\
             ["@vitejs/plugin-react", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:3.0.1"],\
             ["babel-jest", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
+            ["date-fns", "npm:2.29.3"],\
             ["jest", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
             ["jest-environment-jsdom", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
             ["react", "npm:18.2.0"],\
@@ -13073,6 +13079,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["abab", "npm:2.0.6"],\
             ["whatwg-mimetype", "npm:3.0.0"],\
             ["whatwg-url", "npm:11.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["date-fns", [\
+        ["npm:2.29.3", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-2.29.3-fef7e3c72c-e01cf5b62a.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:2.29.3"]\
           ],\
           "linkType": "HARD"\
         }]\
