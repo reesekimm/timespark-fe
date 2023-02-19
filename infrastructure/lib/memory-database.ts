@@ -33,16 +33,15 @@ export const MemoryDatabase = (() => {
         tags: [],
         ...taskData
       })
-      return Promise.resolve(true)
+      return true
     },
     getTasks: ({ from, to }: GetTasksDto) => {
-      const result = tasks.filter(
+      return tasks.filter(
         ({ createdTime }) =>
           (isEqual(parseISO(createdTime), parseISO(from)) ||
             isAfter(parseISO(createdTime), parseISO(from))) &&
           isBefore(parseISO(createdTime), parseISO(to))
       )
-      return Promise.resolve(result)
     }
   }
 })()

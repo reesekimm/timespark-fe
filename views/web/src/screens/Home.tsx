@@ -56,6 +56,7 @@ function Home() {
           variant='primary'
           label='Add'
           disabled={!isValid}
+          loading={createTask.isLoading}
           style={{ width: '10rem' }}
         />
       </Form>

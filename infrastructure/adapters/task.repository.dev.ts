@@ -6,6 +6,16 @@ import {
 import { MemoryDatabase } from '../lib/memory-database'
 
 export const taskRepositoryDev: TaskRepository = {
-  createTask: (taskData: CreateTaskDto) => MemoryDatabase.createTask(taskData),
-  getTasks: (period: GetTasksDto) => MemoryDatabase.getTasks(period)
+  createTask: (taskData: CreateTaskDto) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(MemoryDatabase.createTask(taskData))
+      }, 1000)
+    }),
+  getTasks: (period: GetTasksDto) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(MemoryDatabase.getTasks(period))
+      }, 1000)
+    })
 }
