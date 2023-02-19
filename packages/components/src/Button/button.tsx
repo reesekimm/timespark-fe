@@ -1,45 +1,67 @@
+import { theme } from '@timespark/styles'
 import { ButtonHTMLAttributes, forwardRef, MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
+import { Spinner } from '../Spinner/spinner'
 
+type ButtonVariant = 'primary' | 'default' | 'text'
 type ButtonSize = 'small' | 'medium' | 'large'
 
 export type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   label?: string
-  variant?: 'primary' | 'default' | 'text'
+  variant?: ButtonVariant
   size?: ButtonSize
   onClick?: MouseEventHandler<HTMLButtonElement>
+  loading?: boolean
   disabled?: boolean
 }
 
-const Button = forwardRef<HTMLButtonElement, Props>(
-  (
-    {
-      label = '',
-      variant = 'default',
-      size = 'medium',
-      onClick,
-      disabled = false,
-      children = undefined,
-      ...rest
-    }: Props,
-    ref
-  ) => {
-    return (
-      <StyledButton
-        ref={ref}
-        variant={variant}
-        size={size}
-        onClick={onClick}
-        disabled={disabled}
-        {...rest}
-      >
-        {children ?? label}
-      </StyledButton>
-    )
-  }
-)
+const Button = forwardRef<HTMLButtonElement, Props>(function Button(
+  {
+    label = '',
+    variant = 'default',
+    size = 'medium',
+    onClick,
+    loading = false,
+    disabled = false,
+    children = undefined,
+    ...rest
+  }: Props,
+  ref
+) {
+  return (
+    <StyledButton
+      ref={ref}
+      variant={variant}
+      size={size}
+      onClick={onClick}
+      $loading={loading}
+      disabled={loading || disabled}
+      {...rest}
+    >
+      {loading ? (
+        <Spinner
+          size={spinnerSizeMap[size]}
+          color={
+            variant === 'primary'
+              ? theme.palette.white
+              : theme.palette.gray[300]
+          }
+          style={{ marginRight: '0.5rem' }}
+        />
+      ) : null}
+      {children ?? label}
+    </StyledButton>
+  )
+})
 
-const StyledButton = styled.button<Props>`
+type StyleProps = {
+  variant: ButtonVariant
+  size: ButtonSize
+  $loading: boolean
+  disabled: boolean
+}
+
+const StyledButton = styled.button<StyleProps>`
   border: none;
   height: fit-content;
   background-color: ${({ theme, variant }) =>
@@ -48,10 +70,16 @@ const StyledButton = styled.button<Props>`
   color: ${({ theme, variant }) =>
     variant === 'primary' ? theme.palette.white : theme.palette.primary};
   font-family: ${({ theme }) => theme.fontFamily.extraBold};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   ${({ size }) => size && fontSizeMap[size]}
   ${({ size, variant }) =>
-    variant !== 'text' && size && outlinedStyleSizeMap[size]};
+    variant !== 'text' && size && outlinedStyleMap[size]};
+  ${({ size, variant, $loading }) =>
+    variant !== 'text' && size && $loading && loadingStyleMap[size]}
+
   transition: box-shadow 0.15s ease-in-out;
 
   &:disabled {
@@ -61,6 +89,12 @@ const StyledButton = styled.button<Props>`
       variant === 'primary' ? theme.palette.gray[300] : theme.palette.white};
   }
 `
+
+const spinnerSizeMap: { [key in ButtonSize]: string } = {
+  small: '1.5rem',
+  medium: '2.2rem',
+  large: '2.9rem'
+}
 
 const fontSizeMap = {
   small: css`
@@ -74,8 +108,7 @@ const fontSizeMap = {
   `
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const outlinedStyleSizeMap: { [key in ButtonSize]: any } = {
+const outlinedStyleMap = {
   small: css`
     padding: ${({ theme }) => theme.spacing.small};
     border-radius: 4px;
@@ -111,6 +144,16 @@ const outlinedStyleSizeMap: { [key in ButtonSize]: any } = {
   `
 }
 
-Button.displayName = 'Button'
+const loadingStyleMap = {
+  small: css`
+    padding: 0.9rem;
+  `,
+  medium: css`
+    padding: 1.05rem;
+  `,
+  large: css`
+    padding: 1.1rem;
+  `
+}
 
 export { Button }
