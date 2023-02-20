@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask, useTasks } from '../utils/tasks'
+import { useCreateTask, useTasks } from '../utils/query-tasks'
 import { formatDate, getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
@@ -60,9 +60,9 @@ function Home() {
           style={{ width: '10rem' }}
         />
       </Form>
-      <ul>
-        {tasks ? (
-          tasks.map((task) => (
+      {tasks ? (
+        <ul aria-label='tasks'>
+          {tasks.map((task) => (
             <li key={task.id}>
               <span>{formatDate(task.createdTime)}</span>{' '}
               <span>
@@ -76,11 +76,11 @@ function Home() {
               <span>{task.title}</span>{' '}
               <span>{task.estimatedDuration} min</span>
             </li>
-          ))
-        ) : (
-          <span>Add your first task!</span>
-        )}
-      </ul>
+          ))}
+        </ul>
+      ) : (
+        <span>Add your first task!</span>
+      )}
     </>
   )
 }

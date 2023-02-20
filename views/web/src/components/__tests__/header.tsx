@@ -1,8 +1,8 @@
-import { render, screen } from '../test/rtl-utils'
-import Header from './Header'
+import { render, screen } from '../../utils/rtl-utils'
+import Header from '../Header'
 
 describe('Header', () => {
-  it('default', () => {
+  it('renders logo and navigation menu', () => {
     render(<Header />)
     expect(
       screen.getByRole('heading', { level: 1, name: /timespark/i })

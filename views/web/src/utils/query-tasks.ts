@@ -2,12 +2,16 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { CreateTaskDto, GetTasksDto } from '@timespark/domain/repositories'
 import { port, adapter } from '@timespark/infrastructure'
 import { queryClient } from '../context'
-import { taskKeys } from './query-keys'
+
+export const taskKeys = {
+  all: ['tasks'] as const,
+  lists: ({ from, to }: GetTasksDto) => [...taskKeys.all, { from, to }] as const
+}
 
 export const useCreateTask = (period: GetTasksDto) =>
   useMutation({
     mutationFn: (taskData: CreateTaskDto) =>
-      port.taskPort(adapter.taskRepositoryDev).createTask(taskData),
+      port.taskPort(adapter.taskRepository).createTask(taskData),
     onMutate: (variables) => {
       console.log('createTask payload : ', variables)
     },
@@ -15,10 +19,10 @@ export const useCreateTask = (period: GetTasksDto) =>
       queryClient.invalidateQueries({ queryKey: taskKeys.lists(period) })
   })
 
-export const useTasks = (period: GetTasksDto) => {
+export const useTasks = ({ from, to }: GetTasksDto) => {
   const { data } = useQuery({
-    queryKey: taskKeys.lists(period),
-    queryFn: () => port.taskPort(adapter.taskRepositoryDev).getTasks(period)
+    queryKey: taskKeys.lists({ from, to }),
+    queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
   })
   return data && data.length > 0 ? data : null
 }

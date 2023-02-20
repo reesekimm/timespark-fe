@@ -1,12 +1,7 @@
 import { ReactNode } from 'react'
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
-  toast,
   ToastContainer,
   ToastPosition,
   Theme as ToastTheme
@@ -14,34 +9,8 @@ import {
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyle, theme } from '@timespark/styles'
-import { HttpError } from '@timespark/infrastructure'
 import { AuthProvider } from './auth-context'
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      useErrorBoundary: (error) =>
-        Boolean(
-          error instanceof HttpError && error.status && error.status >= 500
-        )
-    },
-    mutations: {
-      useErrorBoundary: (error) =>
-        Boolean(
-          error instanceof HttpError && error.status && error.status >= 500
-        )
-    }
-  },
-  queryCache: new QueryCache({
-    onError: (error) => {
-      if (error instanceof HttpError) {
-        toast.error(error.message)
-      }
-
-      toast.error('Oops, something went wrong...')
-    }
-  })
-})
+import { defaultQueryConfig } from './query-config'
 
 const toastConfig = {
   position: 'top-right' as ToastPosition,
@@ -56,9 +25,16 @@ const toastConfig = {
   theme: 'light' as ToastTheme
 }
 
-export function AppProviders({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode
+  client?: QueryClient
+}
+
+export const queryClient = new QueryClient(defaultQueryConfig)
+
+export function AppProviders({ children, client = queryClient }: Props) {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <AuthProvider>{children}</AuthProvider>
