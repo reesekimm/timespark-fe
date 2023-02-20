@@ -1,6 +1,6 @@
 export type Task = {
   id: number
-  createdTime: Date
+  createdTime: string
   categoryId: string
   tags: string[]
   title: string

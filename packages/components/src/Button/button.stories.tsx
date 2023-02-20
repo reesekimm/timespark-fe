@@ -9,13 +9,17 @@ const meta: Meta<ButtonProps> = {
       options: ['small', 'medium', 'large'],
       control: { type: 'radio' }
     },
+    loading: {
+      control: { type: 'boolean' }
+    },
     disabled: {
       control: { type: 'boolean' }
     }
   },
   args: {
+    loading: false,
     disabled: false,
-    size: 'small'
+    size: 'medium'
   }
 }
 
@@ -46,4 +50,18 @@ export const Text: Story = {
     variant: 'text'
   },
   render: ({ ...args }) => <Button {...args} />
+}
+
+export const Loading: Story = {
+  args: {
+    label: 'Loading',
+    variant: 'default',
+    loading: true
+  },
+  render: ({ ...args }) => (
+    <div style={{ display: 'flex' }}>
+      <Button {...args} />
+      <Button {...args} loading={false} />
+    </div>
+  )
 }

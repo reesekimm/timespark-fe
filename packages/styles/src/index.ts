@@ -1,5 +1,5 @@
 import * as grommetIcons from 'react-icons/gr'
-import { ImSpinner as Spinner } from 'react-icons/im'
+import { CgSpinnerAlt as Spinner } from 'react-icons/cg'
 import defaultTheme from './defaultTheme'
 import GlobalStyle from './globalStyle'
 

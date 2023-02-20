@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask, useTasks } from '../utils/tasks'
+import { useCreateTask, useTasks } from '../utils/query-tasks'
+import { formatDate, getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -22,8 +23,8 @@ function Home() {
     resolver: zodResolver(schema)
   })
 
-  const createTask = useCreateTask()
-  const tasks = useTasks()
+  const createTask = useCreateTask(getPeriodToday())
+  const tasks = useTasks(getPeriodToday())
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
@@ -55,21 +56,31 @@ function Home() {
           variant='primary'
           label='Add'
           disabled={!isValid}
+          loading={createTask.isLoading}
           style={{ width: '10rem' }}
         />
       </Form>
-      <ul>
-        {tasks?.map((task) => (
-          <li key={task.id}>
-            <span>
-              [
-              {categories.find(({ value }) => value === task.categoryId)?.label}
-              ]
-            </span>{' '}
-            <span>{task.title}</span> <span>{task.estimatedDuration} min</span>
-          </li>
-        ))}
-      </ul>
+      {tasks ? (
+        <ul aria-label='tasks'>
+          {tasks.map((task) => (
+            <li key={task.id}>
+              <span>{formatDate(task.createdTime)}</span>{' '}
+              <span>
+                [
+                {
+                  categories.find(({ value }) => value === task.categoryId)
+                    ?.label
+                }
+                ]
+              </span>{' '}
+              <span>{task.title}</span>{' '}
+              <span>{task.estimatedDuration} min</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span>Add your first task!</span>
+      )}
     </>
   )
 }

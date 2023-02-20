@@ -1,3 +1,4 @@
+import { HttpError } from '@timespark/infrastructure'
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
 import Layout from '../components/Layout'
 
@@ -12,8 +13,10 @@ export default function FullPageError() {
         </Layout>
       )
     }
+  }
 
-    if (error.status >= 500) {
+  if (error instanceof HttpError) {
+    if (error.status && error.status >= 500) {
       return (
         <Layout>
           <div>⚠️ Sorry, Looks like our API is down. Try again later.</div>

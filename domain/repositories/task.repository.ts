@@ -6,7 +6,12 @@ export interface CreateTaskDto {
   estimatedDuration: number
 }
 
+export interface GetTasksDto {
+  from: string
+  to: string
+}
+
 export interface TaskRepository {
   createTask: (taskData: CreateTaskDto) => Promise<boolean>
-  getTasks: () => Promise<Task[]>
+  getTasks: (period: GetTasksDto) => Promise<Task[]>
 }
