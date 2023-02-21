@@ -2,10 +2,8 @@ import {
   renderWithRouter,
   screen,
   userEvent,
-  waitFor,
-  within
+  waitFor
 } from '../utils/rtl-utils'
-import * as tasksDB from '../mock/tasks'
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
@@ -36,7 +34,7 @@ async function fillOutTheForm() {
       .selected
   ).toBe(true)
 
-  await userEvent.type(taskInput, 'task1')
+  await userEvent.type(taskInput, 'test')
 
   expect(screen.getByRole('button', { name: /add/i })).toBeEnabled()
 
@@ -55,18 +53,19 @@ async function fillOutTheForm() {
 }
 
 describe('[CREATE TASK]', () => {
-  test('can create a task and renders it on the list', async () => {
+  test('can create a task and renders it in the table', async () => {
     renderHomeScreen()
 
     await fillOutTheForm()
 
     waitFor(() => {
-      const list = screen.getByRole('list')
-      expect(
-        within(list).getByText(/none/i, { exact: false })
-      ).toBeInTheDocument()
-      expect(within(list).getByText('task1')).toBeInTheDocument()
-      expect(within(list).getByText('30', { exact: false })).toBeInTheDocument()
+      const firstRow = screen
+        .getByRole('table')
+        .querySelector('tbody > tr:first-child')
+      expect(firstRow).toHaveTextContent(/none/i)
+      expect(firstRow).toHaveTextContent(/test/i)
+      expect(firstRow).toHaveTextContent('30')
+      expect(firstRow).toHaveTextContent('0')
     })
   })
 
@@ -91,31 +90,18 @@ describe('[CREATE TASK]', () => {
 
 describe('[RENDER TASKS]', () => {
   describe('if there is any task', () => {
-    beforeEach(() => {
-      tasksDB.reset()
-    })
-
-    test('renders all tasks on the list', async () => {
+    test('renders all tasks in the table', async () => {
       renderHomeScreen()
 
-      const taskList = await screen.findByRole('list', { name: 'tasks' })
-      const tasks = await within(taskList).findAllByRole('listitem')
-
-      expect(tasks).toHaveLength(1)
-    })
-  })
-
-  describe('if no tasks exist', () => {
-    beforeEach(() => {
-      tasksDB.clear()
-    })
-
-    test('renders guide message', async () => {
-      renderHomeScreen()
-
-      expect(
-        await screen.findByText(/Add your first task/i)
-      ).toBeInTheDocument()
+      waitFor(() => {
+        const firstRow = screen
+          .getByRole('table')
+          .querySelector('tbody > tr:first-child')
+        expect(firstRow).toHaveTextContent('명상')
+        expect(firstRow).toHaveTextContent(/task of today/i)
+        expect(firstRow).toHaveTextContent('20')
+        expect(firstRow).toHaveTextContent('0')
+      })
     })
   })
 
