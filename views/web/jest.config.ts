@@ -1,7 +1,10 @@
 import type { Config } from 'jest'
 
 const config: Config = {
-  preset: 'ts-jest',
+  transform: {
+    '\\.[t]sx?$': 'ts-jest',
+    '\\.[j]sx?$': 'babel-jest'
+  },
   roots: ['<rootDir>/src'],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
@@ -9,6 +12,7 @@ const config: Config = {
       '<rootDir>/../../__mocks__/fileMock.js',
     '\\.(css|less)$': '<rootDir>/../../__mocks__/styleMock.js'
   },
+  transformIgnorePatterns: ['\\react-dnd'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['node_modules', '\\.yarn', '<rootDir>.*/public'],
   verbose: true

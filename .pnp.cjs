@@ -816,6 +816,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.0.3"\
       ],\
       [\
+        "@react-dnd/asap",\
+        "npm:5.0.2"\
+      ],\
+      [\
+        "@react-dnd/invariant",\
+        "npm:4.0.2"\
+      ],\
+      [\
+        "@react-dnd/shallowequal",\
+        "npm:4.0.2"\
+      ],\
+      [\
         "@remix-run/router",\
         "npm:1.3.2"\
       ],\
@@ -2160,6 +2172,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:3.0.1"\
       ],\
       [\
+        "dnd-core",\
+        "npm:16.0.1"\
+      ],\
+      [\
         "doctrine",\
         "npm:3.0.0"\
       ],\
@@ -2762,6 +2778,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [\
         "ignore",\
         "npm:5.2.4"\
+      ],\
+      [\
+        "immutability-helper",\
+        "npm:3.1.1"\
       ],\
       [\
         "import-fresh",\
@@ -3932,6 +3952,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:a19119c3d0a99a0b02ed57e650096af6c603606ef70501a74fd3ffce017c8a339cd64b98c8eb5c6d6aa6d26f0ee0a11c43a5fab3b0bb9772363e12d0058e7201#npm:5.6.1"\
       ],\
       [\
+        "react-dnd",\
+        "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:16.0.1"\
+      ],\
+      [\
+        "react-dnd-html5-backend",\
+        "npm:16.0.1"\
+      ],\
+      [\
         "react-docgen",\
         "npm:6.0.0-alpha.3"\
       ],\
@@ -4014,6 +4042,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [\
         "redent",\
         "npm:3.0.0"\
+      ],\
+      [\
+        "redux",\
+        "npm:4.2.1"\
       ],\
       [\
         "regenerate",\
@@ -8535,6 +8567,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@react-dnd/asap", [\
+        ["npm:5.0.2", {\
+          "packageLocation": "./.yarn/cache/@react-dnd-asap-npm-5.0.2-66021d3d61-18f040e535.zip/node_modules/@react-dnd/asap/",\
+          "packageDependencies": [\
+            ["@react-dnd/asap", "npm:5.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@react-dnd/invariant", [\
+        ["npm:4.0.2", {\
+          "packageLocation": "./.yarn/cache/@react-dnd-invariant-npm-4.0.2-826eacc1ea-594f6d7889.zip/node_modules/@react-dnd/invariant/",\
+          "packageDependencies": [\
+            ["@react-dnd/invariant", "npm:4.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@react-dnd/shallowequal", [\
+        ["npm:4.0.2", {\
+          "packageLocation": "./.yarn/cache/@react-dnd-shallowequal-npm-4.0.2-f944714335-7f21d691bd.zip/node_modules/@react-dnd/shallowequal/",\
+          "packageDependencies": [\
+            ["@react-dnd/shallowequal", "npm:4.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@remix-run/router", [\
         ["npm:1.3.2", {\
           "packageLocation": "./.yarn/cache/@remix-run-router-npm-1.3.2-0414b942ee-ee2108b87d.zip/node_modules/@remix-run/router/",\
@@ -10288,9 +10347,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-jest", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
             ["babel-loader", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:8.3.0"],\
             ["chromatic", "npm:6.15.0"],\
+            ["immutability-helper", "npm:3.1.1"],\
             ["jest", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
             ["jest-environment-jsdom", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:29.3.1"],\
             ["react", "npm:18.2.0"],\
+            ["react-dnd", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:16.0.1"],\
+            ["react-dnd-html5-backend", "npm:16.0.1"],\
             ["react-dom", "virtual:c95b581adee0ca1af50a34bd96d2a98d78ba376de4a527324b6036df5ecb3900e2faa471e10caada64f773085268f6ab3950249eb93557d7d05903c35960282e#npm:18.2.0"],\
             ["react-router-dom", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:6.8.1"],\
             ["react-test-renderer", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:18.2.0"],\
@@ -13766,6 +13828,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["dnd-core", [\
+        ["npm:16.0.1", {\
+          "packageLocation": "./.yarn/cache/dnd-core-npm-16.0.1-552224cee0-b7d3ef4664.zip/node_modules/dnd-core/",\
+          "packageDependencies": [\
+            ["dnd-core", "npm:16.0.1"],\
+            ["@react-dnd/asap", "npm:5.0.2"],\
+            ["@react-dnd/invariant", "npm:4.0.2"],\
+            ["redux", "npm:4.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["doctrine", [\
         ["npm:2.1.0", {\
           "packageLocation": "./.yarn/cache/doctrine-npm-2.1.0-ac15d049b7-a45e277f7f.zip/node_modules/doctrine/",\
@@ -15809,6 +15883,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ignore-npm-5.2.4-fbe6e989e5-3d4c309c60.zip/node_modules/ignore/",\
           "packageDependencies": [\
             ["ignore", "npm:5.2.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["immutability-helper", [\
+        ["npm:3.1.1", {\
+          "packageLocation": "./.yarn/cache/immutability-helper-npm-3.1.1-482f1f8f58-6fdbf6d212.zip/node_modules/immutability-helper/",\
+          "packageDependencies": [\
+            ["immutability-helper", "npm:3.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -19567,6 +19650,47 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["react-dnd", [\
+        ["npm:16.0.1", {\
+          "packageLocation": "./.yarn/cache/react-dnd-npm-16.0.1-974f047d7b-e8da2186aa.zip/node_modules/react-dnd/",\
+          "packageDependencies": [\
+            ["react-dnd", "npm:16.0.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:16.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-dnd-virtual-76a4d1e6b1/0/cache/react-dnd-npm-16.0.1-974f047d7b-e8da2186aa.zip/node_modules/react-dnd/",\
+          "packageDependencies": [\
+            ["react-dnd", "virtual:82dc5dd522d5608f126ead1a2505f46095aea3e2207409034d9d41572228bef8139b09b623f43aa7ab086897e6b3362486205574db023070ee98dba0615b7342#npm:16.0.1"],\
+            ["@react-dnd/invariant", "npm:4.0.2"],\
+            ["@react-dnd/shallowequal", "npm:4.0.2"],\
+            ["@types/hoist-non-react-statics", null],\
+            ["@types/node", "npm:18.11.18"],\
+            ["@types/react", "npm:18.0.27"],\
+            ["dnd-core", "npm:16.0.1"],\
+            ["fast-deep-equal", "npm:3.1.3"],\
+            ["hoist-non-react-statics", "npm:3.3.2"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/hoist-non-react-statics",\
+            "@types/node",\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-dnd-html5-backend", [\
+        ["npm:16.0.1", {\
+          "packageLocation": "./.yarn/cache/react-dnd-html5-backend-npm-16.0.1-754940d855-e2368bf85d.zip/node_modules/react-dnd-html5-backend/",\
+          "packageDependencies": [\
+            ["react-dnd-html5-backend", "npm:16.0.1"],\
+            ["dnd-core", "npm:16.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["react-docgen", [\
         ["npm:6.0.0-alpha.3", {\
           "packageLocation": "./.yarn/cache/react-docgen-npm-6.0.0-alpha.3-a0cd4811b0-db4c300910.zip/node_modules/react-docgen/",\
@@ -19996,6 +20120,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redent", "npm:3.0.0"],\
             ["indent-string", "npm:4.0.0"],\
             ["strip-indent", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["redux", [\
+        ["npm:4.2.1", {\
+          "packageLocation": "./.yarn/cache/redux-npm-4.2.1-e7e2cf2e37-f63b9060c3.zip/node_modules/redux/",\
+          "packageDependencies": [\
+            ["redux", "npm:4.2.1"],\
+            ["@babel/runtime", "npm:7.20.7"]\
           ],\
           "linkType": "HARD"\
         }]\

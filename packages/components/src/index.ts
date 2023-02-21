@@ -3,4 +3,8 @@ export { Button } from './Button/button'
 export { Footer } from './Footer/footer'
 export { Select } from './Select/select'
 export { Spinner } from './Spinner/spinner'
+export { Table } from './Table/table'
 export { TextInput } from './TextInput/text-input'
+
+export { HTML5Backend as TableDnDBackend } from 'react-dnd-html5-backend'
+export { DndProvider as TableContextProvider } from 'react-dnd'

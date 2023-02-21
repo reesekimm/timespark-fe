@@ -24,5 +24,6 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
     queryKey: taskKeys.lists({ from, to }),
     queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
   })
-  return data && data.length > 0 ? data : null
+
+  return data && data.length > 0 ? [...data].reverse() : null
 }

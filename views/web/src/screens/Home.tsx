@@ -1,11 +1,18 @@
-import { Button, Select, TextInput } from '@timespark/components'
+import {
+  Button,
+  Select,
+  Table,
+  TableContextProvider,
+  TableDnDBackend,
+  TextInput
+} from '@timespark/components'
 import { CreateTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateTask, useTasks } from '../utils/query-tasks'
-import { formatDate, getPeriodToday } from '../utils/misc'
+import { getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -61,23 +68,18 @@ function Home() {
         />
       </Form>
       {tasks ? (
-        <ul aria-label='tasks'>
-          {tasks.map((task) => (
-            <li key={task.id}>
-              <span>{formatDate(task.createdTime)}</span>{' '}
-              <span>
-                [
-                {
-                  categories.find(({ value }) => value === task.categoryId)
-                    ?.label
-                }
-                ]
-              </span>{' '}
-              <span>{task.title}</span>{' '}
-              <span>{task.estimatedDuration} min</span>
-            </li>
-          ))}
-        </ul>
+        <TableContextProvider backend={TableDnDBackend}>
+          <Table
+            aria-label='tasks'
+            data={tasks.map((task) => ({
+              ...task,
+              category:
+                categories.find((c) => c.value === task.categoryId)?.label ??
+                'None'
+            }))}
+            onDrop={(currentData) => console.log(currentData)}
+          />
+        </TableContextProvider>
       ) : (
         <span>Add your first task!</span>
       )}
