@@ -17,15 +17,13 @@ export const Progress = ({
   max = 100,
   color = theme.palette.secondary,
   backgroundColor = theme.palette.gray[100],
-  style,
-  ...rest
+  style
 }: Props) => {
   return (
     <Background
       data-testid='background'
       backgroundColor={backgroundColor}
       style={style}
-      {...rest}
     >
       {value >= min ? (
         <Bar

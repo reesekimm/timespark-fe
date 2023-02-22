@@ -16,7 +16,7 @@ const sizeMap: { [key in SpinnerSize]: string } = {
   large: '6rem'
 }
 
-export const Spinner = ({ size = 'medium', color, style, ...rest }: Props) => {
+export const Spinner = ({ size = 'medium', color, style }: Props) => {
   const spinnerSize = useMemo(() => {
     if (['small', 'medium', 'large'].includes(size)) {
       return sizeMap[size as SpinnerSize]
@@ -25,9 +25,7 @@ export const Spinner = ({ size = 'medium', color, style, ...rest }: Props) => {
     }
   }, [size])
 
-  return (
-    <StyledSpinner size={spinnerSize} color={color} style={style} {...rest} />
-  )
+  return <StyledSpinner size={spinnerSize} color={color} style={style} />
 }
 
 const spin = keyframes`

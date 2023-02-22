@@ -21,7 +21,7 @@ export type TableProps = {
   style?: CSSProperties
 }
 
-export const Table = ({ data = [], onDrop, style, ...rest }: TableProps) => {
+export const Table = ({ data = [], onDrop, style }: TableProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -57,7 +57,7 @@ export const Table = ({ data = [], onDrop, style, ...rest }: TableProps) => {
   }, [onDrop, rows])
 
   return (
-    <StyledTable style={style} {...rest}>
+    <StyledTable style={style}>
       <thead>
         <tr>
           <Th>Task</Th>

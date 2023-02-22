@@ -7,9 +7,9 @@ export type Props = LabelHTMLAttributes<HTMLLabelElement> & {
   size?: 'small' | 'medium' | 'large'
 }
 
-const Label = ({ htmlFor, label, size = 'medium', ...rest }: Props) => {
+const Label = ({ htmlFor, label, size = 'medium' }: Props) => {
   return (
-    <StyledLabel htmlFor={htmlFor} size={size} {...rest}>
+    <StyledLabel htmlFor={htmlFor} size={size}>
       {label}
     </StyledLabel>
   )

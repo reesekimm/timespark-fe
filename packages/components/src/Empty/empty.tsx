@@ -1,13 +1,15 @@
 import { Icons } from '@timespark/styles'
+import { CSSProperties } from 'react'
 import styled from 'styled-components'
 
 export type Props = {
   description?: string
+  style?: CSSProperties
 }
 
-export const Empty = ({ description = 'No data' }: Props) => {
+export const Empty = ({ description = 'No data', style }: Props) => {
   return (
-    <StyledSection role='section'>
+    <StyledSection style={style}>
       <Icons.GrArchive size='5rem' />
       <Text>{description}</Text>
     </StyledSection>

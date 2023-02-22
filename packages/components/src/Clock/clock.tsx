@@ -17,9 +17,9 @@ export type Props = {
   style?: CSSProperties
 }
 
-export const Clock = ({ totalSeconds, style, ...rest }: Props) => {
+export const Clock = ({ totalSeconds, style }: Props) => {
   return (
-    <StyledClock dateTime={formatTime(totalSeconds)} style={style} {...rest}>
+    <StyledClock dateTime={formatTime(totalSeconds)} style={style}>
       {formatTime(totalSeconds)}
     </StyledClock>
   )

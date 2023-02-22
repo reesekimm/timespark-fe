@@ -82,7 +82,10 @@ function Home() {
           />
         </TableContextProvider>
       ) : (
-        <Empty description='Add your first task :)' />
+        <Empty
+          description='Add your first task :)'
+          style={{ padding: '25rem' }}
+        />
       )}
     </>
   )

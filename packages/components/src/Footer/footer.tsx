@@ -1,9 +1,15 @@
-import { FC } from 'react'
+import { CSSProperties, FC } from 'react'
 import styled from 'styled-components'
 
-export const Footer: FC = ({ ...rest }) => {
+type Props = {
+  style?: CSSProperties
+}
+
+export const Footer: FC = ({ style }: Props) => {
   return (
-    <StyledFooter {...rest}>@{new Date().getFullYear()} Reese Kim</StyledFooter>
+    <StyledFooter style={style}>
+      @{new Date().getFullYear()} Reese Kim
+    </StyledFooter>
   )
 }
 
