@@ -16,17 +16,15 @@ describe('Table', () => {
   it('renders table head and table body appropriately', () => {
     renderTable()
 
-    const category = screen.getByRole('columnheader', { name: /category/i })
-    const title = screen.getByRole('columnheader', { name: /title/i })
+    const task = screen.getByRole('columnheader', { name: /task/i })
     const estimatedDuration = screen.getByRole('columnheader', {
-      name: /estimated dur\. \(min\)/i
+      name: /est\./i
     })
     const actualDuration = screen.getByRole('columnheader', {
-      name: /actual dur\. \(min\)/i
+      name: /act\./i
     })
 
-    expect(category).toBeInTheDocument()
-    expect(title).toBeInTheDocument()
+    expect(task).toBeInTheDocument()
     expect(estimatedDuration).toBeInTheDocument()
     expect(actualDuration).toBeInTheDocument()
 

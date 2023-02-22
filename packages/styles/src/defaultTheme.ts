@@ -3,7 +3,7 @@ const defaultTheme = {
     primary: '#6b48ff',
     secondary: '#76FFB3',
     bg: '#ffffff',
-    text: '#1b2631',
+    text: '#2e4053',
     black: '#1b2631',
     white: '#ffffff',
     gray: {

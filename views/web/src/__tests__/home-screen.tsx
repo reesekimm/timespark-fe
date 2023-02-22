@@ -7,6 +7,7 @@ import {
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
+import * as tasksDB from '../mock/tasks'
 
 function renderHomeScreen() {
   return renderWithRouter({ route: '/' })
@@ -53,7 +54,7 @@ async function fillOutTheForm() {
 }
 
 describe('[CREATE TASK]', () => {
-  test('can create a task and renders it in the table', async () => {
+  it('can create a task and renders it in the table', async () => {
     renderHomeScreen()
 
     await fillOutTheForm()
@@ -69,7 +70,7 @@ describe('[CREATE TASK]', () => {
     })
   })
 
-  test('shows an error message when create task fails', async () => {
+  it('shows an error message when create task fails', async () => {
     server.use(
       rest.post('/task', (req, res, ctx) => {
         return res(ctx.status(500))
@@ -90,7 +91,7 @@ describe('[CREATE TASK]', () => {
 
 describe('[RENDER TASKS]', () => {
   describe('if there is any task', () => {
-    test('renders all tasks in the table', async () => {
+    it('renders all tasks in the table', async () => {
       renderHomeScreen()
 
       waitFor(() => {
@@ -105,7 +106,19 @@ describe('[RENDER TASKS]', () => {
     })
   })
 
-  test('shows an error message when tasks fail to load', async () => {
+  describe('if there are no tasks', () => {
+    beforeEach(() => {
+      tasksDB.clear()
+    })
+
+    it('renders empty section', () => {
+      renderHomeScreen()
+
+      expect(screen.getByText(/add your first task :\)/i)).toBeInTheDocument()
+    })
+  })
+
+  it('shows an error message when tasks fail to load', async () => {
     server.use(
       rest.get('/tasks', (req, res, ctx) => {
         return res(ctx.status(500))

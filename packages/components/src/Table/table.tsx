@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
-import { Icons } from '@timespark/styles'
 import { itemType, TableRow } from './table-row'
+import styled from 'styled-components'
+import { Clock } from '../Clock/clock'
+import { theme } from '@timespark/styles'
 
 export type Data = {
   id: number
@@ -16,14 +18,10 @@ export type Data = {
 export type TableProps = {
   data: Data[]
   onDrop?: (currentData: Data[]) => void
-  emptyStatePlaceholder?: string
+  style?: CSSProperties
 }
 
-export const Table = ({
-  data = [],
-  onDrop,
-  emptyStatePlaceholder = 'No data'
-}: TableProps) => {
+export const Table = ({ data = [], onDrop, style }: TableProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -59,37 +57,72 @@ export const Table = ({
   }, [onDrop, rows])
 
   return (
-    <table style={{ borderCollapse: 'collapse' }}>
+    <StyledTable style={style}>
       <thead>
         <tr>
-          <th></th>
-          <th>category</th>
-          <th>title</th>
-          <th>Estimated Dur. (min)</th>
-          <th>Actual Dur. (min)</th>
+          <Th>Task</Th>
+          <Th>Est.</Th>
+          <Th>Act.</Th>
+          <Th></Th>
+          <Th></Th>
         </tr>
       </thead>
       <tbody ref={drop}>
-        {rows.length > 0 ? (
-          rows.map((d) => (
-            <TableRow
-              key={d.id}
-              data-testid={d.id}
-              {...d}
-              findRow={findRow}
-              moveRow={moveRow}
-              dropRow={dropRow}
-            />
-          ))
-        ) : (
-          <tr>
-            <td>
-              <Icons.GrArchive />
-              <span>{emptyStatePlaceholder}</span>
-            </td>
-          </tr>
-        )}
+        {rows.map((d) => (
+          <TableRow
+            key={d.id}
+            data-testid={d.id}
+            {...d}
+            findRow={findRow}
+            moveRow={moveRow}
+            dropRow={dropRow}
+          />
+        ))}
       </tbody>
-    </table>
+      <tfoot>
+        <tr>
+          <td></td>
+          <Td>
+            <Clock
+              totalSeconds={data.reduce(
+                (total, { estimatedDuration }) =>
+                  total + estimatedDuration * 60,
+                0
+              )}
+              style={{ fontFamily: theme.fontFamily.bold }}
+            />
+          </Td>
+          <Td>
+            <Clock
+              totalSeconds={data.reduce(
+                (total, { actualDuration }) => total + actualDuration * 60,
+                0
+              )}
+              style={{ fontFamily: theme.fontFamily.bold }}
+            />
+          </Td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </StyledTable>
   )
 }
+
+const StyledTable = styled.table`
+  width: 100%;
+  max-width: 120rem;
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+  color: ${({ theme }) => theme.palette.text};
+`
+
+const Th = styled.th`
+  font-family: ${({ theme }) => theme.fontFamily.extraBold};
+  line-height: 1.5;
+`
+
+const Td = styled.td`
+  padding: 2rem;
+  text-align: center;
+`

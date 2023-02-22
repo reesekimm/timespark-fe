@@ -7,9 +7,9 @@ export type Props = LabelHTMLAttributes<HTMLLabelElement> & {
   size?: 'small' | 'medium' | 'large'
 }
 
-const Label = ({ htmlFor, label, size = 'medium', ...rest }: Props) => {
+const Label = ({ htmlFor, label, size = 'medium' }: Props) => {
   return (
-    <StyledLabel htmlFor={htmlFor} size={size} {...rest}>
+    <StyledLabel htmlFor={htmlFor} size={size}>
       {label}
     </StyledLabel>
   )
@@ -20,6 +20,7 @@ export default Label
 const StyledLabel = styled.label<Pick<Props, 'size'>>`
   display: inline-block;
   font-family: ${({ theme }) => theme.fontFamily.extraBold};
+  color: ${({ theme }) => theme.palette.text};
   ${({ size }) => size && labelStyle[size]}
 `
 

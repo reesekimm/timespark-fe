@@ -57,6 +57,7 @@ const StyledSelect = styled.select<Omit<Props, 'options' | 'label'>>`
   width: 100%;
   border: none;
   cursor: pointer;
+  color: ${({ theme }) => theme.palette.text};
   background: transparent;
   appearance: none;
 

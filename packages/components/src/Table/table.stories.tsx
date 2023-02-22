@@ -29,10 +29,3 @@ type Story = StoryObj<TableProps>
 export const Default: Story = {
   render: ({ ...args }) => <Table {...args} />
 }
-
-export const Empty: Story = {
-  args: {
-    data: []
-  },
-  render: ({ ...args }) => <Table {...args} />
-}

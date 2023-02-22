@@ -1,5 +1,6 @@
 import {
   Button,
+  Empty,
   Select,
   Table,
   TableContextProvider,
@@ -40,7 +41,7 @@ function Home() {
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
           {...register('categoryId')}
           label='Category'
@@ -81,7 +82,10 @@ function Home() {
           />
         </TableContextProvider>
       ) : (
-        <span>Add your first task!</span>
+        <Empty
+          description='Add your first task :)'
+          style={{ padding: '25rem' }}
+        />
       )}
     </>
   )
