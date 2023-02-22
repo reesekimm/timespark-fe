@@ -5,9 +5,9 @@ import App from './App'
 import { worker } from './mock/server/dev-server'
 
 async function prepareMockServer() {
-  if (import.meta.env.DEV) {
-    return worker.start({ onUnhandledRequest: 'bypass' })
-  }
+  // if (import.meta.env.DEV) {
+  return worker.start({ onUnhandledRequest: 'bypass' })
+  // }
 }
 
 prepareMockServer().then(() => {
