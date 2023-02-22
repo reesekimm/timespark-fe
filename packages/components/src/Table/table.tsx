@@ -1,7 +1,6 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
-import { Icons } from '@timespark/styles'
 import { itemType, TableRow } from './table-row'
 import styled from 'styled-components'
 
@@ -17,17 +16,10 @@ export type Data = {
 export type TableProps = {
   data: Data[]
   onDrop?: (currentData: Data[]) => void
-  emptyStatePlaceholder?: string
   style?: CSSProperties
 }
 
-export const Table = ({
-  data = [],
-  onDrop,
-  emptyStatePlaceholder = 'No data',
-  style,
-  ...rest
-}: TableProps) => {
+export const Table = ({ data = [], onDrop, style, ...rest }: TableProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -82,25 +74,16 @@ export const Table = ({
         </tr>
       </thead>
       <tbody ref={drop}>
-        {rows.length > 0 ? (
-          rows.map((d) => (
-            <TableRow
-              key={d.id}
-              data-testid={d.id}
-              {...d}
-              findRow={findRow}
-              moveRow={moveRow}
-              dropRow={dropRow}
-            />
-          ))
-        ) : (
-          <tr>
-            <td>
-              <Icons.GrArchive />
-              <span>{emptyStatePlaceholder}</span>
-            </td>
-          </tr>
-        )}
+        {rows?.map((d) => (
+          <TableRow
+            key={d.id}
+            data-testid={d.id}
+            {...d}
+            findRow={findRow}
+            moveRow={moveRow}
+            dropRow={dropRow}
+          />
+        ))}
       </tbody>
     </StyledTable>
   )
