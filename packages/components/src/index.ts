@@ -1,6 +1,7 @@
 export { Anchor } from './Anchor/anchor'
 export { Button } from './Button/button'
 export { Footer } from './Footer/footer'
+export { Progress } from './Progress/progress'
 export { Select } from './Select/select'
 export { Spinner } from './Spinner/spinner'
 export { Table } from './Table/table'

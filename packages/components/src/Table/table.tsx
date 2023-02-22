@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
 import { Icons } from '@timespark/styles'
 import { itemType, TableRow } from './table-row'
+import styled from 'styled-components'
 
 export type Data = {
   id: number
@@ -17,12 +18,15 @@ export type TableProps = {
   data: Data[]
   onDrop?: (currentData: Data[]) => void
   emptyStatePlaceholder?: string
+  style?: CSSProperties
 }
 
 export const Table = ({
   data = [],
   onDrop,
-  emptyStatePlaceholder = 'No data'
+  emptyStatePlaceholder = 'No data',
+  style,
+  ...rest
 }: TableProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
@@ -59,14 +63,23 @@ export const Table = ({
   }, [onDrop, rows])
 
   return (
-    <table style={{ borderCollapse: 'collapse' }}>
+    <StyledTable style={style} {...rest}>
       <thead>
         <tr>
-          <th></th>
-          <th>category</th>
-          <th>title</th>
-          <th>Estimated Dur. (min)</th>
-          <th>Actual Dur. (min)</th>
+          <Th></Th>
+          <Th>Task</Th>
+          <Th>
+            Estimated Dur.
+            <br />
+            (min)
+          </Th>
+          <Th>
+            Actual Dur.
+            <br />
+            (min)
+          </Th>
+          <Th></Th>
+          <Th></Th>
         </tr>
       </thead>
       <tbody ref={drop}>
@@ -90,6 +103,18 @@ export const Table = ({
           </tr>
         )}
       </tbody>
-    </table>
+    </StyledTable>
   )
 }
+
+const StyledTable = styled.table`
+  width: 100%;
+  max-width: 120rem;
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+`
+
+const Th = styled.th`
+  font-family: ${({ theme }) => theme.fontFamily.extraBold};
+  line-height: 1.5;
+`
