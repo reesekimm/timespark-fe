@@ -29,5 +29,5 @@ const StyledClock = styled.time`
   display: inline;
   font-family: ${({ theme }) => theme.fontFamily.regular};
   font-size: ${({ theme }) => theme.fontSize.large};
-  color: ${({ theme }) => theme.palette.gray[500]};
+  color: ${({ theme }) => theme.palette.text};
 `

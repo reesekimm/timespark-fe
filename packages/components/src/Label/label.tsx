@@ -20,6 +20,7 @@ export default Label
 const StyledLabel = styled.label<Pick<Props, 'size'>>`
   display: inline-block;
   font-family: ${({ theme }) => theme.fontFamily.extraBold};
+  color: ${({ theme }) => theme.palette.text};
   ${({ size }) => size && labelStyle[size]}
 `
 
