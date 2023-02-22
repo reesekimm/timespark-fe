@@ -3,6 +3,8 @@ import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
 import { itemType, TableRow } from './table-row'
 import styled from 'styled-components'
+import { Clock } from '../Clock/clock'
+import { theme } from '@timespark/styles'
 
 export type Data = {
   id: number
@@ -59,22 +61,14 @@ export const Table = ({ data = [], onDrop, style, ...rest }: TableProps) => {
       <thead>
         <tr>
           <Th>Task</Th>
-          <Th>
-            Estimated Dur.
-            <br />
-            (min)
-          </Th>
-          <Th>
-            Actual Dur.
-            <br />
-            (min)
-          </Th>
+          <Th>Est.</Th>
+          <Th>Act.</Th>
           <Th></Th>
           <Th></Th>
         </tr>
       </thead>
       <tbody ref={drop}>
-        {rows?.map((d) => (
+        {rows.map((d) => (
           <TableRow
             key={d.id}
             data-testid={d.id}
@@ -85,6 +79,32 @@ export const Table = ({ data = [], onDrop, style, ...rest }: TableProps) => {
           />
         ))}
       </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <Td>
+            <Clock
+              totalSeconds={data.reduce(
+                (total, { estimatedDuration }) =>
+                  total + estimatedDuration * 60,
+                0
+              )}
+              style={{ fontFamily: theme.fontFamily.bold }}
+            />
+          </Td>
+          <Td>
+            <Clock
+              totalSeconds={data.reduce(
+                (total, { actualDuration }) => total + actualDuration * 60,
+                0
+              )}
+              style={{ fontFamily: theme.fontFamily.bold }}
+            />
+          </Td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </StyledTable>
   )
 }
@@ -94,9 +114,15 @@ const StyledTable = styled.table`
   max-width: 120rem;
   border-collapse: separate;
   border-spacing: 0 1rem;
+  color: ${({ theme }) => theme.palette.text};
 `
 
 const Th = styled.th`
   font-family: ${({ theme }) => theme.fontFamily.extraBold};
   line-height: 1.5;
+`
+
+const Td = styled.td`
+  padding: 2rem;
+  text-align: center;
 `

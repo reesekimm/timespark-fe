@@ -108,7 +108,6 @@ const TdCommonStyle = css`
   background-color: ${({ theme }) => theme.palette.white};
   padding: 2rem;
   text-align: center;
-  color: ${({ theme }) => theme.palette.gray[500]};
   font-size: ${({ theme }) => theme.fontSize.small};
 `
 

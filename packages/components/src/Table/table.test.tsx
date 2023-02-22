@@ -18,10 +18,10 @@ describe('Table', () => {
 
     const task = screen.getByRole('columnheader', { name: /task/i })
     const estimatedDuration = screen.getByRole('columnheader', {
-      name: /estimated dur\. \(min\)/i
+      name: /est\./i
     })
     const actualDuration = screen.getByRole('columnheader', {
-      name: /actual dur\. \(min\)/i
+      name: /act\./i
     })
 
     expect(task).toBeInTheDocument()
