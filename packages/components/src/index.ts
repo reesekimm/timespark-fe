@@ -1,5 +1,6 @@
 export { Anchor } from './Anchor/anchor'
 export { Button } from './Button/button'
+export { Clock } from './Clock/clock'
 export { Footer } from './Footer/footer'
 export { Progress } from './Progress/progress'
 export { Select } from './Select/select'

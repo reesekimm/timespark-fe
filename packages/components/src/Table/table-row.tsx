@@ -1,9 +1,9 @@
-import { Icons } from '@timespark/styles'
+import { Icons, theme } from '@timespark/styles'
 import { useDrag, useDrop } from 'react-dnd'
 import styled, { css } from 'styled-components'
 import { Data } from './table'
-import { formatTime } from '../../utils/misc'
 import { Progress } from '../Progress/progress'
+import { Clock } from '../Clock/clock'
 
 export const itemType = 'row'
 
@@ -59,13 +59,16 @@ export const TableRow = ({
 
   return (
     <Tr ref={(node) => drag(drop(node))} isDragging={isDragging}>
-      <DragIcon>
-        <Icons.GrDrag />
-      </DragIcon>
-      <TaskWrapper>
-        <Task>
-          [{category}] {title}
-        </Task>
+      <Task>
+        <TaskWrapper>
+          <Icons.GrDrag
+            color={theme.palette.gray[300]}
+            style={{ margin: '0 2rem' }}
+          />
+          <div>
+            [{category}] {title}
+          </div>
+        </TaskWrapper>
         <Progress
           value={estimatedDuration - actualDuration}
           max={estimatedDuration}
@@ -75,11 +78,25 @@ export const TableRow = ({
               : 'RGBA(118,255,179,0.3)'
           }
           backgroundColor='white'
-          style={{ height: '7rem' }}
+          style={{
+            height: '7rem',
+            borderTopLeftRadius: '10px',
+            borderBottomLeftRadius: '10px'
+          }}
         />
-      </TaskWrapper>
-      <Timer>{formatTime(estimatedDuration * 60)}</Timer>
-      <Timer>{formatTime(actualDuration * 60)}</Timer>
+      </Task>
+      <Td>
+        <Clock
+          totalSeconds={estimatedDuration * 60}
+          style={{ color: theme.palette.gray[400] }}
+        />
+      </Td>
+      <Td>
+        <Clock
+          totalSeconds={actualDuration * 60}
+          style={{ color: theme.palette.gray[400] }}
+        />
+      </Td>
       <Td></Td>
       <LastTd></LastTd>
     </Tr>
@@ -87,62 +104,42 @@ export const TableRow = ({
 }
 
 const TdCommonStyle = css`
-  border: ${({ theme }) => `1px solid ${theme.palette.gray[200]}`};
+  border: ${({ theme }) => `1px solid ${theme.palette.gray[100]}`};
   background-color: ${({ theme }) => theme.palette.white};
   padding: 2rem;
   text-align: center;
   color: ${({ theme }) => theme.palette.gray[500]};
-  font-size: ${({ theme }) => theme.fontSize.medium};
+  font-size: ${({ theme }) => theme.fontSize.small};
 `
 
 const DraggingStyle = css`
-  opacity: 0.2;
-  color: white;
+  opacity: 0.3;
 `
 
 const Tr = styled.tr<{ isDragging: boolean }>`
+  cursor: move;
+
   td {
     ${({ isDragging }) => isDragging && DraggingStyle}
   }
 `
 
-const DragIcon = styled.td`
+const Task = styled.td`
   ${TdCommonStyle}
+  padding: 0;
   border-right: none;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-
-  svg {
-    cursor: move;
-  }
-`
-
-const TaskWrapper = styled.td`
-  ${TdCommonStyle}
-  padding: 0;
-  text-align: left;
-  border-left: none;
-  border-right: none;
-  position: relative;
-  display: flex;
   min-width: 60rem;
+  position: relative;
 `
 
-const Task = styled.div`
+const TaskWrapper = styled.div`
+  display: flex;
+  align-items: center;
   position: absolute;
-  left: 1.5rem;
-  top: 2.7rem;
-  color: ${({ theme }) => theme.palette.gray[500]};
-  font-size: ${({ theme }) => theme.fontSize.small};
-`
-
-const Timer = styled.td`
-  ${TdCommonStyle}
-  border-left: none;
-  border-right: none;
-  font-family: ${({ theme }) => theme.fontFamily.regular};
-  font-size: ${({ theme }) => theme.fontSize.large};
-  color: ${({ theme }) => theme.palette.gray[400]};
+  left: 0;
+  top: 2.8rem;
 `
 
 const Td = styled.td`

@@ -32,6 +32,7 @@ export const Progress = ({
           data-testid='bar'
           color={color}
           value={(value > max ? 1 : value / max) * 100}
+          style={style}
         ></Bar>
       ) : null}
     </Background>

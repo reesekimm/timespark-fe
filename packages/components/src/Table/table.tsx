@@ -66,7 +66,6 @@ export const Table = ({
     <StyledTable style={style} {...rest}>
       <thead>
         <tr>
-          <Th></Th>
           <Th>Task</Th>
           <Th>
             Estimated Dur.
