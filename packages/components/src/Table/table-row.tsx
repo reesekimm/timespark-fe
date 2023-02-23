@@ -4,12 +4,14 @@ import styled, { css } from 'styled-components'
 import { Data } from './table'
 import { Progress } from '../Progress/progress'
 import { Clock } from '../Clock/clock'
+import { Button } from '../Button/button'
 
 export const itemType = 'row'
 
 export type TableRowProps = Data & {
   findRow: (id: number) => { row: Data; index: number }
   moveRow: (id: number, atIndex: number) => void
+  startTask: (id: number) => void
   deleteRow: (id: number) => void
   dropRow?: () => void
 }
@@ -22,6 +24,7 @@ export const TableRow = ({
   actualDuration,
   findRow,
   moveRow,
+  startTask,
   deleteRow,
   dropRow
 }: TableRowProps) => {
@@ -96,7 +99,11 @@ export const TableRow = ({
           style={{ color: theme.palette.gray[400] }}
         />
       </Td>
-      <Td></Td>
+      <Td>
+        <Button variant='text' onClick={() => startTask(id)}>
+          <StartIcon title='start' size='1.7rem' />
+        </Button>
+      </Td>
       <LastTd>
         <DeleteIcon
           title='delete'
@@ -162,6 +169,13 @@ const DragIcon = styled(Icons.GrDrag)`
   cursor: move;
   path {
     stroke: ${({ theme }) => theme.palette.gray[300]};
+  }
+`
+
+const StartIcon = styled(Icons.GrPlay)`
+  cursor: pointer;
+  polygon {
+    stroke: ${({ theme }) => theme.palette.text};
   }
 `
 

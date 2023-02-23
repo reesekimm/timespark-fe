@@ -20,7 +20,10 @@ const meta: Meta<TableProps> = {
       console.log('Current rows', currentData)
     },
     onDelete: (id) => {
-      console.log(`delete task id ${id}`)
+      console.log(`Delete task id ${id}`)
+    },
+    onStart: (id) => {
+      console.log(`Start task id ${id}`)
     }
   }
 }

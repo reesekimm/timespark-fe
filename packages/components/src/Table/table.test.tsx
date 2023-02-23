@@ -6,11 +6,17 @@ import { data as tableData } from './data'
 
 function renderTable({
   onDrop,
-  onDelete
-}: Pick<TableProps, 'onDrop' | 'onDelete'>) {
+  onDelete,
+  onStart
+}: Pick<TableProps, 'onDrop' | 'onDelete' | 'onStart'>) {
   render(
     <DndProvider backend={HTML5Backend}>
-      <Table data={tableData} onDrop={onDrop} onDelete={onDelete} />
+      <Table
+        data={tableData}
+        onDrop={onDrop}
+        onDelete={onDelete}
+        onStart={onStart}
+      />
     </DndProvider>
   )
 }
@@ -18,14 +24,16 @@ function renderTable({
 describe('Table', () => {
   const onDrop = jest.fn()
   const onDelete = jest.fn()
+  const onStart = jest.fn()
 
   beforeEach(() => {
     onDrop.mockClear()
     onDelete.mockClear()
+    onStart.mockClear()
   })
 
   it('renders table head and table body appropriately', () => {
-    renderTable({ onDrop, onDelete })
+    renderTable({ onDrop, onDelete, onStart })
 
     const task = screen.getByRole('columnheader', { name: /task/i })
     const estimatedDuration = screen.getByRole('columnheader', {
@@ -45,12 +53,22 @@ describe('Table', () => {
   })
 
   it('can delete row on click delete button', async () => {
-    renderTable({ onDrop, onDelete })
+    renderTable({ onDrop, onDelete, onStart })
 
     const deleteButtonOfFirstTask = screen.getAllByTitle('delete')[0]
 
     await userEvent.click(deleteButtonOfFirstTask)
 
     expect(onDelete).toBeCalled()
+  })
+
+  it('can start task', async () => {
+    renderTable({ onDrop, onDelete, onStart })
+
+    const startButtonOfFirstTask = screen.getAllByTitle('start')[0]
+
+    await userEvent.click(startButtonOfFirstTask)
+
+    expect(onStart).toBeCalled()
   })
 })

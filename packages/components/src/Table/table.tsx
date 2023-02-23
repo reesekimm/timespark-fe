@@ -17,12 +17,19 @@ export type Data = {
 
 export type TableProps = {
   data: Data[]
+  onStart: (id: number) => void
   onDelete: (id: number) => void
   onDrop?: (currentData: Data[]) => void
   style?: CSSProperties
 }
 
-export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
+export const Table = ({
+  data = [],
+  onStart,
+  onDelete,
+  onDrop,
+  style
+}: TableProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -76,8 +83,9 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
             {...d}
             findRow={findRow}
             moveRow={moveRow}
-            dropRow={dropRow}
+            startTask={onStart}
             deleteRow={onDelete}
+            dropRow={dropRow}
           />
         ))}
       </tbody>
