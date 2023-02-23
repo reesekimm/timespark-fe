@@ -16,7 +16,7 @@ import { useCreateTask, useDeleteTask, useTasks } from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
-  categoryId: z.string(),
+  categoryName: z.string(),
   title: z.string().min(1),
   estimatedDuration: z.number()
 })
@@ -37,7 +37,7 @@ function Home() {
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
-    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
+    reset({ categoryName: '1', title: '', estimatedDuration: 10 })
   }
 
   const onDelete = ({ id }: DeleteTaskDto) => {
@@ -48,7 +48,7 @@ function Home() {
     <>
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
-          {...register('categoryId')}
+          {...register('categoryName')}
           label='Category'
           options={categories}
           style={{ minWidth: '20rem' }}
@@ -80,7 +80,7 @@ function Home() {
             data={tasks.map((task) => ({
               ...task,
               category:
-                categories.find((c) => c.value === task.categoryId)?.label ??
+                categories.find((c) => c.label === task.categoryName)?.label ??
                 'None'
             }))}
             onDrop={(currentData) => console.log(currentData)}

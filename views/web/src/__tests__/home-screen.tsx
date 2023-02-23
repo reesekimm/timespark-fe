@@ -162,6 +162,9 @@ describe('[DELETE TASK]', () => {
 
 describe('[START TASK]', () => {
   describe('on click start button', () => {
-    it('actual duration timer starts and progress bar shows the remaining duration', () => {})
+    // it('hides start button', () => {})
+    // it('renders pause/finish buttons', () => {})
+    // it('starts actual duration timer and updates total actual duration', () => {})
+    // it('updates progress bar to display remaining time', () => {})
   })
 })

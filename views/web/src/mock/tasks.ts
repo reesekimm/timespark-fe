@@ -9,11 +9,14 @@ function reset() {
   const defaultTask: Task = {
     id: 100,
     createdTime: new Date().toISOString(),
-    categoryId: '3',
+    startTime: '',
+    endTime: '',
+    categoryName: 'None',
     tags: [],
     title: 'task of today',
     actualDuration: 0,
-    estimatedDuration: 20
+    estimatedDuration: 20,
+    state: 'created'
   }
 
   tasks = [...tasksData, defaultTask]
@@ -27,6 +30,9 @@ function create(taskData: CreateTaskDto) {
   tasks.push({
     id: tasks.length + 1,
     createdTime: new Date().toISOString(),
+    startTime: '',
+    endTime: '',
+    state: 'created',
     actualDuration: 0,
     tags: [],
     ...taskData

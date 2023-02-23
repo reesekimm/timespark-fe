@@ -1,7 +1,7 @@
 import { Task } from '../models'
 
 export interface CreateTaskDto {
-  categoryId: string
+  categoryName: string
   title: string
   estimatedDuration: number
 }
