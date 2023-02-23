@@ -7,12 +7,12 @@ import {
   TableDnDBackend,
   TextInput
 } from '@timespark/components'
-import { CreateTaskDto } from '@timespark/domain/repositories'
+import { CreateTaskDto, DeleteTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask, useTasks } from '../utils/query-tasks'
+import { useCreateTask, useDeleteTask, useTasks } from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
@@ -33,10 +33,15 @@ function Home() {
 
   const createTask = useCreateTask(getPeriodToday())
   const tasks = useTasks(getPeriodToday())
+  const deleteTask = useDeleteTask()
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
     reset({ categoryId: '1', title: '', estimatedDuration: 10 })
+  }
+
+  const onDelete = ({ id }: DeleteTaskDto) => {
+    deleteTask.mutate({ id })
   }
 
   return (
@@ -79,6 +84,7 @@ function Home() {
                 'None'
             }))}
             onDrop={(currentData) => console.log(currentData)}
+            onDelete={(id) => onDelete({ id })}
           />
         </TableContextProvider>
       ) : (

@@ -18,6 +18,9 @@ const meta: Meta<TableProps> = {
     data,
     onDrop: (currentData) => {
       console.log('Current rows', currentData)
+    },
+    onDelete: (id) => {
+      console.log(`delete task id ${id}`)
     }
   }
 }

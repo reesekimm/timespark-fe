@@ -10,6 +10,7 @@ export const itemType = 'row'
 export type TableRowProps = Data & {
   findRow: (id: number) => { row: Data; index: number }
   moveRow: (id: number, atIndex: number) => void
+  deleteRow: (id: number) => void
   dropRow?: () => void
 }
 
@@ -21,6 +22,7 @@ export const TableRow = ({
   actualDuration,
   findRow,
   moveRow,
+  deleteRow,
   dropRow
 }: TableRowProps) => {
   const originalIndex = findRow(id).index
@@ -59,22 +61,19 @@ export const TableRow = ({
 
   return (
     <Tr ref={(node) => drag(drop(node))} isDragging={isDragging}>
-      <Task>
-        <TaskWrapper>
-          <Icons.GrDrag
-            color={theme.palette.gray[300]}
-            style={{ margin: '0 2rem' }}
-          />
+      <TaskWrapper>
+        <Task>
+          <DragIcon />
           <div>
             [{category}] {title}
           </div>
-        </TaskWrapper>
+        </Task>
         <Progress
           value={estimatedDuration - actualDuration}
           max={estimatedDuration}
           color={
             (estimatedDuration - actualDuration) / estimatedDuration < 0.3
-              ? 'RGBA(255,101,80,0.3)'
+              ? 'RGBA(239,83,80,0.3)'
               : 'RGBA(118,255,179,0.3)'
           }
           backgroundColor='white'
@@ -84,7 +83,7 @@ export const TableRow = ({
             borderBottomLeftRadius: '10px'
           }}
         />
-      </Task>
+      </TaskWrapper>
       <Td>
         <Clock
           totalSeconds={estimatedDuration * 60}
@@ -98,7 +97,13 @@ export const TableRow = ({
         />
       </Td>
       <Td></Td>
-      <LastTd></LastTd>
+      <LastTd>
+        <DeleteIcon
+          title='delete'
+          size='1.5rem'
+          onClick={() => deleteRow(id)}
+        />
+      </LastTd>
     </Tr>
   )
 }
@@ -116,14 +121,12 @@ const DraggingStyle = css`
 `
 
 const Tr = styled.tr<{ isDragging: boolean }>`
-  cursor: move;
-
   td {
     ${({ isDragging }) => isDragging && DraggingStyle}
   }
 `
 
-const Task = styled.td`
+const TaskWrapper = styled.td`
   ${TdCommonStyle}
   padding: 0;
   border-right: none;
@@ -133,7 +136,7 @@ const Task = styled.td`
   position: relative;
 `
 
-const TaskWrapper = styled.div`
+const Task = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
@@ -152,4 +155,19 @@ const LastTd = styled.td`
   border-left: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+`
+
+const DragIcon = styled(Icons.GrDrag)`
+  margin: 0 2rem;
+  cursor: move;
+  path {
+    stroke: ${({ theme }) => theme.palette.gray[300]};
+  }
+`
+
+const DeleteIcon = styled(Icons.GrTrash)`
+  cursor: pointer;
+  path {
+    stroke: ${({ theme }) => theme.palette.danger};
+  }
 `

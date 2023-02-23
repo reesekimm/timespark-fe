@@ -44,4 +44,9 @@ function get({ from, to }: GetTasksDto) {
   )
 }
 
-export { reset, clear, create, get }
+function remove(id: number) {
+  tasks = tasks.filter((task) => task.id !== id)
+  return tasks
+}
+
+export { reset, clear, create, get, remove }
