@@ -1,16 +1,12 @@
-import {
-  renderWithRouter,
-  screen,
-  userEvent,
-  waitFor
-} from '../utils/rtl-utils'
+import { render, screen, userEvent, waitFor } from '../utils/rtl-utils'
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
 import * as tasksDB from '../mock/tasks'
+import Home from '../screens/Home'
 
 function renderHomeScreen() {
-  return renderWithRouter({ route: '/' })
+  return render(<Home />)
 }
 
 async function fillOutTheForm() {
@@ -121,6 +117,35 @@ describe('[RENDER TASKS]', () => {
   it('shows an error message when tasks fail to load', async () => {
     server.use(
       rest.get('/tasks', (req, res, ctx) => {
+        return res(ctx.status(500))
+      })
+    )
+
+    renderHomeScreen()
+
+    waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        ERROR_MESSAGES.SERVER_DOWN
+      )
+    })
+  })
+})
+
+describe('[DELETE TASK]', () => {
+  it('can delete task from the table', async () => {
+    renderHomeScreen()
+
+    const deleteButtons = await screen.findAllByTitle('delete')
+
+    // delete the first task
+    await userEvent.click(deleteButtons[0])
+
+    expect(screen.queryByText(/task 1/i)).not.toBeInTheDocument()
+  })
+
+  it('shows an error message when delete task fails', async () => {
+    server.use(
+      rest.delete('/task/:id', (req, res, ctx) => {
         return res(ctx.status(500))
       })
     )

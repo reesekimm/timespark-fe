@@ -20,6 +20,7 @@ const onErrorCallback = (error: unknown) => {
   } else if (err.status === 401) {
     toast.info(ERROR_MESSAGES.UNAUTHORIZED)
   } else {
+    console.error(error)
     toast.error(ERROR_MESSAGES.REQUEST_FAILED)
   }
 }

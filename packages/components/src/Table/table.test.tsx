@@ -1,20 +1,31 @@
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { render, screen } from '../../utils/rtl-utils'
-import { Table } from './table'
+import { render, screen, userEvent } from '../../utils/rtl-utils'
+import { Table, TableProps } from './table'
 import { data as tableData } from './data'
 
-function renderTable(data = tableData) {
+function renderTable({
+  onDrop,
+  onDelete
+}: Pick<TableProps, 'onDrop' | 'onDelete'>) {
   render(
     <DndProvider backend={HTML5Backend}>
-      <Table data={data} />
+      <Table data={tableData} onDrop={onDrop} onDelete={onDelete} />
     </DndProvider>
   )
 }
 
 describe('Table', () => {
+  const onDrop = jest.fn()
+  const onDelete = jest.fn()
+
+  beforeEach(() => {
+    onDrop.mockClear()
+    onDelete.mockClear()
+  })
+
   it('renders table head and table body appropriately', () => {
-    renderTable()
+    renderTable({ onDrop, onDelete })
 
     const task = screen.getByRole('columnheader', { name: /task/i })
     const estimatedDuration = screen.getByRole('columnheader', {
@@ -31,5 +42,15 @@ describe('Table', () => {
     const tableBody = screen.getByRole('table').querySelector('tbody')
 
     expect(tableBody?.children.length).toBe(5)
+  })
+
+  it('can delete row on click delete button', async () => {
+    renderTable({ onDrop, onDelete })
+
+    const deleteButtonOfFirstTask = screen.getAllByTitle('delete')[0]
+
+    await userEvent.click(deleteButtonOfFirstTask)
+
+    expect(onDelete).toBeCalled()
   })
 })

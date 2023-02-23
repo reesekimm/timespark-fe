@@ -25,5 +25,16 @@ export const handlers = [
         error instanceof HttpError ? error.message : 'Unknown Error'
       return res(ctx.json({ message }))
     }
+  }),
+  rest.delete('/task/:id', async (req, res, ctx) => {
+    const { id } = req.params
+    try {
+      tasksDB.remove(Number(id))
+      return res(ctx.status(200), ctx.json({ success: true }))
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : 'Unknown Error'
+      return res(ctx.json({ message }))
+    }
   })
 ]
