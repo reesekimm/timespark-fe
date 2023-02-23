@@ -85,6 +85,9 @@ function Home() {
             }))}
             onDrop={(currentData) => console.log(currentData)}
             onDelete={(id) => onDelete({ id })}
+            onStart={(id) => {
+              console.log(`Start task id ${id}`)
+            }}
           />
         </TableContextProvider>
       ) : (
