@@ -37,7 +37,7 @@ export const Table = ({
     setRows(data)
   }, [data])
 
-  const findRow = useCallback(
+  const findTask = useCallback(
     (id: number) => {
       const row = rows.find((row) => row.id === id) as Data
       return { row, index: rows.indexOf(row) }
@@ -45,9 +45,9 @@ export const Table = ({
     [rows]
   )
 
-  const moveRow = useCallback(
+  const moveTask = useCallback(
     (id: number, atIndex: number) => {
-      const { row, index } = findRow(id)
+      const { row, index } = findTask(id)
       setRows(
         update(rows, {
           $splice: [
@@ -57,10 +57,10 @@ export const Table = ({
         })
       )
     },
-    [findRow, rows]
+    [findTask, rows]
   )
 
-  const dropRow = useCallback(() => {
+  const dropTask = useCallback(() => {
     if (onDrop) onDrop(rows)
   }, [onDrop, rows])
 
@@ -81,11 +81,11 @@ export const Table = ({
             key={d.id}
             data-testid={d.id}
             {...d}
-            findRow={findRow}
-            moveRow={moveRow}
+            findTask={findTask}
+            moveTask={moveTask}
             startTask={onStart}
-            deleteRow={onDelete}
-            dropRow={dropRow}
+            deleteTask={onDelete}
+            dropTask={dropTask}
           />
         ))}
       </tbody>

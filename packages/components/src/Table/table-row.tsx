@@ -9,11 +9,11 @@ import { Button } from '../Button/button'
 export const itemType = 'row'
 
 export type TableRowProps = Data & {
-  findRow: (id: number) => { row: Data; index: number }
-  moveRow: (id: number, atIndex: number) => void
+  findTask: (id: number) => { row: Data; index: number }
+  moveTask: (id: number, atIndex: number) => void
   startTask: (id: number) => void
-  deleteRow: (id: number) => void
-  dropRow?: () => void
+  deleteTask: (id: number) => void
+  dropTask?: () => void
 }
 
 export const TableRow = ({
@@ -22,13 +22,13 @@ export const TableRow = ({
   title,
   estimatedDuration,
   actualDuration,
-  findRow,
-  moveRow,
+  findTask,
+  moveTask,
   startTask,
-  deleteRow,
-  dropRow
+  deleteTask,
+  dropTask
 }: TableRowProps) => {
-  const originalIndex = findRow(id).index
+  const originalIndex = findTask(id).index
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: itemType,
@@ -40,13 +40,13 @@ export const TableRow = ({
         const { id: droppedId, originalIndex } = item
         const didDrop = monitor.didDrop()
         if (!didDrop) {
-          moveRow(droppedId, originalIndex)
+          moveTask(droppedId, originalIndex)
         } else {
-          if (dropRow) dropRow()
+          if (dropTask) dropTask()
         }
       }
     }),
-    [id, originalIndex, moveRow]
+    [id, originalIndex, moveTask]
   )
 
   const [, drop] = useDrop(
@@ -54,12 +54,12 @@ export const TableRow = ({
       accept: itemType,
       hover({ id: draggedId }: Pick<TableRowProps, 'id'>) {
         if (draggedId !== id) {
-          const { index: overIndex } = findRow(id)
-          moveRow(draggedId, overIndex)
+          const { index: overIndex } = findTask(id)
+          moveTask(draggedId, overIndex)
         }
       }
     }),
-    [findRow, moveRow]
+    [findTask, moveTask]
   )
 
   return (
@@ -105,11 +105,9 @@ export const TableRow = ({
         </Button>
       </Td>
       <LastTd>
-        <DeleteIcon
-          title='delete'
-          size='1.5rem'
-          onClick={() => deleteRow(id)}
-        />
+        <Button variant='text' onClick={() => deleteTask(id)}>
+          <DeleteIcon title='delete' size='1.5rem' />
+        </Button>
       </LastTd>
     </Tr>
   )
