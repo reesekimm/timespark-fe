@@ -2,9 +2,9 @@ import {
   Button,
   Empty,
   Select,
-  Table,
-  TableContextProvider,
-  TableDnDBackend,
+  TaskListContextProvider,
+  TaskListDnDBackend,
+  TaskList,
   TextInput
 } from '@timespark/components'
 import { CreateTaskDto, DeleteTaskDto } from '@timespark/domain/repositories'
@@ -74,8 +74,8 @@ function Home() {
         />
       </Form>
       {tasks ? (
-        <TableContextProvider backend={TableDnDBackend}>
-          <Table
+        <TaskListContextProvider backend={TaskListDnDBackend}>
+          <TaskList
             aria-label='tasks'
             data={tasks.map((task) => ({
               ...task,
@@ -89,7 +89,7 @@ function Home() {
               console.log(`Start task id ${id}`)
             }}
           />
-        </TableContextProvider>
+        </TaskListContextProvider>
       ) : (
         <Empty
           description='Add your first task :)'

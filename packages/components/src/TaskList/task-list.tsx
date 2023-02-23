@@ -1,7 +1,7 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
-import { itemType, TableRow } from './table-row'
+import { itemType, TaskListItem } from './task-list-item'
 import styled from 'styled-components'
 import { Clock } from '../Clock/clock'
 import { theme } from '@timespark/styles'
@@ -15,7 +15,7 @@ export type Data = {
   actualDuration: number
 }
 
-export type TableProps = {
+export type TaskListProps = {
   data: Data[]
   onStart: (id: number) => void
   onDelete: (id: number) => void
@@ -23,13 +23,13 @@ export type TableProps = {
   style?: CSSProperties
 }
 
-export const Table = ({
+export const TaskList = ({
   data = [],
   onStart,
   onDelete,
   onDrop,
   style
-}: TableProps) => {
+}: TaskListProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -77,7 +77,7 @@ export const Table = ({
       </thead>
       <tbody ref={drop}>
         {rows.map((d) => (
-          <TableRow
+          <TaskListItem
             key={d.id}
             data-testid={d.id}
             {...d}

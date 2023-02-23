@@ -1,14 +1,14 @@
 import { Icons, theme } from '@timespark/styles'
 import { useDrag, useDrop } from 'react-dnd'
 import styled, { css } from 'styled-components'
-import { Data } from './table'
+import { Data } from './task-list'
 import { Progress } from '../Progress/progress'
 import { Clock } from '../Clock/clock'
 import { Button } from '../Button/button'
 
 export const itemType = 'row'
 
-export type TableRowProps = Data & {
+export type TaskListItemProps = Data & {
   findTask: (id: number) => { row: Data; index: number }
   moveTask: (id: number, atIndex: number) => void
   startTask: (id: number) => void
@@ -16,7 +16,7 @@ export type TableRowProps = Data & {
   dropTask?: () => void
 }
 
-export const TableRow = ({
+export const TaskListItem = ({
   id,
   category,
   title,
@@ -27,7 +27,7 @@ export const TableRow = ({
   startTask,
   deleteTask,
   dropTask
-}: TableRowProps) => {
+}: TaskListItemProps) => {
   const originalIndex = findTask(id).index
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -52,7 +52,7 @@ export const TableRow = ({
   const [, drop] = useDrop(
     () => ({
       accept: itemType,
-      hover({ id: draggedId }: Pick<TableRowProps, 'id'>) {
+      hover({ id: draggedId }: Pick<TaskListItemProps, 'id'>) {
         if (draggedId !== id) {
           const { index: overIndex } = findTask(id)
           moveTask(draggedId, overIndex)
