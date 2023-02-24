@@ -12,7 +12,12 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask, useDeleteTask, useTasks } from '../utils/query-tasks'
+import {
+  useCreateTask,
+  useDeleteTask,
+  useStartTask,
+  useTasks
+} from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
 
 const schema = z.object({
@@ -34,6 +39,7 @@ function Home() {
   const createTask = useCreateTask(getPeriodToday())
   const tasks = useTasks(getPeriodToday())
   const deleteTask = useDeleteTask()
+  const startTask = useStartTask(getPeriodToday())
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate(data)
@@ -42,6 +48,13 @@ function Home() {
 
   const onDelete = ({ id }: DeleteTaskDto) => {
     deleteTask.mutate({ id })
+  }
+
+  const onStart = (id: number) => {
+    startTask.mutate({
+      id,
+      startTime: new Date().toISOString()
+    })
   }
 
   return (
@@ -85,9 +98,7 @@ function Home() {
             }))}
             onDrop={(currentData) => console.log(currentData)}
             onDelete={(id) => onDelete({ id })}
-            onStart={(id) => {
-              console.log(`Start task id ${id}`)
-            }}
+            onStart={onStart}
           />
         </TaskListContextProvider>
       ) : (

@@ -2,7 +2,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   CreateTaskDto,
   DeleteTaskDto,
-  GetTasksDto
+  GetTasksDto,
+  StartTaskDto
 } from '@timespark/domain/repositories'
 import { port, adapter } from '@timespark/infrastructure'
 import { queryClient } from '../context'
@@ -40,4 +41,15 @@ export const useDeleteTask = () =>
       console.log('deleteTask payload : ', variables)
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: taskKeys.all })
+  })
+
+export const useStartTask = (period: GetTasksDto) =>
+  useMutation({
+    mutationFn: (taskData: StartTaskDto) =>
+      port.taskPort(adapter.taskRepository).startTask(taskData),
+    onMutate: (variables) => {
+      console.log('deleteTask payload : ', variables)
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists(period) })
   })

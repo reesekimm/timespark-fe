@@ -1,5 +1,10 @@
 import { Task } from '@timespark/domain/models'
-import { CreateTaskDto, GetTasksDto } from '@timespark/domain/repositories'
+import {
+  CreateTaskDto,
+  GetTasksDto,
+  StartTaskDto
+} from '@timespark/domain/repositories'
+import { HttpError } from '@timespark/infrastructure'
 import { isAfter, isBefore, isEqual, parseISO } from 'date-fns'
 import tasksData from './data/tasks.json'
 
@@ -55,4 +60,28 @@ function remove(id: number) {
   return tasks
 }
 
-export { reset, clear, create, get, remove }
+function start({ id, startTime }: StartTaskDto) {
+  validateTask(id)
+  const taskIndex = tasks.findIndex((task) => task.id === id)
+  const newTask = {
+    ...tasks[taskIndex],
+    startTime,
+    state: 'start'
+  }
+
+  tasks[taskIndex] = newTask
+
+  return newTask
+}
+
+function validateTask(id: number) {
+  if (tasks.findIndex((task) => task.id === id) < 0) {
+    throw new HttpError({
+      name: 'NotFound',
+      message: `No task with the id '${id}'`,
+      status: 404
+    })
+  }
+}
+
+export { reset, clear, create, get, remove, start }

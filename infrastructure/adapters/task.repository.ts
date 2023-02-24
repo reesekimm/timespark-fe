@@ -2,6 +2,7 @@ import {
   CreateTaskDto,
   DeleteTaskDto,
   GetTasksDto,
+  StartTaskDto,
   TaskRepository
 } from '@timespark/domain/repositories'
 import { httpAxios } from '../utils/http'
@@ -14,5 +15,7 @@ export const taskRepository: TaskRepository = {
   getTasks: async ({ from, to }: GetTasksDto) =>
     await client('/tasks', { params: { from, to } }),
   deleteTask: async ({ id }: DeleteTaskDto) =>
-    await client(`/task/${id}`, { method: 'DELETE' })
+    await client(`/task/${id}`, { method: 'DELETE' }),
+  startTask: async (taskData: StartTaskDto) =>
+    await client(`/task/${taskData.id}`, { method: 'PUT', data: taskData })
 }
