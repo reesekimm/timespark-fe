@@ -201,7 +201,7 @@ describe('[START TASK]', () => {
       })
     })
 
-    it('replaces start button with pause/end buttons', async () => {
+    it('replaces start button with pause button', async () => {
       renderHomeScreen()
 
       const firstTaskStartButton = await screen.findByTitle(/start title1/i)
@@ -211,7 +211,6 @@ describe('[START TASK]', () => {
       await waitFor(() => {
         expect(screen.queryByTitle(/start title1/i)).not.toBeInTheDocument()
         expect(screen.getByTitle(/pause title1/i)).toBeInTheDocument()
-        expect(screen.getByTitle(/end title1/i)).toBeInTheDocument()
       })
     })
 

@@ -39,16 +39,16 @@ export const handlers = [
   }),
   rest.put('/task/:id', async (req, res, ctx) => {
     const taskData = await req.json()
+    let result
+
     try {
-      if ('startTime' in taskData) {
-        const result = tasksDB.start(taskData)
-        return res(ctx.status(200), ctx.json(result))
+      if (taskData.state === 'start') {
+        result = tasksDB.start(taskData)
+      } else if (taskData.state === 'pause') {
+        result = tasksDB.pause(taskData)
       }
 
-      if ('actualDuration' in taskData) {
-        const result = tasksDB.pause(taskData)
-        return res(ctx.status(200), ctx.json(result))
-      }
+      return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
         error instanceof HttpError ? error.message : 'Unknown Error'

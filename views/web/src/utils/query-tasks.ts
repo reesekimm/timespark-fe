@@ -4,8 +4,7 @@ import {
   CreateTaskDto,
   DeleteTaskDto,
   GetTasksDto,
-  PauseTaskDto,
-  StartTaskDto
+  UpdateTaskDto
 } from '@timespark/domain/repositories'
 import { port, adapter } from '@timespark/infrastructure'
 import { queryClient } from '../context'
@@ -48,30 +47,12 @@ export const useDeleteTask = () =>
     onSuccess: () => queryClient.invalidateQueries({ queryKey: taskKeys.all })
   })
 
-export const useStartTask = () =>
+export const useUpdateTask = () =>
   useMutation({
-    mutationFn: (taskData: StartTaskDto) =>
-      port.taskPort(adapter.taskRepository).startTask(taskData),
+    mutationFn: (taskData: UpdateTaskDto) =>
+      port.taskPort(adapter.taskRepository).updateTask(taskData),
     onMutate: (variables) => {
       console.log('startTask payload : ', variables)
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData<Task[]>(
-        taskKeys.lists(getPeriodToday()),
-        (prevTasks) =>
-          prevTasks?.map((task) =>
-            task.id === data.id ? { ...task, ...data } : task
-          )
-      )
-    }
-  })
-
-export const usePauseTask = () =>
-  useMutation({
-    mutationFn: (taskData: PauseTaskDto) =>
-      port.taskPort(adapter.taskRepository).pauseTask(taskData),
-    onMutate: (variables) => {
-      console.log('pauseTask payload : ', variables)
     },
     onSuccess: (data) => {
       queryClient.setQueryData<Task[]>(

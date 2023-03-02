@@ -122,23 +122,14 @@ export const TaskListItem = ({
           </Button>
         ) : null}
         {state === 'start' || state === 'continue' ? (
-          <>
-            <Button
-              variant='text'
-              aria-labelledby={`Pause ${title}`}
-              onClick={() => pauseTask(id)}
-              disabled={!isActive}
-            >
-              <PauseIcon title={`Pause ${title}`} size='2rem' />
-            </Button>
-            <Button
-              variant='text'
-              aria-labelledby={`End ${title}`}
-              disabled={!isActive}
-            >
-              <EndIcon title={`End ${title}`} size='2.5rem' />
-            </Button>
-          </>
+          <Button
+            variant='text'
+            aria-labelledby={`Pause ${title}`}
+            onClick={() => pauseTask(id)}
+            disabled={!isActive}
+          >
+            <PauseIcon title={`Pause ${title}`} size='2rem' />
+          </Button>
         ) : null}
         {state === 'pause' ? (
           <>
@@ -162,10 +153,10 @@ export const TaskListItem = ({
         {state === 'end' ? (
           <Button
             variant='text'
-            aria-labelledby={`Resume ${title}`}
+            aria-labelledby={`Done ${title}`}
             disabled={!isActive}
           >
-            <DoneIcon title={`Resume ${title}`} size='3rem' />
+            <DoneIcon title={`Done ${title}`} size='3rem' />
           </Button>
         ) : null}
       </IconWrapper>

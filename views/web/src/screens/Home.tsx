@@ -16,9 +16,8 @@ import {
   setQueryDataForTasks,
   useCreateTask,
   useDeleteTask,
-  usePauseTask,
-  useStartTask,
-  useTasks
+  useTasks,
+  useUpdateTask
 } from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
 import { useEffect, useRef, useState } from 'react'
@@ -50,15 +49,10 @@ function Home() {
     reset: resetDeleteState
   } = useDeleteTask()
   const {
-    mutate: start,
-    isSuccess: startSuccess,
-    reset: resetStartState
-  } = useStartTask()
-  const {
-    mutate: pause,
-    isSuccess: pauseSuccess,
-    reset: resetPauseState
-  } = usePauseTask()
+    mutate: update,
+    isSuccess: updateSuccess,
+    reset: resetUpdateState
+  } = useUpdateTask()
 
   const timerId = useRef<number>()
 
@@ -88,49 +82,54 @@ function Home() {
     if (!task) return
 
     setActiveTask(task)
-    start({
+    update({
       id,
-      startTime: new Date().toISOString()
+      state: 'start',
+      time: new Date().toISOString()
     })
   }
+
+  const onPause = (id: number) => {
+    if (activeTask?.id === id) {
+      update({
+        id,
+        state: 'pause',
+        time: new Date().toISOString()
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (updateSuccess) {
+      const task = tasks.find((task) => task.id === activeTask?.id)
+      if (!task) return
+
+      if (task.state === 'start') {
+        let time = task.actualDuration
+
+        timerId.current = setInterval(() => {
+          const updatedTask = {
+            ...task,
+            actualDuration: time + 1
+          }
+          setQueryDataForTasks(updatedTask)
+          setActiveTask(updatedTask)
+          time += 1
+        }, 1000)
+      }
+
+      if (task.state === 'pause') {
+        setActiveTask(null)
+        clearInterval(timerId.current)
+      }
+
+      resetUpdateState()
+    }
+  }, [activeTask, resetUpdateState, updateSuccess, tasks])
 
   const onDrop = (tasks: Task[]) => {
     setQueryDataForTasks(tasks)
   }
-
-  useEffect(() => {
-    if (startSuccess) {
-      const task = tasks.find((task) => task.id === activeTask?.id)
-      if (!task) return
-
-      let time = task.actualDuration
-
-      timerId.current = setInterval(() => {
-        const updatedTask = {
-          ...task,
-          actualDuration: time + 1
-        }
-        setQueryDataForTasks(updatedTask)
-        setActiveTask(updatedTask)
-        time += 1
-      }, 1000)
-
-      resetStartState()
-    }
-  }, [activeTask, resetStartState, startSuccess, tasks])
-
-  const onPause = (id: number) => {
-    if (!activeTask || activeTask.id !== id) return
-    pause({ id: activeTask.id, actualDuration: activeTask.actualDuration })
-  }
-
-  useEffect(() => {
-    if (pauseSuccess) {
-      setActiveTask(null)
-      clearInterval(timerId.current)
-      resetPauseState()
-    }
-  }, [pauseSuccess, resetPauseState])
 
   return (
     <>

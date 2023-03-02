@@ -2,11 +2,16 @@ import { Task } from '@timespark/domain/models'
 import {
   CreateTaskDto,
   GetTasksDto,
-  PauseTaskDto,
-  StartTaskDto
+  UpdateTaskDto
 } from '@timespark/domain/repositories'
 import { HttpError } from '@timespark/infrastructure'
-import { isAfter, isBefore, isEqual, parseISO } from 'date-fns'
+import {
+  differenceInSeconds,
+  isAfter,
+  isBefore,
+  isEqual,
+  parseISO
+} from 'date-fns'
 import tasksData from './data/tasks.json'
 
 let tasks = [...tasksData]
@@ -61,13 +66,13 @@ function remove(id: number) {
   return tasks
 }
 
-function start({ id, startTime }: StartTaskDto) {
+function start({ id, state, time }: UpdateTaskDto) {
   validateTask(id)
   const taskIndex = tasks.findIndex((task) => task.id === id)
   const newTask = {
     ...tasks[taskIndex],
-    startTime,
-    state: 'start'
+    state,
+    startTime: time
   }
 
   tasks[taskIndex] = newTask
@@ -75,13 +80,16 @@ function start({ id, startTime }: StartTaskDto) {
   return newTask
 }
 
-function pause({ id, actualDuration }: PauseTaskDto) {
+function pause({ id, state, time }: UpdateTaskDto) {
   validateTask(id)
   const taskIndex = tasks.findIndex((task) => task.id === id)
   const newTask = {
     ...tasks[taskIndex],
-    actualDuration,
-    state: 'pause'
+    state,
+    actualDuration: differenceInSeconds(
+      new Date(time),
+      new Date(tasks[taskIndex].startTime)
+    )
   }
 
   tasks[taskIndex] = newTask
