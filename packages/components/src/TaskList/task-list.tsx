@@ -1,28 +1,47 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
-import { itemType, TableRow } from './table-row'
+import { itemType, TaskListItem } from './task-list-item'
 import styled from 'styled-components'
 import { Clock } from '../Clock/clock'
 import { theme } from '@timespark/styles'
 
-export type Data = {
+export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'complete'
+
+export type Task = {
   id: number
-  category: string
+  createdTime: string
+  startTime: string
+  endTime: string
+  state: TaskState
+  categoryName: string
   tags: string[]
   title: string
   estimatedDuration: number
   actualDuration: number
 }
 
-export type TableProps = {
-  data: Data[]
+export type TaskListProps = {
+  data: Task[]
+  onStart: (id: number) => void
+  onPause: (id: number) => void
+  onComplete: (id: number) => void
   onDelete: (id: number) => void
-  onDrop?: (currentData: Data[]) => void
+  onDrop?: (currentData: Task[]) => void
+  activeTaskId: number
   style?: CSSProperties
 }
 
-export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
+export const TaskList = ({
+  data = [],
+  onStart,
+  onPause,
+  onComplete,
+  onDelete,
+  onDrop,
+  activeTaskId,
+  style
+}: TaskListProps) => {
   const [rows, setRows] = useState(data)
   const [, drop] = useDrop(() => ({ accept: itemType }))
 
@@ -30,17 +49,17 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
     setRows(data)
   }, [data])
 
-  const findRow = useCallback(
+  const findTask = useCallback(
     (id: number) => {
-      const row = rows.find((row) => row.id === id) as Data
+      const row = rows.find((row) => row.id === id) as Task
       return { row, index: rows.indexOf(row) }
     },
     [rows]
   )
 
-  const moveRow = useCallback(
+  const moveTask = useCallback(
     (id: number, atIndex: number) => {
-      const { row, index } = findRow(id)
+      const { row, index } = findTask(id)
       setRows(
         update(rows, {
           $splice: [
@@ -50,10 +69,10 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
         })
       )
     },
-    [findRow, rows]
+    [findTask, rows]
   )
 
-  const dropRow = useCallback(() => {
+  const dropTask = useCallback(() => {
     if (onDrop) onDrop(rows)
   }, [onDrop, rows])
 
@@ -69,15 +88,19 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
         </tr>
       </thead>
       <tbody ref={drop}>
-        {rows.map((d) => (
-          <TableRow
-            key={d.id}
-            data-testid={d.id}
-            {...d}
-            findRow={findRow}
-            moveRow={moveRow}
-            dropRow={dropRow}
-            deleteRow={onDelete}
+        {rows.map((task) => (
+          <TaskListItem
+            key={task.id}
+            data-testid={task.id}
+            {...task}
+            findTask={findTask}
+            moveTask={moveTask}
+            startTask={onStart}
+            pauseTask={onPause}
+            completeTask={onComplete}
+            deleteTask={onDelete}
+            dropTask={dropTask}
+            isActive={activeTaskId === 0 || task.id === activeTaskId}
           />
         ))}
       </tbody>
@@ -86,9 +109,9 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
           <td></td>
           <Td>
             <Clock
+              data-testid='total-estimated-duration'
               totalSeconds={data.reduce(
-                (total, { estimatedDuration }) =>
-                  total + estimatedDuration * 60,
+                (total, { estimatedDuration }) => total + estimatedDuration,
                 0
               )}
               style={{ fontFamily: theme.fontFamily.bold }}
@@ -96,8 +119,9 @@ export const Table = ({ data = [], onDrop, onDelete, style }: TableProps) => {
           </Td>
           <Td>
             <Clock
+              data-testid='total-actual-duration'
               totalSeconds={data.reduce(
-                (total, { actualDuration }) => total + actualDuration * 60,
+                (total, { actualDuration }) => total + actualDuration,
                 0
               )}
               style={{ fontFamily: theme.fontFamily.bold }}

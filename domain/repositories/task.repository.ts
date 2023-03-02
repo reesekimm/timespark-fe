@@ -1,7 +1,7 @@
-import { Task } from '../models'
+import { Task, TaskState } from '../models'
 
 export interface CreateTaskDto {
-  categoryId: string
+  categoryName: string
   title: string
   estimatedDuration: number
 }
@@ -15,8 +15,15 @@ export interface DeleteTaskDto {
   id: number
 }
 
+export interface UpdateTaskDto {
+  id: number
+  state: TaskState
+  time: string
+}
+
 export interface TaskRepository {
-  createTask: (taskData: CreateTaskDto) => Promise<boolean>
+  createTask: (taskData: CreateTaskDto) => Promise<Task>
   getTasks: (period: GetTasksDto) => Promise<Task[]>
-  deleteTask: ({ id }: DeleteTaskDto) => Promise<boolean>
+  deleteTask: ({ id }: DeleteTaskDto) => Promise<{ id: number }>
+  updateTask: (taskData: UpdateTaskDto) => Promise<Task>
 }

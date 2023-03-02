@@ -6,6 +6,7 @@ import {
 import { HttpError } from '@timespark/infrastructure'
 import { toast } from 'react-toastify'
 import { ERROR_MESSAGES } from '../utils/constants'
+import { queryClient } from '.'
 
 const onErrorCallback = (error: unknown) => {
   const err = error as HttpError
@@ -18,6 +19,7 @@ const onErrorCallback = (error: unknown) => {
   if (err.status >= 500) {
     toast.error(ERROR_MESSAGES.SERVER_DOWN)
   } else if (err.status === 401) {
+    queryClient.clear()
     toast.info(ERROR_MESSAGES.UNAUTHORIZED)
   } else {
     console.error(error)

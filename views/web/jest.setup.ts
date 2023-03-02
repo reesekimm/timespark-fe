@@ -11,7 +11,7 @@ afterEach(() => server.resetHandlers())
 
 afterEach(() => {
   testQueryClient.clear()
-  tasksDB.reset()
+  tasksDB.clear()
 })
 
 afterAll(() => server.close())

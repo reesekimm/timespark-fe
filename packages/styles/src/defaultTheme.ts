@@ -17,7 +17,8 @@ const defaultTheme = {
       800: '#283747',
       900: '#212f3c'
     },
-    danger: '#ef5350'
+    success: '#3bcb83',
+    danger: '#ff5252'
   },
   fontFamily: {
     light: 'NanumSquareNeoLight',

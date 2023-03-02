@@ -16,10 +16,10 @@ export const handlers = [
     }
   }),
   rest.post('/task', async (req, res, ctx) => {
-    const { taskData } = await req.json()
+    const taskData = await req.json()
     try {
       const result = tasksDB.create(taskData)
-      return res(ctx.status(200), ctx.json({ task: result }))
+      return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
         error instanceof HttpError ? error.message : 'Unknown Error'
@@ -29,8 +29,28 @@ export const handlers = [
   rest.delete('/task/:id', async (req, res, ctx) => {
     const { id } = req.params
     try {
-      tasksDB.remove(Number(id))
-      return res(ctx.status(200), ctx.json({ success: true }))
+      const result = tasksDB.remove(Number(id))
+      return res(ctx.status(200), ctx.json(result))
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : 'Unknown Error'
+      return res(ctx.json({ message }))
+    }
+  }),
+  rest.put('/task/:id', async (req, res, ctx) => {
+    const taskData = await req.json()
+    let result
+
+    try {
+      if (taskData.state === 'start' || taskData.state === 'continue') {
+        result = tasksDB.start(taskData)
+      } else if (taskData.state === 'pause') {
+        result = tasksDB.pause(taskData)
+      } else {
+        result = tasksDB.complete(taskData)
+      }
+
+      return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
         error instanceof HttpError ? error.message : 'Unknown Error'

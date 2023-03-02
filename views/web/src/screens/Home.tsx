@@ -2,9 +2,9 @@ import {
   Button,
   Empty,
   Select,
-  Table,
-  TableContextProvider,
-  TableDnDBackend,
+  TaskListContextProvider,
+  TaskListDnDBackend,
+  TaskList,
   TextInput
 } from '@timespark/components'
 import { CreateTaskDto, DeleteTaskDto } from '@timespark/domain/repositories'
@@ -12,11 +12,19 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCreateTask, useDeleteTask, useTasks } from '../utils/query-tasks'
+import {
+  setQueryDataForTasks,
+  useCreateTask,
+  useDeleteTask,
+  useTasks,
+  useUpdateTask
+} from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
+import { useEffect, useRef, useState } from 'react'
+import { Task } from '@timespark/domain/models'
 
 const schema = z.object({
-  categoryId: z.string(),
+  categoryName: z.string(),
   title: z.string().min(1),
   estimatedDuration: z.number()
 })
@@ -31,24 +39,111 @@ function Home() {
     resolver: zodResolver(schema)
   })
 
-  const createTask = useCreateTask(getPeriodToday())
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+
+  const createTask = useCreateTask()
   const tasks = useTasks(getPeriodToday())
-  const deleteTask = useDeleteTask()
+  const {
+    mutate: deleteTask,
+    isSuccess: deleteSuccess,
+    reset: resetDeleteState
+  } = useDeleteTask()
+  const {
+    mutate: update,
+    isSuccess: updateSuccess,
+    reset: resetUpdateState
+  } = useUpdateTask()
+
+  const timerId = useRef<number>()
 
   const onSubmit = (data: CreateTaskDto) => {
-    createTask.mutate(data)
-    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
+    createTask.mutate({
+      ...data,
+      categoryName:
+        categories.find((c) => c.value === data.categoryName)?.label ?? 'None',
+      estimatedDuration: data.estimatedDuration * 60
+    })
+    reset({ categoryName: '1', title: '', estimatedDuration: 10 })
   }
 
   const onDelete = ({ id }: DeleteTaskDto) => {
-    deleteTask.mutate({ id })
+    deleteTask({ id })
+  }
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      setActiveTask(null)
+      resetDeleteState()
+    }
+  }, [deleteSuccess, resetDeleteState])
+
+  const onStart = (id: number) => {
+    const task = tasks?.find((task) => task.id === id)
+    if (!task) return
+
+    setActiveTask(task)
+    update({
+      id,
+      state: task.state === 'created' ? 'start' : 'continue',
+      time: new Date().toISOString()
+    })
+  }
+
+  const onPause = (id: number) => {
+    if (activeTask?.id === id) {
+      update({
+        id,
+        state: 'pause',
+        time: new Date().toISOString()
+      })
+    }
+  }
+
+  const onComplete = (id: number) => {
+    update({
+      id,
+      state: 'complete',
+      time: new Date().toISOString()
+    })
+  }
+
+  useEffect(() => {
+    if (updateSuccess) {
+      const task = tasks.find((task) => task.id === activeTask?.id)
+      if (!task) return
+
+      if (task.state === 'start' || task.state === 'continue') {
+        let time = task.actualDuration
+
+        timerId.current = setInterval(() => {
+          const updatedTask = {
+            ...task,
+            actualDuration: time + 1
+          }
+          setQueryDataForTasks(updatedTask)
+          setActiveTask(updatedTask)
+          time += 1
+        }, 1000)
+      }
+
+      if (task.state === 'pause') {
+        setActiveTask(null)
+        clearInterval(timerId.current)
+      }
+
+      resetUpdateState()
+    }
+  }, [activeTask, resetUpdateState, updateSuccess, tasks])
+
+  const onDrop = (tasks: Task[]) => {
+    setQueryDataForTasks(tasks)
   }
 
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
-          {...register('categoryId')}
+          {...register('categoryName')}
           label='Category'
           options={categories}
           style={{ minWidth: '20rem' }}
@@ -73,20 +168,24 @@ function Home() {
           style={{ width: '10rem' }}
         />
       </Form>
-      {tasks ? (
-        <TableContextProvider backend={TableDnDBackend}>
-          <Table
+      {tasks.length > 0 ? (
+        <TaskListContextProvider backend={TaskListDnDBackend}>
+          <TaskList
             aria-label='tasks'
             data={tasks.map((task) => ({
               ...task,
               category:
-                categories.find((c) => c.value === task.categoryId)?.label ??
+                categories.find((c) => c.label === task.categoryName)?.label ??
                 'None'
             }))}
-            onDrop={(currentData) => console.log(currentData)}
+            onDrop={(tasks) => onDrop(tasks)}
             onDelete={(id) => onDelete({ id })}
+            onStart={onStart}
+            onPause={onPause}
+            onComplete={onComplete}
+            activeTaskId={activeTask?.id ?? 0}
           />
-        </TableContextProvider>
+        </TaskListContextProvider>
       ) : (
         <Empty
           description='Add your first task :)'
