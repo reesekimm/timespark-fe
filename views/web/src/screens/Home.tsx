@@ -16,6 +16,7 @@ import {
   setQueryDataForTasks,
   useCreateTask,
   useDeleteTask,
+  usePauseTask,
   useStartTask,
   useTasks
 } from '../utils/query-tasks'
@@ -39,18 +40,27 @@ function Home() {
     resolver: zodResolver(schema)
   })
 
-  const [activeTask, setActiveTask] = useState<Task>()
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   const createTask = useCreateTask()
   const tasks = useTasks(getPeriodToday())
-  const deleteTask = useDeleteTask()
+  const {
+    mutate: deleteTask,
+    isSuccess: deleteSuccess,
+    reset: resetDeleteState
+  } = useDeleteTask()
   const {
     mutate: start,
     isSuccess: startSuccess,
     reset: resetStartState
   } = useStartTask()
+  const {
+    mutate: pause,
+    isSuccess: pauseSuccess,
+    reset: resetPauseState
+  } = usePauseTask()
 
-  const timerId = useRef<number>(0)
+  const timerId = useRef<number>()
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
@@ -63,11 +73,20 @@ function Home() {
   }
 
   const onDelete = ({ id }: DeleteTaskDto) => {
-    deleteTask.mutate({ id })
+    deleteTask({ id })
   }
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      setActiveTask(null)
+      resetDeleteState()
+    }
+  }, [deleteSuccess, resetDeleteState])
 
   const onStart = (id: number) => {
     const task = tasks?.find((task) => task.id === id)
+    if (!task) return
+
     setActiveTask(task)
     start({
       id,
@@ -87,14 +106,31 @@ function Home() {
       let time = task.actualDuration
 
       timerId.current = setInterval(() => {
-        setQueryDataForTasks({ ...task, actualDuration: time + 1 })
+        const updatedTask = {
+          ...task,
+          actualDuration: time + 1
+        }
+        setQueryDataForTasks(updatedTask)
+        setActiveTask(updatedTask)
         time += 1
       }, 1000)
 
-      // 타이머가 한 번만 실행되도록 상태 초기화
       resetStartState()
     }
   }, [activeTask, resetStartState, startSuccess, tasks])
+
+  const onPause = (id: number) => {
+    if (!activeTask || activeTask.id !== id) return
+    pause({ id: activeTask.id, actualDuration: activeTask.actualDuration })
+  }
+
+  useEffect(() => {
+    if (pauseSuccess) {
+      setActiveTask(null)
+      clearInterval(timerId.current)
+      resetPauseState()
+    }
+  }, [pauseSuccess, resetPauseState])
 
   return (
     <>
@@ -138,6 +174,7 @@ function Home() {
             onDrop={(tasks) => onDrop(tasks)}
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
+            onPause={onPause}
             activeTaskId={activeTask?.id ?? 0}
           />
         </TaskListContextProvider>

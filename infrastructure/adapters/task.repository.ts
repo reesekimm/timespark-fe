@@ -2,6 +2,7 @@ import {
   CreateTaskDto,
   DeleteTaskDto,
   GetTasksDto,
+  PauseTaskDto,
   StartTaskDto,
   TaskRepository
 } from '@timespark/domain/repositories'
@@ -17,5 +18,7 @@ export const taskRepository: TaskRepository = {
   deleteTask: async ({ id }: DeleteTaskDto) =>
     await client(`/task/${id}`, { method: 'DELETE' }),
   startTask: async (taskData: StartTaskDto) =>
+    await client(`/task/${taskData.id}`, { method: 'PUT', data: taskData }),
+  pauseTask: async (taskData: PauseTaskDto) =>
     await client(`/task/${taskData.id}`, { method: 'PUT', data: taskData })
 }

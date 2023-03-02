@@ -20,9 +20,15 @@ export interface StartTaskDto {
   startTime: string
 }
 
+export interface PauseTaskDto {
+  id: number
+  actualDuration: number
+}
+
 export interface TaskRepository {
   createTask: (taskData: CreateTaskDto) => Promise<Task>
   getTasks: (period: GetTasksDto) => Promise<Task[]>
   deleteTask: ({ id }: DeleteTaskDto) => Promise<boolean>
   startTask: (taskData: StartTaskDto) => Promise<Task>
+  pauseTask: (taskData: PauseTaskDto) => Promise<Task>
 }

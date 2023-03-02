@@ -10,6 +10,7 @@ export const itemType = 'row'
 
 export type TaskListItemProps = TaskType & {
   startTask: (id: number) => void
+  pauseTask: (id: number) => void
   deleteTask: (id: number) => void
   isActive: boolean
   findTask: (id: number) => { row: TaskType; index: number }
@@ -27,6 +28,7 @@ export const TaskListItem = ({
   findTask,
   moveTask,
   startTask,
+  pauseTask,
   deleteTask,
   dropTask,
   isActive
@@ -96,12 +98,14 @@ export const TaskListItem = ({
       </TaskWrapper>
       <Td>
         <Clock
+          data-testid='estimated-duration'
           totalSeconds={estimatedDuration}
           style={{ color: theme.palette.gray[400] }}
         />
       </Td>
       <Td>
         <Clock
+          data-testid='actual-duration'
           totalSeconds={actualDuration}
           style={{ color: theme.palette.gray[400] }}
         />
@@ -122,7 +126,7 @@ export const TaskListItem = ({
             <Button
               variant='text'
               aria-labelledby={`Pause ${title}`}
-              onClick={() => console.log('puase')}
+              onClick={() => pauseTask(id)}
               disabled={!isActive}
             >
               <PauseIcon title={`Pause ${title}`} size='2rem' />

@@ -24,6 +24,7 @@ export type Task = {
 export type TaskListProps = {
   data: Task[]
   onStart: (id: number) => void
+  onPause: (id: number) => void
   onDelete: (id: number) => void
   onDrop?: (currentData: Task[]) => void
   activeTaskId: number
@@ -33,6 +34,7 @@ export type TaskListProps = {
 export const TaskList = ({
   data = [],
   onStart,
+  onPause,
   onDelete,
   onDrop,
   activeTaskId,
@@ -92,6 +94,7 @@ export const TaskList = ({
             findTask={findTask}
             moveTask={moveTask}
             startTask={onStart}
+            pauseTask={onPause}
             deleteTask={onDelete}
             dropTask={dropTask}
             isActive={activeTaskId === 0 || task.id === activeTaskId}
@@ -103,6 +106,7 @@ export const TaskList = ({
           <td></td>
           <Td>
             <Clock
+              data-testid='total-estimated-duration'
               totalSeconds={data.reduce(
                 (total, { estimatedDuration }) => total + estimatedDuration,
                 0
@@ -112,6 +116,7 @@ export const TaskList = ({
           </Td>
           <Td>
             <Clock
+              data-testid='total-actual-duration'
               totalSeconds={data.reduce(
                 (total, { actualDuration }) => total + actualDuration,
                 0

@@ -25,7 +25,7 @@ const meta: Meta<TaskListProps> = {
     onStart: (id) => {
       console.log(`Start task id ${id}`)
     },
-    activeTaskId: 2
+    activeTaskId: 0
   }
 }
 

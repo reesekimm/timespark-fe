@@ -66,6 +66,24 @@ export const useStartTask = () =>
     }
   })
 
+export const usePauseTask = () =>
+  useMutation({
+    mutationFn: (taskData: PauseTaskDto) =>
+      port.taskPort(adapter.taskRepository).pauseTask(taskData),
+    onMutate: (variables) => {
+      console.log('pauseTask payload : ', variables)
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData<Task[]>(
+        taskKeys.lists(getPeriodToday()),
+        (prevTasks) =>
+          prevTasks?.map((task) =>
+            task.id === data.id ? { ...task, ...data } : task
+          )
+      )
+    }
+  })
+
 export const setQueryDataForTasks = (taskData: Task | Task[]) => {
   let updater
 

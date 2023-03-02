@@ -2,6 +2,7 @@ import { Task } from '@timespark/domain/models'
 import {
   CreateTaskDto,
   GetTasksDto,
+  PauseTaskDto,
   StartTaskDto
 } from '@timespark/domain/repositories'
 import { HttpError } from '@timespark/infrastructure'
@@ -74,6 +75,20 @@ function start({ id, startTime }: StartTaskDto) {
   return newTask
 }
 
+function pause({ id, actualDuration }: PauseTaskDto) {
+  validateTask(id)
+  const taskIndex = tasks.findIndex((task) => task.id === id)
+  const newTask = {
+    ...tasks[taskIndex],
+    actualDuration,
+    state: 'pause'
+  }
+
+  tasks[taskIndex] = newTask
+
+  return newTask
+}
+
 function validateTask(id: number) {
   if (tasks.findIndex((task) => task.id === id) < 0) {
     throw new HttpError({
@@ -84,4 +99,4 @@ function validateTask(id: number) {
   }
 }
 
-export { reset, clear, create, get, remove, start }
+export { reset, clear, create, get, remove, start, pause }
