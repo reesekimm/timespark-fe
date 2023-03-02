@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Clock } from '../Clock/clock'
 import { theme } from '@timespark/styles'
 
-export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'end'
+export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'complete'
 
 export type Task = {
   id: number
@@ -25,6 +25,7 @@ export type TaskListProps = {
   data: Task[]
   onStart: (id: number) => void
   onPause: (id: number) => void
+  onComplete: (id: number) => void
   onDelete: (id: number) => void
   onDrop?: (currentData: Task[]) => void
   activeTaskId: number
@@ -35,6 +36,7 @@ export const TaskList = ({
   data = [],
   onStart,
   onPause,
+  onComplete,
   onDelete,
   onDrop,
   activeTaskId,
@@ -95,6 +97,7 @@ export const TaskList = ({
             moveTask={moveTask}
             startTask={onStart}
             pauseTask={onPause}
+            completeTask={onComplete}
             deleteTask={onDelete}
             dropTask={dropTask}
             isActive={activeTaskId === 0 || task.id === activeTaskId}

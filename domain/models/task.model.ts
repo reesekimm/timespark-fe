@@ -1,4 +1,4 @@
-export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'end'
+export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'complete'
 
 export type Task = {
   id: number

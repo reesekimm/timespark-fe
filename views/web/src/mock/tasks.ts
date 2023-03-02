@@ -38,7 +38,7 @@ function clear() {
 }
 
 function create(taskData: CreateTaskDto) {
-  tasks.push({
+  const newTask = {
     id: tasks.length + 1,
     createdTime: new Date().toISOString(),
     startTime: '',
@@ -47,9 +47,11 @@ function create(taskData: CreateTaskDto) {
     actualDuration: 0,
     tags: [],
     ...taskData
-  })
+  }
 
-  return tasks
+  tasks.push(newTask)
+
+  return newTask
 }
 
 function get({ from, to }: GetTasksDto) {
@@ -63,7 +65,8 @@ function get({ from, to }: GetTasksDto) {
 
 function remove(id: number) {
   tasks = tasks.filter((task) => task.id !== id)
-  return tasks
+
+  return { id }
 }
 
 function start({ id, state, time }: UpdateTaskDto) {
@@ -96,6 +99,20 @@ function pause({ id, state, time }: UpdateTaskDto) {
   return newTask
 }
 
+function complete({ id, state, time }: UpdateTaskDto) {
+  validateTask(id)
+  const taskIndex = tasks.findIndex((task) => task.id === id)
+  const newTask = {
+    ...tasks[taskIndex],
+    state,
+    endTime: time
+  }
+
+  tasks[taskIndex] = newTask
+
+  return newTask
+}
+
 function validateTask(id: number) {
   if (tasks.findIndex((task) => task.id === id) < 0) {
     throw new HttpError({
@@ -106,4 +123,4 @@ function validateTask(id: number) {
   }
 }
 
-export { reset, clear, create, get, remove, start, pause }
+export { reset, clear, create, get, remove, start, pause, complete }

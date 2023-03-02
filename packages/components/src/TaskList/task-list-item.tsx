@@ -11,6 +11,7 @@ export const itemType = 'row'
 export type TaskListItemProps = TaskType & {
   startTask: (id: number) => void
   pauseTask: (id: number) => void
+  completeTask: (id: number) => void
   deleteTask: (id: number) => void
   isActive: boolean
   findTask: (id: number) => { row: TaskType; index: number }
@@ -29,6 +30,7 @@ export const TaskListItem = ({
   moveTask,
   startTask,
   pauseTask,
+  completeTask,
   deleteTask,
   dropTask,
   isActive
@@ -143,21 +145,16 @@ export const TaskListItem = ({
             </Button>
             <Button
               variant='text'
-              aria-labelledby={`End ${title}`}
+              aria-labelledby={`Complete ${title}`}
+              onClick={() => completeTask(id)}
               disabled={!isActive}
             >
-              <EndIcon title={`End ${title}`} size='2.5rem' />
+              <CompleteIcon title={`Complete ${title}`} size='2.5rem' />
             </Button>
           </>
         ) : null}
-        {state === 'end' ? (
-          <Button
-            variant='text'
-            aria-labelledby={`Done ${title}`}
-            disabled={!isActive}
-          >
-            <DoneIcon title={`Done ${title}`} size='3rem' />
-          </Button>
+        {state === 'complete' ? (
+          <DoneIcon title={`Done ${title}`} size='3rem' />
         ) : null}
       </IconWrapper>
       <LastTd>
@@ -268,7 +265,7 @@ const PauseIcon = styled(Icons.GrPause)`
   }
 `
 
-const EndIcon = styled(Icons.GrStatusGood)`
+const CompleteIcon = styled(Icons.GrStatusGood)`
   ${IconCommonStyle}
   margin-left: 1.4rem;
   path {
@@ -277,7 +274,6 @@ const EndIcon = styled(Icons.GrStatusGood)`
 `
 
 const DoneIcon = styled(Icons.GrStatusGood)`
-  ${IconCommonStyle}
   path {
     stroke: ${({ theme }) => theme.palette.white};
     fill: ${({ theme }) => theme.palette.success};

@@ -66,7 +66,7 @@ export const data: Task[] = [
     createdTime: '',
     startTime: '',
     endTime: '',
-    state: 'end',
+    state: 'complete',
     categoryName: 'Category',
     tags: [],
     title: 'task6 (end)',

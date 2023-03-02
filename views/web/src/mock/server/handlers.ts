@@ -29,8 +29,8 @@ export const handlers = [
   rest.delete('/task/:id', async (req, res, ctx) => {
     const { id } = req.params
     try {
-      tasksDB.remove(Number(id))
-      return res(ctx.status(200), ctx.json({ success: true }))
+      const result = tasksDB.remove(Number(id))
+      return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
         error instanceof HttpError ? error.message : 'Unknown Error'
@@ -46,6 +46,8 @@ export const handlers = [
         result = tasksDB.start(taskData)
       } else if (taskData.state === 'pause') {
         result = tasksDB.pause(taskData)
+      } else {
+        result = tasksDB.complete(taskData)
       }
 
       return res(ctx.status(200), ctx.json(result))

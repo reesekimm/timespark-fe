@@ -308,7 +308,7 @@ describe('[PAUSE TASK]', () => {
       })
     })
 
-    it('replaces pause button with start/end buttons', async () => {
+    it('replaces pause button with start/complete buttons', async () => {
       renderHomeScreen()
 
       const startButton = await screen.findByTitle(/start title1/i)
@@ -322,7 +322,7 @@ describe('[PAUSE TASK]', () => {
       await waitFor(() => {
         expect(screen.queryByTitle(/pause title1/i)).not.toBeInTheDocument()
         expect(screen.getByTitle(/resume title1/i)).toBeInTheDocument()
-        expect(screen.getByTitle(/end title1/i)).toBeInTheDocument()
+        expect(screen.getByTitle(/complete title1/i)).toBeInTheDocument()
       })
     })
 
@@ -363,6 +363,6 @@ describe('[PAUSE TASK]', () => {
       }, 3000)
     })
 
-    it('stop updating progress bar to display remaining time', async () => {})
+    // it('stop updating progress bar to display remaining time', async () => {})
   })
 })

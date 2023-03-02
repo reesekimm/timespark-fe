@@ -99,6 +99,14 @@ function Home() {
     }
   }
 
+  const onComplete = (id: number) => {
+    update({
+      id,
+      state: 'complete',
+      time: new Date().toISOString()
+    })
+  }
+
   useEffect(() => {
     if (updateSuccess) {
       const task = tasks.find((task) => task.id === activeTask?.id)
@@ -174,6 +182,7 @@ function Home() {
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
             onPause={onPause}
+            onComplete={onComplete}
             activeTaskId={activeTask?.id ?? 0}
           />
         </TaskListContextProvider>

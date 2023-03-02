@@ -24,6 +24,6 @@ export interface UpdateTaskDto {
 export interface TaskRepository {
   createTask: (taskData: CreateTaskDto) => Promise<Task>
   getTasks: (period: GetTasksDto) => Promise<Task[]>
-  deleteTask: ({ id }: DeleteTaskDto) => Promise<boolean>
+  deleteTask: ({ id }: DeleteTaskDto) => Promise<{ id: number }>
   updateTask: (taskData: UpdateTaskDto) => Promise<Task>
 }

@@ -19,13 +19,12 @@ export const useCreateTask = () =>
   useMutation({
     mutationFn: (taskData: CreateTaskDto) =>
       port.taskPort(adapter.taskRepository).createTask(taskData),
-    onMutate: (variables) => {
-      console.log('createTask payload : ', variables)
-    },
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: taskKeys.lists(getPeriodToday())
-      })
+    onSuccess: (data) => {
+      queryClient.setQueryData<Task[]>(
+        taskKeys.lists(getPeriodToday()),
+        (prevTasks) => (prevTasks ? [...prevTasks, data] : [data])
+      )
+    }
   })
 
 export const useTasks = ({ from, to }: GetTasksDto) => {
@@ -41,19 +40,19 @@ export const useDeleteTask = () =>
   useMutation({
     mutationFn: ({ id }: DeleteTaskDto) =>
       port.taskPort(adapter.taskRepository).deleteTask({ id }),
-    onMutate: (variables) => {
-      console.log('deleteTask payload : ', variables)
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: taskKeys.all })
+    onSuccess: ({ id }) => {
+      queryClient.setQueryData<Task[]>(
+        taskKeys.lists(getPeriodToday()),
+        (prevTasks) =>
+          prevTasks ? prevTasks.filter((task) => task.id !== id) : prevTasks
+      )
+    }
   })
 
 export const useUpdateTask = () =>
   useMutation({
     mutationFn: (taskData: UpdateTaskDto) =>
       port.taskPort(adapter.taskRepository).updateTask(taskData),
-    onMutate: (variables) => {
-      console.log('startTask payload : ', variables)
-    },
     onSuccess: (data) => {
       queryClient.setQueryData<Task[]>(
         taskKeys.lists(getPeriodToday()),
