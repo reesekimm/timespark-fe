@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '../utils/rtl-utils'
+import { render, screen, userEvent, waitFor, within } from '../utils/rtl-utils'
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
@@ -135,9 +135,10 @@ describe('[DELETE TASK]', () => {
   it('can delete task from the table', async () => {
     renderHomeScreen()
 
-    const deleteButtons = await screen.findAllByTitle('delete')
+    const deleteButtons = await screen.findAllByTitle(/delete/i, {
+      exact: false
+    })
 
-    // delete the first task
     await userEvent.click(deleteButtons[0])
 
     expect(screen.queryByText(/task 1/i)).not.toBeInTheDocument()
@@ -162,9 +163,100 @@ describe('[DELETE TASK]', () => {
 
 describe('[START TASK]', () => {
   describe('on click start button', () => {
-    // it('hides start button', () => {})
-    // it('renders pause/finish buttons', () => {})
-    // it('starts actual duration timer and updates total actual duration', () => {})
-    // it('updates progress bar to display remaining time', () => {})
+    beforeEach(() => {
+      tasksDB.create({
+        categoryName: 'Category',
+        title: 'title1',
+        estimatedDuration: 30
+      })
+      tasksDB.create({
+        categoryName: 'Category',
+        title: 'title2',
+        estimatedDuration: 30
+      })
+    })
+
+    it('disable other tasks', async () => {
+      renderHomeScreen()
+
+      const startButtons = await screen.findAllByTitle(/start title/i, {
+        exact: false
+      })
+
+      expect(startButtons).toHaveLength(2)
+      expect(startButtons[0]).toBeEnabled()
+      expect(startButtons[1]).toBeEnabled()
+
+      await userEvent.click(startButtons[0])
+
+      waitFor(() => {
+        expect(startButtons[1]).toBeDisabled()
+      })
+    })
+
+    it('replaces start button with pause/end buttons', async () => {
+      renderHomeScreen()
+
+      const firstTaskStartButton = await screen.findByTitle(/start title1/i)
+
+      await userEvent.click(firstTaskStartButton)
+
+      waitFor(() => {
+        expect(screen.queryByTitle(/start title1/i)).not.toBeInTheDocument()
+        expect(screen.queryByTitle(/pause title1/i)).toBeInTheDocument()
+        expect(screen.queryByTitle(/end title1/i)).toBeInTheDocument()
+      })
+    })
+
+    it('udpates actual duration of the task and total actual duration', async () => {
+      renderHomeScreen()
+
+      const table = await screen.findByRole('table')
+      const firstTask = table.querySelector('tbody > tr:nth-child(2)')
+      const firstTaskStartButton = within(
+        firstTask as HTMLTableRowElement
+      ).getByTitle(/start title1/i)
+
+      await userEvent.click(firstTaskStartButton)
+
+      setTimeout(() => {
+        const firstTaskActualDur = within(
+          firstTask as HTMLTableRowElement
+        ).getAllByRole('time', { name: '0' })[1]
+
+        const tFoot = screen.getByRole('table').querySelector('tfoot')
+
+        const totalActualDur = within(
+          tFoot as HTMLTableSectionElement
+        ).getAllByRole('time')[1]
+
+        expect(firstTaskActualDur).toHaveValue('00:03')
+        expect(totalActualDur).toHaveValue('00:03')
+      }, 3000)
+    })
+
+    it('updates progress bar to display remaining time', async () => {
+      renderHomeScreen()
+
+      const table = await screen.findByRole('table')
+      const firstTask = table.querySelector('tbody > tr:nth-child(2)')
+      const firstTaskStartButton = within(
+        firstTask as HTMLTableRowElement
+      ).getByTitle(/start title1/i)
+
+      const initialProgressBarWidth = within(
+        firstTask as HTMLTableRowElement
+      ).getByTestId('bar').clientWidth
+
+      await userEvent.click(firstTaskStartButton)
+
+      setTimeout(() => {
+        const currentProgressBarWidth = within(
+          firstTask as HTMLTableRowElement
+        ).getByTestId('bar').clientWidth
+
+        expect(currentProgressBarWidth).toBeLessThan(initialProgressBarWidth)
+      }, 3000)
+    })
   })
 })

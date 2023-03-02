@@ -13,12 +13,15 @@ import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  setQueryDataForTasks,
   useCreateTask,
   useDeleteTask,
   useStartTask,
   useTasks
 } from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
+import { useEffect, useRef, useState } from 'react'
+import { Task } from '@timespark/domain/models'
 
 const schema = z.object({
   categoryName: z.string(),
@@ -36,13 +39,26 @@ function Home() {
     resolver: zodResolver(schema)
   })
 
-  const createTask = useCreateTask(getPeriodToday())
+  const [activeTask, setActiveTask] = useState<Task>()
+
+  const createTask = useCreateTask()
   const tasks = useTasks(getPeriodToday())
   const deleteTask = useDeleteTask()
-  const startTask = useStartTask(getPeriodToday())
+  const {
+    mutate: start,
+    isSuccess: startSuccess,
+    reset: resetStartState
+  } = useStartTask()
+
+  const timerId = useRef<number>(0)
 
   const onSubmit = (data: CreateTaskDto) => {
-    createTask.mutate(data)
+    createTask.mutate({
+      ...data,
+      categoryName:
+        categories.find((c) => c.value === data.categoryName)?.label ?? 'None',
+      estimatedDuration: data.estimatedDuration * 60
+    })
     reset({ categoryName: '1', title: '', estimatedDuration: 10 })
   }
 
@@ -51,11 +67,34 @@ function Home() {
   }
 
   const onStart = (id: number) => {
-    startTask.mutate({
+    const task = tasks?.find((task) => task.id === id)
+    setActiveTask(task)
+    start({
       id,
       startTime: new Date().toISOString()
     })
   }
+
+  const onDrop = (tasks: Task[]) => {
+    setQueryDataForTasks(tasks)
+  }
+
+  useEffect(() => {
+    if (startSuccess) {
+      const task = tasks.find((task) => task.id === activeTask?.id)
+      if (!task) return
+
+      let time = task.actualDuration
+
+      timerId.current = setInterval(() => {
+        setQueryDataForTasks({ ...task, actualDuration: time + 1 })
+        time += 1
+      }, 1000)
+
+      // 타이머가 한 번만 실행되도록 상태 초기화
+      resetStartState()
+    }
+  }, [activeTask, resetStartState, startSuccess, tasks])
 
   return (
     <>
@@ -86,7 +125,7 @@ function Home() {
           style={{ width: '10rem' }}
         />
       </Form>
-      {tasks ? (
+      {tasks.length > 0 ? (
         <TaskListContextProvider backend={TaskListDnDBackend}>
           <TaskList
             aria-label='tasks'
@@ -96,9 +135,10 @@ function Home() {
                 categories.find((c) => c.label === task.categoryName)?.label ??
                 'None'
             }))}
-            onDrop={(currentData) => console.log(currentData)}
+            onDrop={(tasks) => onDrop(tasks)}
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
+            activeTaskId={activeTask?.id ?? 0}
           />
         </TaskListContextProvider>
       ) : (

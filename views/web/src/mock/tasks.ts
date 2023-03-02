@@ -20,7 +20,7 @@ function reset() {
     tags: [],
     title: 'task of today',
     actualDuration: 0,
-    estimatedDuration: 20,
+    estimatedDuration: 20 * 60,
     state: 'created'
   }
 

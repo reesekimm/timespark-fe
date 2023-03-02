@@ -1,24 +1,26 @@
 import { Icons, theme } from '@timespark/styles'
 import { useDrag, useDrop } from 'react-dnd'
 import styled, { css } from 'styled-components'
-import { Data } from './task-list'
+import { Task as TaskType } from './task-list'
 import { Progress } from '../Progress/progress'
 import { Clock } from '../Clock/clock'
 import { Button } from '../Button/button'
 
 export const itemType = 'row'
 
-export type TaskListItemProps = Data & {
-  findTask: (id: number) => { row: Data; index: number }
-  moveTask: (id: number, atIndex: number) => void
+export type TaskListItemProps = TaskType & {
   startTask: (id: number) => void
   deleteTask: (id: number) => void
+  isActive: boolean
+  findTask: (id: number) => { row: TaskType; index: number }
+  moveTask: (id: number, atIndex: number) => void
   dropTask?: () => void
 }
 
 export const TaskListItem = ({
   id,
-  category,
+  state,
+  categoryName,
   title,
   estimatedDuration,
   actualDuration,
@@ -26,7 +28,8 @@ export const TaskListItem = ({
   moveTask,
   startTask,
   deleteTask,
-  dropTask
+  dropTask,
+  isActive
 }: TaskListItemProps) => {
   const originalIndex = findTask(id).index
   const [{ isDragging }, drag] = useDrag(
@@ -63,12 +66,16 @@ export const TaskListItem = ({
   )
 
   return (
-    <Tr ref={(node) => drag(drop(node))} isDragging={isDragging}>
+    <Tr
+      ref={(node) => drag(drop(node))}
+      isDragging={isDragging}
+      isActive={isActive}
+    >
       <TaskWrapper>
         <Task>
           <DragIcon />
           <div>
-            [{category}] {title}
+            [{categoryName}] {title}
           </div>
         </Task>
         <Progress
@@ -77,9 +84,9 @@ export const TaskListItem = ({
           color={
             (estimatedDuration - actualDuration) / estimatedDuration < 0.3
               ? 'RGBA(239,83,80,0.3)'
-              : 'RGBA(118,255,179,0.3)'
+              : 'RGBA(107,72,255,0.3)'
           }
-          backgroundColor='white'
+          backgroundColor='transparent'
           style={{
             height: '7rem',
             borderTopLeftRadius: '10px',
@@ -89,24 +96,89 @@ export const TaskListItem = ({
       </TaskWrapper>
       <Td>
         <Clock
-          totalSeconds={estimatedDuration * 60}
+          totalSeconds={estimatedDuration}
           style={{ color: theme.palette.gray[400] }}
         />
       </Td>
       <Td>
         <Clock
-          totalSeconds={actualDuration * 60}
+          totalSeconds={actualDuration}
           style={{ color: theme.palette.gray[400] }}
         />
       </Td>
-      <Td>
-        <Button variant='text' onClick={() => startTask(id)}>
-          <StartIcon title='start' size='1.7rem' />
-        </Button>
-      </Td>
+      <IconWrapper>
+        {state === 'created' ? (
+          <Button
+            variant='text'
+            aria-labelledby={`Start ${title}`}
+            onClick={() => startTask(id)}
+            disabled={!isActive}
+          >
+            <StartIcon title={`Start ${title}`} size='2rem' />
+          </Button>
+        ) : null}
+        {state === 'start' || state === 'continue' ? (
+          <>
+            <Button
+              variant='text'
+              aria-labelledby={`Pause ${title}`}
+              onClick={() => console.log('puase')}
+              disabled={!isActive}
+            >
+              <PauseIcon title={`Pause ${title}`} size='2rem' />
+            </Button>
+            <Button
+              variant='text'
+              aria-labelledby={`End ${title}`}
+              disabled={!isActive}
+            >
+              <EndIcon title={`End ${title}`} size='2.5rem' />
+            </Button>
+          </>
+        ) : null}
+        {state === 'pause' ? (
+          <>
+            <Button
+              variant='text'
+              aria-labelledby={`Resume ${title}`}
+              onClick={() => startTask(id)}
+              disabled={!isActive}
+            >
+              <StartIcon title={`Resume ${title}`} size='2rem' />
+            </Button>
+            <Button
+              variant='text'
+              aria-labelledby={`End ${title}`}
+              disabled={!isActive}
+            >
+              <EndIcon title={`End ${title}`} size='2.5rem' />
+            </Button>
+          </>
+        ) : null}
+        {state === 'end' ? (
+          <Button
+            variant='text'
+            aria-labelledby={`Resume ${title}`}
+            disabled={!isActive}
+          >
+            <DoneIcon title={`Resume ${title}`} size='3rem' />
+          </Button>
+        ) : null}
+      </IconWrapper>
       <LastTd>
-        <Button variant='text' onClick={() => deleteTask(id)}>
-          <DeleteIcon title='delete' size='1.5rem' />
+        <Button
+          variant='text'
+          aria-labelledby={`Delete ${title}`}
+          onClick={() => deleteTask(id)}
+          disabled={!isActive || state === 'start' || state === 'continue'}
+        >
+          <DeleteIcon
+            title={`Delete ${title}`}
+            size='2rem'
+            style={{
+              opacity: state === 'start' || state === 'continue' ? 0.3 : 1
+            }}
+          />
         </Button>
       </LastTd>
     </Tr>
@@ -119,13 +191,23 @@ const TdCommonStyle = css`
   padding: 2rem;
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.small};
+
+  button {
+    &:disabled {
+      svg {
+        cursor: not-allowed;
+      }
+    }
+  }
 `
 
 const DraggingStyle = css`
   opacity: 0.3;
 `
 
-const Tr = styled.tr<{ isDragging: boolean }>`
+const Tr = styled.tr<{ isDragging: boolean; isActive: boolean }>`
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
+
   td {
     ${({ isDragging }) => isDragging && DraggingStyle}
   }
@@ -137,7 +219,7 @@ const TaskWrapper = styled.td`
   border-right: none;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  min-width: 60rem;
+  width: 69rem;
   position: relative;
 `
 
@@ -147,6 +229,7 @@ const Task = styled.div`
   position: absolute;
   left: 0;
   top: 2.8rem;
+  color: ${({ theme }) => theme.palette.gray[500]};
 `
 
 const Td = styled.td`
@@ -162,23 +245,64 @@ const LastTd = styled.td`
   border-bottom-right-radius: 10px;
 `
 
+const IconCommonStyle = css<{ isActive?: boolean }>`
+  cursor: pointer;
+`
+
 const DragIcon = styled(Icons.GrDrag)`
   margin: 0 2rem;
   cursor: move;
   path {
-    stroke: ${({ theme }) => theme.palette.gray[300]};
+    stroke: ${({ theme }) => theme.palette.gray[500]};
   }
 `
 
 const StartIcon = styled(Icons.GrPlay)`
-  cursor: pointer;
+  ${IconCommonStyle}
   polygon {
-    stroke: ${({ theme }) => theme.palette.text};
+    stroke: ${({ theme }) => theme.palette.gray[500]};
+    fill: ${({ theme }) => theme.palette.gray[500]};
   }
 `
 
+const PauseIcon = styled(Icons.GrPause)`
+  ${IconCommonStyle}
+  path {
+    stroke: ${({ theme }) => theme.palette.gray[500]};
+    fill: ${({ theme }) => theme.palette.gray[500]};
+  }
+`
+
+const EndIcon = styled(Icons.GrStatusGood)`
+  ${IconCommonStyle}
+  margin-left: 1.4rem;
+  path {
+    stroke: ${({ theme }) => theme.palette.success};
+  }
+`
+
+const DoneIcon = styled(Icons.GrStatusGood)`
+  ${IconCommonStyle}
+  path {
+    stroke: ${({ theme }) => theme.palette.white};
+    fill: ${({ theme }) => theme.palette.success};
+  }
+`
+
+const IconWrapper = styled.td`
+  ${TdCommonStyle}
+  border-left: none;
+  border-right: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 12rem;
+  height: 7.2rem;
+  margin: 0;
+`
+
 const DeleteIcon = styled(Icons.GrTrash)`
-  cursor: pointer;
+  ${IconCommonStyle}
   path {
     stroke: ${({ theme }) => theme.palette.danger};
   }

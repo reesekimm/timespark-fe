@@ -19,7 +19,7 @@ export const handlers = [
     const taskData = await req.json()
     try {
       const result = tasksDB.create(taskData)
-      return res(ctx.status(200), ctx.json({ task: result }))
+      return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
         error instanceof HttpError ? error.message : 'Unknown Error'

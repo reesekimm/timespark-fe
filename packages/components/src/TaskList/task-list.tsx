@@ -6,9 +6,15 @@ import styled from 'styled-components'
 import { Clock } from '../Clock/clock'
 import { theme } from '@timespark/styles'
 
-export type Data = {
+export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'end'
+
+export type Task = {
   id: number
-  category: string
+  createdTime: string
+  startTime: string
+  endTime: string
+  state: TaskState
+  categoryName: string
   tags: string[]
   title: string
   estimatedDuration: number
@@ -16,10 +22,11 @@ export type Data = {
 }
 
 export type TaskListProps = {
-  data: Data[]
+  data: Task[]
   onStart: (id: number) => void
   onDelete: (id: number) => void
-  onDrop?: (currentData: Data[]) => void
+  onDrop?: (currentData: Task[]) => void
+  activeTaskId: number
   style?: CSSProperties
 }
 
@@ -28,6 +35,7 @@ export const TaskList = ({
   onStart,
   onDelete,
   onDrop,
+  activeTaskId,
   style
 }: TaskListProps) => {
   const [rows, setRows] = useState(data)
@@ -39,7 +47,7 @@ export const TaskList = ({
 
   const findTask = useCallback(
     (id: number) => {
-      const row = rows.find((row) => row.id === id) as Data
+      const row = rows.find((row) => row.id === id) as Task
       return { row, index: rows.indexOf(row) }
     },
     [rows]
@@ -76,16 +84,17 @@ export const TaskList = ({
         </tr>
       </thead>
       <tbody ref={drop}>
-        {rows.map((d) => (
+        {rows.map((task) => (
           <TaskListItem
-            key={d.id}
-            data-testid={d.id}
-            {...d}
+            key={task.id}
+            data-testid={task.id}
+            {...task}
             findTask={findTask}
             moveTask={moveTask}
             startTask={onStart}
             deleteTask={onDelete}
             dropTask={dropTask}
+            isActive={activeTaskId === 0 || task.id === activeTaskId}
           />
         ))}
       </tbody>
@@ -95,8 +104,7 @@ export const TaskList = ({
           <Td>
             <Clock
               totalSeconds={data.reduce(
-                (total, { estimatedDuration }) =>
-                  total + estimatedDuration * 60,
+                (total, { estimatedDuration }) => total + estimatedDuration,
                 0
               )}
               style={{ fontFamily: theme.fontFamily.bold }}
@@ -105,7 +113,7 @@ export const TaskList = ({
           <Td>
             <Clock
               totalSeconds={data.reduce(
-                (total, { actualDuration }) => total + actualDuration * 60,
+                (total, { actualDuration }) => total + actualDuration,
                 0
               )}
               style={{ fontFamily: theme.fontFamily.bold }}

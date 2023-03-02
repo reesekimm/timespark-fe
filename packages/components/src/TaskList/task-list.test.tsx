@@ -16,6 +16,7 @@ function renderTaskList({
         onDrop={onDrop}
         onDelete={onDelete}
         onStart={onStart}
+        activeTaskId={0}
       />
     </DndProvider>
   )
