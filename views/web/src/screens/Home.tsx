@@ -84,7 +84,7 @@ function Home() {
     setActiveTask(task)
     update({
       id,
-      state: 'start',
+      state: task.state === 'created' ? 'start' : 'continue',
       time: new Date().toISOString()
     })
   }
@@ -104,7 +104,7 @@ function Home() {
       const task = tasks.find((task) => task.id === activeTask?.id)
       if (!task) return
 
-      if (task.state === 'start') {
+      if (task.state === 'start' || task.state === 'continue') {
         let time = task.actualDuration
 
         timerId.current = setInterval(() => {

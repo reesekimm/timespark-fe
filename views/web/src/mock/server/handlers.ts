@@ -42,7 +42,7 @@ export const handlers = [
     let result
 
     try {
-      if (taskData.state === 'start') {
+      if (taskData.state === 'start' || taskData.state === 'continue') {
         result = tasksDB.start(taskData)
       } else if (taskData.state === 'pause') {
         result = tasksDB.pause(taskData)

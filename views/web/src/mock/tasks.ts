@@ -86,10 +86,9 @@ function pause({ id, state, time }: UpdateTaskDto) {
   const newTask = {
     ...tasks[taskIndex],
     state,
-    actualDuration: differenceInSeconds(
-      new Date(time),
-      new Date(tasks[taskIndex].startTime)
-    )
+    actualDuration:
+      tasks[taskIndex].actualDuration +
+      differenceInSeconds(new Date(time), new Date(tasks[taskIndex].startTime))
   }
 
   tasks[taskIndex] = newTask
