@@ -22,7 +22,7 @@ function reset() {
     createdTime: new Date().toISOString(),
     startTime: '',
     endTime: '',
-    categoryName: 'None',
+    categoryId: 1,
     tags: [],
     title: 'task of today',
     actualDuration: 0,

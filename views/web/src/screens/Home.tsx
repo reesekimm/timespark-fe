@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Task } from '@timespark/domain/models'
 
 const schema = z.object({
-  categoryName: z.string(),
+  categoryId: z.string(),
   title: z.string().min(1),
   estimatedDuration: z.number()
 })
@@ -56,14 +56,16 @@ function Home() {
 
   const timerId = useRef<number>()
 
-  const onSubmit = (data: CreateTaskDto) => {
+  const onSubmit = (
+    data: Omit<CreateTaskDto, 'categoryId'> & { categoryId: string }
+  ) => {
     createTask.mutate({
       ...data,
-      categoryName:
-        categories.find((c) => c.value === data.categoryName)?.label ?? 'None',
+      categoryId:
+        categories.find((c) => c.value === Number(data.categoryId))?.value ?? 1,
       estimatedDuration: data.estimatedDuration * 60
     })
-    reset({ categoryName: '1', title: '', estimatedDuration: 10 })
+    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
   }
 
   const onDelete = ({ id }: DeleteTaskDto) => {
@@ -143,7 +145,7 @@ function Home() {
     <>
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
-          {...register('categoryName')}
+          {...register('categoryId')}
           label='Category'
           options={categories}
           style={{ minWidth: '20rem' }}
@@ -174,11 +176,10 @@ function Home() {
             aria-label='tasks'
             data={tasks.map((task) => ({
               ...task,
-              category:
-                categories.find((c) => c.label === task.categoryName)?.label ??
-                'None'
+              categoryName:
+                categories.find((c) => c.value === task.categoryId)?.label ?? ''
             }))}
-            onDrop={(tasks) => onDrop(tasks)}
+            onDrop={() => onDrop(tasks)}
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
             onPause={onPause}
@@ -206,10 +207,10 @@ const Form = styled.form`
 `
 
 const categories = [
-  { value: '1', label: 'None' },
-  { value: '2', label: '운동' },
-  { value: '3', label: '명상' },
-  { value: '4', label: '공부' }
+  { value: 1, label: 'None' },
+  { value: 2, label: '운동' },
+  { value: 3, label: '명상' },
+  { value: 4, label: '공부' }
 ]
 
 const times = [

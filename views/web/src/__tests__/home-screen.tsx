@@ -171,12 +171,12 @@ describe('[START TASK]', () => {
   describe('on click start button', () => {
     beforeEach(() => {
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: 1,
         title: 'title1',
         estimatedDuration: 30
       })
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: 1,
         title: 'title2',
         estimatedDuration: 30
       })
@@ -271,12 +271,12 @@ describe('[PAUSE TASK]', () => {
   describe('on click pause button', () => {
     beforeEach(() => {
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: 1,
         title: 'title1',
         estimatedDuration: 30
       })
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: 1,
         title: 'title2',
         estimatedDuration: 30
       })
