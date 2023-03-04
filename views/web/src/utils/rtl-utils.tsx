@@ -42,5 +42,7 @@ const renderWithRouter = ({ route = '/', ...renderOptions } = {}) => {
   return result
 }
 
+const user = userEvent.setup()
+
 export * from '@testing-library/react'
-export { render, renderWithRouter, userEvent }
+export { render, renderWithRouter, user }

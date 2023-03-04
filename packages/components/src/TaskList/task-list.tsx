@@ -2,7 +2,6 @@ import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
 import styled from 'styled-components'
-import { v4 as uuidv4 } from 'uuid'
 import { theme } from '@timespark/styles'
 import { itemType, TaskListItem } from './task-list-item'
 import { Clock } from '../Clock/clock'
@@ -93,7 +92,7 @@ export const TaskList = ({
       <tbody ref={drop}>
         {rows.map((task) => (
           <TaskListItem
-            key={uuidv4()}
+            key={task.id}
             data-testid={task.id}
             {...task}
             findTask={findTask}
