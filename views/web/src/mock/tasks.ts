@@ -1,4 +1,4 @@
-import { Task } from '@timespark/domain/models'
+import { Task, TaskState } from '@timespark/domain/models'
 import {
   CreateTaskDto,
   GetTasksDto,
@@ -12,22 +12,23 @@ import {
   isEqual,
   parseISO
 } from 'date-fns'
+import { v4 as uuidv4 } from 'uuid'
 import tasksData from './data/tasks.json'
 
 let tasks = [...tasksData]
 
 function reset() {
   const defaultTask: Task = {
-    id: 100,
+    id: uuidv4(),
     createdTime: new Date().toISOString(),
     startTime: '',
     endTime: '',
-    categoryName: 'None',
+    categoryId: uuidv4(),
     tags: [],
     title: 'task of today',
     actualDuration: 0,
     estimatedDuration: 20 * 60,
-    state: 'created'
+    state: 'created' as TaskState
   }
 
   tasks = [...tasksData, defaultTask]
@@ -39,7 +40,7 @@ function clear() {
 
 function create(taskData: CreateTaskDto) {
   const newTask = {
-    id: tasks.length + 1,
+    id: uuidv4(),
     createdTime: new Date().toISOString(),
     startTime: '',
     endTime: '',
@@ -63,7 +64,7 @@ function get({ from, to }: GetTasksDto) {
   )
 }
 
-function remove(id: number) {
+function remove(id: string) {
   tasks = tasks.filter((task) => task.id !== id)
 
   return { id }
@@ -113,7 +114,13 @@ function complete({ id, state, time }: UpdateTaskDto) {
   return newTask
 }
 
-function validateTask(id: number) {
+function removeByCategory(categoryId: string) {
+  tasks = tasks.filter((task) => task.categoryId !== categoryId)
+
+  return tasks
+}
+
+function validateTask(id: string) {
   if (tasks.findIndex((task) => task.id === id) < 0) {
     throw new HttpError({
       name: 'NotFound',
@@ -123,4 +130,14 @@ function validateTask(id: number) {
   }
 }
 
-export { reset, clear, create, get, remove, start, pause, complete }
+export {
+  reset,
+  clear,
+  create,
+  get,
+  remove,
+  start,
+  pause,
+  complete,
+  removeByCategory
+}

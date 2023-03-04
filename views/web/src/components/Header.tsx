@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Anchor } from '@timespark/components'
 
-export const Header = ({ ...rest }) => {
+function Header({ ...rest }) {
   return (
     <StyledHeader {...rest}>
       <SiteTitle>

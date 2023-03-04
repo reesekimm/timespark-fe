@@ -1,19 +1,20 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import update from 'immutability-helper'
-import { itemType, TaskListItem } from './task-list-item'
 import styled from 'styled-components'
-import { Clock } from '../Clock/clock'
 import { theme } from '@timespark/styles'
+import { itemType, TaskListItem } from './task-list-item'
+import { Clock } from '../Clock/clock'
 
 export type TaskState = 'created' | 'start' | 'pause' | 'continue' | 'complete'
 
 export type Task = {
-  id: number
+  id: string
   createdTime: string
   startTime: string
   endTime: string
   state: TaskState
+  categoryId: string
   categoryName: string
   tags: string[]
   title: string
@@ -23,12 +24,12 @@ export type Task = {
 
 export type TaskListProps = {
   data: Task[]
-  onStart: (id: number) => void
-  onPause: (id: number) => void
-  onComplete: (id: number) => void
-  onDelete: (id: number) => void
+  onStart: (id: string) => void
+  onPause: (id: string) => void
+  onComplete: (id: string) => void
+  onDelete: (id: string) => void
   onDrop?: (currentData: Task[]) => void
-  activeTaskId: number
+  activeTaskId: string
   style?: CSSProperties
 }
 
@@ -50,7 +51,7 @@ export const TaskList = ({
   }, [data])
 
   const findTask = useCallback(
-    (id: number) => {
+    (id: string) => {
       const row = rows.find((row) => row.id === id) as Task
       return { row, index: rows.indexOf(row) }
     },
@@ -58,7 +59,7 @@ export const TaskList = ({
   )
 
   const moveTask = useCallback(
-    (id: number, atIndex: number) => {
+    (id: string, atIndex: number) => {
       const { row, index } = findTask(id)
       setRows(
         update(rows, {
@@ -72,9 +73,10 @@ export const TaskList = ({
     [findTask, rows]
   )
 
-  const dropTask = useCallback(() => {
+  useEffect(() => {
     if (onDrop) onDrop(rows)
-  }, [onDrop, rows])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows])
 
   return (
     <StyledTable style={style}>
@@ -99,8 +101,7 @@ export const TaskList = ({
             pauseTask={onPause}
             completeTask={onComplete}
             deleteTask={onDelete}
-            dropTask={dropTask}
-            isActive={activeTaskId === 0 || task.id === activeTaskId}
+            isActive={activeTaskId === '' || task.id === activeTaskId}
           />
         ))}
       </tbody>

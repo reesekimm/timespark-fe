@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor, within } from '../utils/rtl-utils'
+import { render, screen, user, waitFor, within } from '../utils/rtl-utils'
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
@@ -21,7 +21,7 @@ async function fillOutTheForm() {
 
   expect(addButton).toBeDisabled()
 
-  await userEvent.selectOptions(
+  await user.selectOptions(
     categorySelect,
     screen.getByRole('option', { name: /none/i })
   )
@@ -31,11 +31,11 @@ async function fillOutTheForm() {
       .selected
   ).toBe(true)
 
-  await userEvent.type(taskInput, 'test')
+  await user.type(taskInput, 'test')
 
   expect(screen.getByRole('button', { name: /add/i })).toBeEnabled()
 
-  await userEvent.selectOptions(
+  await user.selectOptions(
     estimatedDurSelect,
     screen.getByRole('option', {
       name: '30'
@@ -46,7 +46,7 @@ async function fillOutTheForm() {
     (screen.getByRole('option', { name: '30' }) as HTMLOptionElement).selected
   ).toBe(true)
 
-  await userEvent.click(addButton)
+  await user.click(addButton)
 }
 
 describe('[CREATE TASK]', () => {
@@ -135,13 +135,13 @@ describe('[DELETE TASK]', () => {
   it('can delete task from the table', async () => {
     renderHomeScreen()
 
-    const deleteButtons = await screen.findAllByTitle(/delete/i, {
-      exact: false
+    const deleteButton = await screen.findByRole('button', {
+      name: /delete task of today/i
     })
 
-    await userEvent.click(deleteButtons[0])
+    await user.click(deleteButton)
 
-    expect(screen.queryByText(/task 1/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/task of today/i)).not.toBeInTheDocument()
   })
 
   it('shows an error message when delete task fails', async () => {
@@ -153,11 +153,11 @@ describe('[DELETE TASK]', () => {
 
     renderHomeScreen()
 
-    const deleteButtons = await screen.findAllByTitle(/delete/i, {
-      exact: false
+    const deleteButton = await screen.findByRole('button', {
+      name: /delete task of today/i
     })
 
-    await userEvent.click(deleteButtons[0])
+    await user.click(deleteButton)
 
     await waitFor(() => {
       expect(screen.getByRole('alert')).toHaveTextContent(
@@ -171,12 +171,12 @@ describe('[START TASK]', () => {
   describe('on click start button', () => {
     beforeEach(() => {
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: '',
         title: 'title1',
         estimatedDuration: 30
       })
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: '',
         title: 'title2',
         estimatedDuration: 30
       })
@@ -194,7 +194,7 @@ describe('[START TASK]', () => {
       expect(startButtons[0]).toBeEnabled()
       expect(startButtons[1]).toBeEnabled()
 
-      await userEvent.click(startButtons[0])
+      await user.click(startButtons[0])
 
       await waitFor(() => {
         expect(startButtons[1]).toBeDisabled()
@@ -204,9 +204,11 @@ describe('[START TASK]', () => {
     it('replaces start button with pause button', async () => {
       renderHomeScreen()
 
-      const firstTaskStartButton = await screen.findByTitle(/start title1/i)
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
 
-      await userEvent.click(firstTaskStartButton)
+      await user.click(firstTaskStartButton)
 
       await waitFor(() => {
         expect(screen.queryByTitle(/start title1/i)).not.toBeInTheDocument()
@@ -217,25 +219,16 @@ describe('[START TASK]', () => {
     it('udpates actual duration of the task and total actual duration', async () => {
       renderHomeScreen()
 
-      const table = await screen.findByRole('table')
-      const firstTask = table.querySelector('tbody > tr:first-child')
-      const firstTaskStartButton = within(
-        firstTask as HTMLTableRowElement
-      ).getByTitle(/start title1/i)
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
 
-      await userEvent.click(firstTaskStartButton)
+      await user.click(firstTaskStartButton)
+
+      const firstTaskActualDur = screen.getAllByTestId('actual-duration')[0]
+      const totalActualDur = screen.getByTestId('total-actual-duration')
 
       setTimeout(() => {
-        const firstTaskActualDur = within(
-          firstTask as HTMLTableRowElement
-        ).getAllByRole('time')[1]
-
-        const tFoot = screen.getByRole('table').querySelector('tfoot')
-
-        const totalActualDur = within(
-          tFoot as HTMLTableSectionElement
-        ).getAllByRole('time')[1]
-
         expect(firstTaskActualDur).toHaveValue('00:03')
         expect(totalActualDur).toHaveValue('00:03')
       }, 3000)
@@ -244,23 +237,18 @@ describe('[START TASK]', () => {
     it('updates progress bar to display remaining time', async () => {
       renderHomeScreen()
 
-      const table = await screen.findByRole('table')
-      const firstTask = table.querySelector('tbody > tr:first-child')
-      const firstTaskStartButton = within(
-        firstTask as HTMLTableRowElement
-      ).getByTitle(/start title1/i)
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
 
-      const initialProgressBarWidth = within(
-        firstTask as HTMLTableRowElement
-      ).getByTestId('bar').clientWidth
+      await user.click(firstTaskStartButton)
 
-      await userEvent.click(firstTaskStartButton)
+      const initialProgressBarWidth =
+        screen.getAllByTestId('bar')[0].clientWidth
 
       setTimeout(() => {
-        const currentProgressBarWidth = within(
-          firstTask as HTMLTableRowElement
-        ).getByTestId('bar').clientWidth
-
+        const currentProgressBarWidth =
+          screen.getAllByTestId('bar')[0].clientWidth
         expect(currentProgressBarWidth).toBeLessThan(initialProgressBarWidth)
       }, 3000)
     })
@@ -271,12 +259,12 @@ describe('[PAUSE TASK]', () => {
   describe('on click pause button', () => {
     beforeEach(() => {
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: '',
         title: 'title1',
         estimatedDuration: 30
       })
       tasksDB.create({
-        categoryName: 'Category',
+        categoryId: '',
         title: 'title2',
         estimatedDuration: 30
       })
@@ -285,76 +273,72 @@ describe('[PAUSE TASK]', () => {
     it('enables all tasks', async () => {
       renderHomeScreen()
 
-      const startButtons = await screen.findAllByTitle(/start title/i, {
-        exact: false
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
       })
+      await user.click(firstTaskStartButton)
 
-      expect(startButtons[0]).toBeEnabled()
-      expect(startButtons[1]).toBeEnabled()
-
-      await userEvent.click(startButtons[0])
-
-      waitFor(() => {
-        expect(startButtons[1]).toBeDisabled()
+      const pauseButton = await screen.findByRole('button', {
+        name: /pause title1/i
       })
-
-      const pauseButton = await screen.findByTitle(/pause title1/i)
-
-      await userEvent.click(pauseButton)
+      await user.click(pauseButton)
 
       await waitFor(() => {
-        expect(startButtons[0]).toBeEnabled()
-        expect(startButtons[1]).toBeEnabled()
+        const deleteButtons = screen.getAllByRole('button', {
+          name: /delete title/i
+        })
+
+        expect(deleteButtons).toHaveLength(2)
+        expect(deleteButtons[0]).toBeEnabled()
+        expect(deleteButtons[1]).toBeEnabled()
       })
     })
 
-    it('replaces pause button with start/complete buttons', async () => {
+    it('replaces pause button with resume/complete buttons', async () => {
       renderHomeScreen()
 
-      const startButton = await screen.findByTitle(/start title1/i)
+      const startButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
+      await user.click(startButton)
 
-      await userEvent.click(startButton)
-
-      const pauseButton = await screen.findByTitle(/pause title1/i)
-
-      await userEvent.click(pauseButton)
+      const pauseButton = await screen.findByRole('button', {
+        name: /pause title1/i
+      })
+      await user.click(pauseButton)
 
       await waitFor(() => {
-        expect(screen.queryByTitle(/pause title1/i)).not.toBeInTheDocument()
-        expect(screen.getByTitle(/resume title1/i)).toBeInTheDocument()
-        expect(screen.getByTitle(/complete title1/i)).toBeInTheDocument()
+        expect(
+          screen.queryByRole('button', { name: /pause title1/i })
+        ).not.toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /resume title1/i })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /complete title1/i })
+        ).toBeInTheDocument()
       })
     })
 
     it('stops udpating actual duration of the task and total actual duration', async () => {
       renderHomeScreen()
 
-      const table = await screen.findByRole('table')
-      const firstTask = table.querySelector(
-        'tbody > tr:first-child'
-      ) as HTMLTableRowElement
-      const firstTaskStartButton = within(firstTask).getByTitle(/start title1/i)
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
+      await user.click(firstTaskStartButton)
 
-      await userEvent.click(firstTaskStartButton)
+      const pauseButton = await screen.findByRole('button', {
+        name: /pause title1/i
+      })
+      await user.click(pauseButton)
 
-      const firstTaskPauseButton = await within(firstTask).findByTitle(
-        /pause title1/i
-      )
-      await userEvent.click(firstTaskPauseButton)
-
-      const initialActualDur = within(firstTask).getByTestId('actual-duration')
-
-      const tFoot = screen
-        .getByRole('table')
-        .querySelector('tfoot') as HTMLTableSectionElement
-      const initialTotalActualDur = within(tFoot).getByTestId(
-        'total-actual-duration'
-      )
+      const initialActualDur = screen.getAllByTestId('actual-duration')[0]
+      const initialTotalActualDur = screen.getByTestId('total-actual-duration')
 
       setTimeout(() => {
-        const currentActualDur =
-          within(firstTask).getByTestId('actual-duration')
-        const currentTotalActualDur = within(tFoot).getByTestId(
+        const currentActualDur = screen.getAllByTestId('actual-duration')[0]
+        const currentTotalActualDur = screen.getByTestId(
           'total-actual-duration'
         )
 
@@ -363,6 +347,31 @@ describe('[PAUSE TASK]', () => {
       }, 3000)
     })
 
-    // it('stop updating progress bar to display remaining time', async () => {})
+    it('stop updating progress bar to display remaining time', async () => {
+      renderHomeScreen()
+
+      const firstTaskStartButton = await screen.findByRole('button', {
+        name: /start title1/i
+      })
+
+      await user.click(firstTaskStartButton)
+
+      const pauseButton = await screen.findByRole('button', {
+        name: /pause title1/i
+      })
+
+      setTimeout(async () => {
+        await user.click(pauseButton)
+
+        const initialProgressBarWidth =
+          screen.getAllByTestId('bar')[0].clientWidth
+
+        setTimeout(() => {
+          const currentProgressBarWidth =
+            screen.getAllByTestId('bar')[0].clientWidth
+          expect(currentProgressBarWidth).toEqual(initialProgressBarWidth)
+        }, 3000)
+      }, 3000)
+    })
   })
 })

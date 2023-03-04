@@ -23,7 +23,7 @@ function renderTaskList({
         onStart={onStart}
         onPause={onPause}
         onComplete={onComplete}
-        activeTaskId={0}
+        activeTaskId=''
       />
     </DndProvider>
   )

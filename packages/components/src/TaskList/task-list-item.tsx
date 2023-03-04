@@ -9,14 +9,13 @@ import { Button } from '../Button/button'
 export const itemType = 'row'
 
 export type TaskListItemProps = TaskType & {
-  startTask: (id: number) => void
-  pauseTask: (id: number) => void
-  completeTask: (id: number) => void
-  deleteTask: (id: number) => void
+  startTask: (id: string) => void
+  pauseTask: (id: string) => void
+  completeTask: (id: string) => void
+  deleteTask: (id: string) => void
   isActive: boolean
-  findTask: (id: number) => { row: TaskType; index: number }
-  moveTask: (id: number, atIndex: number) => void
-  dropTask?: () => void
+  findTask: (id: string) => { row: TaskType; index: number }
+  moveTask: (id: string, atIndex: number) => void
 }
 
 export const TaskListItem = ({
@@ -32,7 +31,6 @@ export const TaskListItem = ({
   pauseTask,
   completeTask,
   deleteTask,
-  dropTask,
   isActive
 }: TaskListItemProps) => {
   const originalIndex = findTask(id).index
@@ -48,8 +46,6 @@ export const TaskListItem = ({
         const didDrop = monitor.didDrop()
         if (!didDrop) {
           moveTask(droppedId, originalIndex)
-        } else {
-          if (dropTask) dropTask()
         }
       }
     }),
@@ -178,7 +174,7 @@ export const TaskListItem = ({
 }
 
 const TdCommonStyle = css`
-  border: ${({ theme }) => `1px solid ${theme.palette.gray[100]}`};
+  border: ${({ theme }) => `1px solid ${theme.palette.gray[400]}`};
   background-color: ${({ theme }) => theme.palette.white};
   padding: 2rem;
   text-align: center;
