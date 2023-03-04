@@ -6,8 +6,9 @@ import {
 import { HttpError } from '@timespark/infrastructure'
 import { v4 as uuidv4 } from 'uuid'
 import categoriesData from './data/categories.json'
+import { removeByCategory } from './tasks'
 
-const categories: Category[] = [...categoriesData]
+let categories: Category[] = [...categoriesData]
 
 function create({ name }: CreateCategoryDto) {
   const newCategory = {
@@ -37,6 +38,13 @@ function update({ id, name }: UpdateCategoryDto) {
   return newCategory
 }
 
+function remove(id: string) {
+  categories = categories.filter((category) => category.id !== id)
+  removeByCategory(id)
+
+  return { id }
+}
+
 function validateCategory(id: string) {
   if (categories.findIndex((category) => category.id === id) < 0) {
     throw new HttpError({
@@ -47,4 +55,4 @@ function validateCategory(id: string) {
   }
 }
 
-export { create, get, update }
+export { create, get, update, remove }

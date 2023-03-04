@@ -15,5 +15,7 @@ export const categoryRepository: CategoryRepository = {
     await client(`/category/${categoryData.id}`, {
       method: 'PUT',
       data: categoryData
-    })
+    }),
+  deleteCategory: async ({ id }) =>
+    await client(`/category/${id}`, { method: 'DELETE' })
 }

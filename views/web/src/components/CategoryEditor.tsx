@@ -2,6 +2,7 @@ import { Button, TextInput } from '@timespark/components'
 import { Category } from '@timespark/domain/models'
 import {
   CreateCategoryDto,
+  DeleteCategoryDto,
   UpdateCategoryDto
 } from '@timespark/domain/repositories'
 import { ChangeEvent, useMemo, useState } from 'react'
@@ -20,7 +21,7 @@ type CreateMode = Common & {
 type EditMode = Common & {
   category: Category
   onUpdate: (dategoryData: UpdateCategoryDto) => void
-  onDelete: () => void
+  onDelete: ({ id }: DeleteCategoryDto) => void
 }
 
 type CategoryEditorProps = CreateMode | EditMode
@@ -84,7 +85,11 @@ function CategoryEditor(props: CategoryEditorProps) {
             </Button>
           ) : null}
           {'category' in props ? (
-            <Button variant='text' size='small'>
+            <Button
+              variant='text'
+              size='small'
+              onClick={() => props.onDelete({ id: props.category.id })}
+            >
               Delete
             </Button>
           ) : null}

@@ -5,6 +5,7 @@ import CategoryEditor from '../components/CategoryEditor'
 import {
   useCategories,
   useCreateCategory,
+  useDeleteCategory,
   useUpdateCategory
 } from '../utils/query-categories'
 
@@ -14,6 +15,7 @@ function Settings() {
   const categories = useCategories()
   const { mutate: create } = useCreateCategory()
   const { mutate: update } = useUpdateCategory()
+  const { mutate: deleteCategory } = useDeleteCategory()
 
   const toggleVisibility = () => {
     setShowing((prev) => !prev)
@@ -47,7 +49,7 @@ function Settings() {
               state='collapsed'
               category={category}
               onUpdate={update}
-              onDelete={() => console.log('Delete', category.id)}
+              onDelete={deleteCategory}
             />
           </ListItem>
         ))}

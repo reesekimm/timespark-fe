@@ -114,6 +114,12 @@ function complete({ id, state, time }: UpdateTaskDto) {
   return newTask
 }
 
+function removeByCategory(categoryId: string) {
+  tasks = tasks.filter((task) => task.categoryId !== categoryId)
+
+  return tasks
+}
+
 function validateTask(id: string) {
   if (tasks.findIndex((task) => task.id === id) < 0) {
     throw new HttpError({
@@ -124,4 +130,14 @@ function validateTask(id: string) {
   }
 }
 
-export { reset, clear, create, get, remove, start, pause, complete }
+export {
+  reset,
+  clear,
+  create,
+  get,
+  remove,
+  start,
+  pause,
+  complete,
+  removeByCategory
+}
