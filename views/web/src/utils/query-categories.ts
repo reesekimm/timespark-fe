@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { CreateCategoryDto } from '@timespark/domain/repositories'
+import {
+  CreateCategoryDto,
+  UpdateCategoryDto
+} from '@timespark/domain/repositories'
 import { adapter, port } from '@timespark/infrastructure'
 import { queryClient } from '../context'
 
@@ -22,3 +25,12 @@ export const useCategories = () => {
 
   return data ?? []
 }
+
+export const useUpdateCategory = () =>
+  useMutation({
+    mutationFn: (categoryData: UpdateCategoryDto) =>
+      port
+        .categoryPort(adapter.categoryRepository)
+        .updateCategory(categoryData),
+    onSuccess: () => queryClient.invalidateQueries(categoryKeys.all)
+  })

@@ -1,6 +1,9 @@
 import { Button, TextInput } from '@timespark/components'
 import { Category } from '@timespark/domain/models'
-import { CreateCategoryDto } from '@timespark/domain/repositories'
+import {
+  CreateCategoryDto,
+  UpdateCategoryDto
+} from '@timespark/domain/repositories'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -16,7 +19,7 @@ type CreateMode = Common & {
 
 type EditMode = Common & {
   category: Category
-  onUpdate: () => void
+  onUpdate: (dategoryData: UpdateCategoryDto) => void
   onDelete: () => void
 }
 
@@ -38,8 +41,8 @@ function CategoryEditor(props: CategoryEditorProps) {
     if ('category' in props) {
       return {
         submitButtonLabel: 'Save',
-        onSubmit: (data) => {
-          props.onUpdate(data)
+        onSubmit: ({ name }: Pick<UpdateCategoryDto, 'name'>) => {
+          props.onUpdate({ id: props.category.id, name })
           setCollapsed(true)
         },
         onCancel: () => {
@@ -51,7 +54,7 @@ function CategoryEditor(props: CategoryEditorProps) {
     } else {
       return {
         submitButtonLabel: 'Create',
-        onSubmit: ({ name }) => {
+        onSubmit: ({ name }: CreateCategoryDto) => {
           props.onCreate({ name })
           reset({ name: '' })
           setCategoryPreview('Category preview')

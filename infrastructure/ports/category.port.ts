@@ -1,6 +1,7 @@
 import {
   CategoryRepository,
-  CreateCategoryDto
+  CreateCategoryDto,
+  UpdateCategoryDto
 } from '@timespark/domain/repositories'
 
 export const categoryPort = (
@@ -8,5 +9,7 @@ export const categoryPort = (
 ): CategoryRepository => ({
   createCategory: ({ name }: CreateCategoryDto) =>
     repository.createCategory({ name }),
-  getCategories: () => repository.getCategories()
+  getCategories: () => repository.getCategories(),
+  updateCategory: (categoryData: UpdateCategoryDto) =>
+    repository.updateCategory(categoryData)
 })

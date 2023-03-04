@@ -70,9 +70,19 @@ export const handlers = [
   }),
   rest.post('/category', async (req, res, ctx) => {
     const { name } = await req.json()
-    console.log('[name]', name)
     try {
       const result = categoriesDB.create({ name })
+      return res(ctx.status(200), ctx.json(result))
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : 'Unknown Error'
+      return res(ctx.json({ message }))
+    }
+  }),
+  rest.put('/category/:id', async (req, res, ctx) => {
+    const categoryData = await req.json()
+    try {
+      const result = categoriesDB.update(categoryData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =

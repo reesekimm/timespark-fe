@@ -2,13 +2,18 @@ import { Button } from '@timespark/components'
 import { useState } from 'react'
 import styled from 'styled-components'
 import CategoryEditor from '../components/CategoryEditor'
-import { useCategories, useCreateCategory } from '../utils/query-categories'
+import {
+  useCategories,
+  useCreateCategory,
+  useUpdateCategory
+} from '../utils/query-categories'
 
 function Settings() {
   const [showing, setShowing] = useState(false)
 
   const categories = useCategories()
   const { mutate: create } = useCreateCategory()
+  const { mutate: update } = useUpdateCategory()
 
   const toggleVisibility = () => {
     setShowing((prev) => !prev)
@@ -41,7 +46,7 @@ function Settings() {
             <CategoryEditor
               state='collapsed'
               category={category}
-              onUpdate={() => console.log('Update', category.id)}
+              onUpdate={update}
               onDelete={() => console.log('Delete', category.id)}
             />
           </ListItem>
