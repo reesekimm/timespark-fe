@@ -21,7 +21,7 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { label, placeholder, inputSize = 'medium', onChange, ...rest }: Props,
+  { label, placeholder, inputSize = 'medium', onChange, style, ...rest }: Props,
   ref
 ) {
   const id = uuidv4()
@@ -39,7 +39,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
   )
 
   return (
-    <div>
+    <div style={style}>
       {label ? <Label htmlFor={id} label={label} size={inputSize} /> : null}
       <StyledInput
         id={id}

@@ -22,6 +22,7 @@ import {
 import { getPeriodToday } from '../utils/misc'
 import { useEffect, useRef, useState } from 'react'
 import { Task } from '@timespark/domain/models'
+import { useCategories } from '../utils/query-categories'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -38,6 +39,8 @@ function Home() {
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   })
+
+  const categories = useCategories()
 
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
@@ -56,16 +59,13 @@ function Home() {
 
   const timerId = useRef<number>()
 
-  const onSubmit = (
-    data: Omit<CreateTaskDto, 'categoryId'> & { categoryId: string }
-  ) => {
+  const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
       ...data,
-      categoryId:
-        categories.find((c) => c.value === Number(data.categoryId))?.value ?? 1,
+      categoryId: categories.find((c) => c.id === data.categoryId)?.id ?? '',
       estimatedDuration: data.estimatedDuration * 60
     })
-    reset({ categoryId: '1', title: '', estimatedDuration: 10 })
+    reset({ categoryId: '', title: '', estimatedDuration: 10 })
   }
 
   const onDelete = ({ id }: DeleteTaskDto) => {
@@ -79,7 +79,7 @@ function Home() {
     }
   }, [deleteSuccess, resetDeleteState])
 
-  const onStart = (id: number) => {
+  const onStart = (id: string) => {
     const task = tasks?.find((task) => task.id === id)
     if (!task) return
 
@@ -91,7 +91,7 @@ function Home() {
     })
   }
 
-  const onPause = (id: number) => {
+  const onPause = (id: string) => {
     if (activeTask?.id === id) {
       update({
         id,
@@ -101,7 +101,7 @@ function Home() {
     }
   }
 
-  const onComplete = (id: number) => {
+  const onComplete = (id: string) => {
     update({
       id,
       state: 'complete',
@@ -147,7 +147,8 @@ function Home() {
         <Select
           {...register('categoryId')}
           label='Category'
-          options={categories}
+          placeholder='None'
+          options={categories.map((c) => ({ value: c.id, label: c.name }))}
           style={{ minWidth: '20rem' }}
         />
         <TextInput
@@ -177,14 +178,14 @@ function Home() {
             data={tasks.map((task) => ({
               ...task,
               categoryName:
-                categories.find((c) => c.value === task.categoryId)?.label ?? ''
+                categories.find((c) => c.id === task.categoryId)?.name ?? 'None'
             }))}
-            onDrop={() => onDrop(tasks)}
+            onDrop={onDrop}
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
             onPause={onPause}
             onComplete={onComplete}
-            activeTaskId={activeTask?.id ?? 0}
+            activeTaskId={activeTask?.id ?? ''}
           />
         </TaskListContextProvider>
       ) : (
@@ -205,13 +206,6 @@ const Form = styled.form`
   align-items: flex-end;
   justify-content: space-between;
 `
-
-const categories = [
-  { value: 1, label: 'None' },
-  { value: 2, label: '운동' },
-  { value: 3, label: '명상' },
-  { value: 4, label: '공부' }
-]
 
 const times = [
   {

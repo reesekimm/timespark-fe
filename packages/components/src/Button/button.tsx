@@ -65,7 +65,7 @@ const StyledButton = styled.button<StyleProps>`
   border: none;
   height: fit-content;
   background-color: ${({ theme, variant }) =>
-    variant === 'primary' ? theme.palette.primary : theme.palette.white};
+    variant === 'primary' ? theme.palette.primary : 'transparent'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   color: ${({ theme, variant }) =>
     variant === 'primary' ? theme.palette.white : theme.palette.primary};
