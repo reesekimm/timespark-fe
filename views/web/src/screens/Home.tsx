@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Button,
   Empty,
@@ -19,8 +20,7 @@ import {
   useTasks,
   useUpdateTask
 } from '../utils/query-tasks'
-import { getPeriodToday } from '../utils/misc'
-import { useEffect, useRef, useState } from 'react'
+import { getPeriodToday, useLocalStorageState } from '../utils/misc'
 import { Task } from '@timespark/domain/models'
 import { useCategories } from '../utils/query-categories'
 
@@ -42,7 +42,8 @@ function Home() {
 
   const categories = useCategories()
 
-  const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [activeTask, setActiveTask] = useLocalStorageState('activeTask', null)
+  const [timerId, setTimerId] = useLocalStorageState('timerId', 0)
 
   const createTask = useCreateTask()
   const tasks = useTasks(getPeriodToday())
@@ -56,8 +57,6 @@ function Home() {
     isSuccess: updateSuccess,
     reset: resetUpdateState
   } = useUpdateTask()
-
-  const timerId = useRef<number>()
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
@@ -77,7 +76,7 @@ function Home() {
       setActiveTask(null)
       resetDeleteState()
     }
-  }, [deleteSuccess, resetDeleteState])
+  }, [deleteSuccess, resetDeleteState, setActiveTask])
 
   const onStart = (id: string) => {
     const task = tasks?.find((task) => task.id === id)
@@ -117,7 +116,7 @@ function Home() {
       if (task.state === 'start' || task.state === 'continue') {
         let time = task.actualDuration
 
-        timerId.current = setInterval(() => {
+        const id = setInterval(() => {
           const updatedTask = {
             ...task,
             actualDuration: time + 1
@@ -126,16 +125,27 @@ function Home() {
           setActiveTask(updatedTask)
           time += 1
         }, 1000)
+
+        setTimerId(id)
       }
 
       if (task.state === 'pause') {
+        clearInterval(timerId)
+        setTimerId(0)
         setActiveTask(null)
-        clearInterval(timerId.current)
       }
 
       resetUpdateState()
     }
-  }, [activeTask, resetUpdateState, updateSuccess, tasks])
+  }, [
+    activeTask,
+    setActiveTask,
+    resetUpdateState,
+    updateSuccess,
+    tasks,
+    setTimerId,
+    timerId
+  ])
 
   const onDrop = (tasks: Task[]) => {
     setQueryDataForTasks(tasks)
