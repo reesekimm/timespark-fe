@@ -28,7 +28,7 @@ export type TaskListProps = {
   onPause: (id: string) => void
   onComplete: (id: string) => void
   onDelete: (id: string) => void
-  onDrop?: (currentData: Task[]) => void
+  onDrop: (tasks: Task[]) => void
   activeTaskId: string
   style?: CSSProperties
 }
@@ -73,11 +73,6 @@ export const TaskList = ({
     [findTask, rows]
   )
 
-  useEffect(() => {
-    if (onDrop) onDrop(rows)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rows])
-
   return (
     <StyledTable style={style}>
       <thead>
@@ -101,6 +96,7 @@ export const TaskList = ({
             pauseTask={onPause}
             completeTask={onComplete}
             deleteTask={onDelete}
+            dropTask={() => onDrop(rows)}
             isActive={activeTaskId === '' || task.id === activeTaskId}
           />
         ))}

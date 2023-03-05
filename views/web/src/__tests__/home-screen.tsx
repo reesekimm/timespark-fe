@@ -141,7 +141,11 @@ describe('[DELETE TASK]', () => {
 
     await user.click(deleteButton)
 
-    expect(screen.queryByText(/task of today/i)).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('button', { name: /delete task of today/i })
+      ).not.toBeInTheDocument()
+    })
   })
 
   it('shows an error message when delete task fails', async () => {
@@ -211,8 +215,12 @@ describe('[START TASK]', () => {
       await user.click(firstTaskStartButton)
 
       await waitFor(() => {
-        expect(screen.queryByTitle(/start title1/i)).not.toBeInTheDocument()
-        expect(screen.getByTitle(/pause title1/i)).toBeInTheDocument()
+        expect(
+          screen.queryByRole('button', { name: /start title1/i })
+        ).not.toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /pause title1/i })
+        ).toBeInTheDocument()
       })
     })
 

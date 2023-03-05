@@ -7,8 +7,10 @@ import {
   UpdateTaskDto
 } from '@timespark/domain/repositories'
 import { port, adapter } from '@timespark/infrastructure'
+import { useEffect, useState } from 'react'
 import { queryClient } from '../context'
 import { getPeriodToday } from './misc'
+import { getSequence, setSequence } from './sequence'
 
 export const taskKeys = {
   all: ['tasks'] as const,
@@ -20,10 +22,8 @@ export const useCreateTask = () =>
     mutationFn: (taskData: CreateTaskDto) =>
       port.taskPort(adapter.taskRepository).createTask(taskData),
     onSuccess: (data) => {
-      queryClient.setQueryData<Task[]>(
-        taskKeys.lists(getPeriodToday()),
-        (prevTasks) => (prevTasks ? [...prevTasks, data] : [data])
-      )
+      setSequence(getSequence().concat(data.id))
+      queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
     }
   })
 
@@ -33,7 +33,30 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
     queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
   })
 
-  return data ?? []
+  const [result, setResult] = useState<Task[]>([])
+
+  useEffect(() => {
+    if (!data) return
+
+    const sequence = getSequence()
+
+    const validSequence = data.every((task) => sequence.includes(task.id))
+
+    if (validSequence) {
+      const temp = []
+      for (const id of sequence) {
+        const matchTask = data.find((task) => task.id === id)
+        if (matchTask) temp.push(matchTask)
+      }
+      setResult(temp)
+      setSequence(temp.map((task) => task.id))
+    } else {
+      setResult(data)
+      setSequence(data.map((task) => task.id))
+    }
+  }, [data])
+
+  return result
 }
 
 export const useDeleteTask = () =>
@@ -41,11 +64,8 @@ export const useDeleteTask = () =>
     mutationFn: ({ id }: DeleteTaskDto) =>
       port.taskPort(adapter.taskRepository).deleteTask({ id }),
     onSuccess: ({ id }) => {
-      queryClient.setQueryData<Task[]>(
-        taskKeys.lists(getPeriodToday()),
-        (prevTasks) =>
-          prevTasks ? prevTasks.filter((task) => task.id !== id) : prevTasks
-      )
+      setSequence(getSequence().filter((taskId) => taskId !== id))
+      queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
     }
   })
 
@@ -53,14 +73,8 @@ export const useUpdateTask = () =>
   useMutation({
     mutationFn: (taskData: UpdateTaskDto) =>
       port.taskPort(adapter.taskRepository).updateTask(taskData),
-    onSuccess: (data) => {
-      queryClient.setQueryData<Task[]>(
-        taskKeys.lists(getPeriodToday()),
-        (prevTasks) =>
-          prevTasks?.map((task) =>
-            task.id === data.id ? { ...task, ...data } : task
-          )
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
     }
   })
 
