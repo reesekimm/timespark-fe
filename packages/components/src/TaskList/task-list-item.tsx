@@ -13,6 +13,7 @@ export type TaskListItemProps = TaskType & {
   pauseTask: (id: string) => void
   completeTask: (id: string) => void
   deleteTask: (id: string) => void
+  dropTask: () => void
   isActive: boolean
   findTask: (id: string) => { row: TaskType; index: number }
   moveTask: (id: string, atIndex: number) => void
@@ -31,6 +32,7 @@ export const TaskListItem = ({
   pauseTask,
   completeTask,
   deleteTask,
+  dropTask,
   isActive
 }: TaskListItemProps) => {
   const originalIndex = findTask(id).index
@@ -46,6 +48,8 @@ export const TaskListItem = ({
         const didDrop = monitor.didDrop()
         if (!didDrop) {
           moveTask(droppedId, originalIndex)
+        } else {
+          dropTask()
         }
       }
     }),

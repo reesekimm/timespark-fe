@@ -23,6 +23,7 @@ import {
 import { getPeriodToday, useLocalStorageState } from '../utils/misc'
 import { Task } from '@timespark/domain/models'
 import { useCategories } from '../utils/query-categories'
+import { setSequence } from '../utils/sequence'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -54,6 +55,7 @@ function Home() {
   } = useDeleteTask()
   const {
     mutate: update,
+    data: updatedTask,
     isSuccess: updateSuccess,
     reset: resetUpdateState
   } = useUpdateTask()
@@ -82,7 +84,6 @@ function Home() {
     const task = tasks?.find((task) => task.id === id)
     if (!task) return
 
-    setActiveTask(task)
     update({
       id,
       state: task.state === 'created' ? 'start' : 'continue',
@@ -110,26 +111,28 @@ function Home() {
 
   useEffect(() => {
     if (updateSuccess) {
-      const task = tasks.find((task) => task.id === activeTask?.id)
-      if (!task) return
+      const state = updatedTask.state
 
-      if (task.state === 'start' || task.state === 'continue') {
-        let time = task.actualDuration
+      setActiveTask(updatedTask) // disable other tasks immediately
 
+      if (state === 'start' || state === 'continue') {
+        let time = updatedTask.actualDuration
         const id = setInterval(() => {
-          const updatedTask = {
-            ...task,
+          const newTask = {
+            ...updatedTask,
             actualDuration: time + 1
           }
-          setQueryDataForTasks(updatedTask)
-          setActiveTask(updatedTask)
+
+          setQueryDataForTasks(newTask)
+          setActiveTask(newTask)
+
           time += 1
         }, 1000)
 
         setTimerId(id)
       }
 
-      if (task.state === 'pause') {
+      if (state === 'pause' || state === 'complete') {
         clearInterval(timerId)
         setTimerId(0)
         setActiveTask(null)
@@ -144,11 +147,12 @@ function Home() {
     updateSuccess,
     tasks,
     setTimerId,
-    timerId
+    timerId,
+    updatedTask
   ])
 
   const onDrop = (tasks: Task[]) => {
-    setQueryDataForTasks(tasks)
+    setSequence(tasks.map((task) => task.id))
   }
 
   return (
