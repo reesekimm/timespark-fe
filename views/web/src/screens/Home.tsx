@@ -113,8 +113,6 @@ function Home() {
     if (updateSuccess) {
       const state = updatedTask.state
 
-      setActiveTask(updatedTask) // disable other tasks immediately
-
       if (state === 'start' || state === 'continue') {
         let time = updatedTask.actualDuration
         const id = setInterval(() => {
@@ -130,6 +128,7 @@ function Home() {
         }, 1000)
 
         setTimerId(id)
+        setActiveTask(updatedTask) // disable other tasks immediately
       }
 
       if (state === 'pause' || state === 'complete') {

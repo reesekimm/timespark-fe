@@ -12,6 +12,7 @@ afterEach(() => server.resetHandlers())
 afterEach(() => {
   testQueryClient.clear()
   tasksDB.clear()
+  window.localStorage.clear()
 })
 
 afterAll(() => server.close())
