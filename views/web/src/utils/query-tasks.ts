@@ -11,11 +11,14 @@ import { useEffect, useState } from 'react'
 import { queryClient } from '../context'
 import { getPeriodToday } from './misc'
 import { getSequence, setSequence } from './sequence'
+import { requestActiveTask } from './timerWorker'
 
 export const taskKeys = {
   all: ['tasks'] as const,
   lists: ({ from, to }: GetTasksDto) => [...taskKeys.all, { from, to }] as const
 }
+
+let activeTask: Task | null = null
 
 export const useCreateTask = () =>
   useMutation({
@@ -28,7 +31,7 @@ export const useCreateTask = () =>
   })
 
 export const useTasks = ({ from, to }: GetTasksDto) => {
-  const { data } = useQuery({
+  const queryResult = useQuery({
     queryKey: taskKeys.lists({ from, to }),
     queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
   })
@@ -36,27 +39,37 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
   const [result, setResult] = useState<Task[]>([])
 
   useEffect(() => {
+    const data = queryResult.data
+
     if (!data) return
 
-    const sequence = getSequence()
+    requestActiveTask()
 
+    let tempResult: Task[] = []
+
+    const sequence = getSequence()
     const validSequence = data.every((task) => sequence.includes(task.id))
 
     if (validSequence) {
-      const temp = []
       for (const id of sequence) {
         const matchTask = data.find((task) => task.id === id)
-        if (matchTask) temp.push(matchTask)
+        if (matchTask) tempResult.push(matchTask)
       }
-      setResult(temp)
-      setSequence(temp.map((task) => task.id))
     } else {
-      setResult(data)
-      setSequence(data.map((task) => task.id))
+      tempResult = data
     }
-  }, [data])
 
-  return result
+    if (activeTask) {
+      tempResult = tempResult.map((task) =>
+        task.id === activeTask?.id ? activeTask : task
+      )
+    }
+
+    setResult(tempResult)
+    setSequence(tempResult.map((task) => task.id))
+  }, [queryResult.data])
+
+  return { ...queryResult, data: { tasks: result, activeTask } }
 }
 
 export const useDeleteTask = () =>
@@ -94,4 +107,8 @@ export const setQueryDataForTasks = (taskData: Task | Task[]) => {
   }
 
   queryClient.setQueryData<Task[]>(taskKeys.lists(getPeriodToday()), updater)
+}
+
+export const setActiveTask = (task: Task | null) => {
+  activeTask = task
 }
