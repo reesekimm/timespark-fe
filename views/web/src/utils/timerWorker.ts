@@ -19,8 +19,15 @@ export const removeActiveTask = () => {
   timerWorker.postMessage({ action: 'remove' })
 }
 
+type TimerWorkerUtilType =
+  | {
+      action: 'getActiveTask' | 'setActiveTask'
+      data: Task
+    }
+  | { action: 'removeActiveTask'; data?: undefined }
+
 timerWorker.onmessage = (event: MessageEvent<string>) => {
-  const { action, data } = event.data
+  const { action, data } = event.data as unknown as TimerWorkerUtilType
 
   switch (action) {
     case 'getActiveTask':

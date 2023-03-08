@@ -91,8 +91,18 @@ function remove() {
   }
 }
 
+type TimerWorkerType =
+  | {
+      action: 'get' | 'remove'
+      data?: undefined
+    }
+  | {
+      action: 'set'
+      data: Task
+    }
+
 self.onmessage = (event: MessageEvent<string>) => {
-  const { action, data } = event.data
+  const { action, data } = event.data as unknown as TimerWorkerType
 
   switch (action) {
     case 'get':
