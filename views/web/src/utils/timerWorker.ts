@@ -1,7 +1,7 @@
 import { Task } from '@timespark/domain/models'
 import TimerWorker from '../workers/timer.worker?worker'
 import {
-  setActiveTask as setCurrentActiveTask,
+  setActiveTask as setActiveTaskInMainThread,
   setQueryDataForTasks
 } from './query-tasks'
 
@@ -11,7 +11,7 @@ export const setActiveTask = (task: Task) => {
   timerWorker.postMessage({ action: 'set', data: task })
 }
 
-export const requestActiveTask = () => {
+export const getActiveTask = () => {
   timerWorker.postMessage({ action: 'get' })
 }
 
@@ -31,13 +31,13 @@ timerWorker.onmessage = (event: MessageEvent<string>) => {
 
   switch (action) {
     case 'getActiveTask':
-      setCurrentActiveTask(data)
+      setActiveTaskInMainThread(data)
       break
     case 'setActiveTask':
       setQueryDataForTasks(data)
       break
     case 'removeActiveTask':
-      setCurrentActiveTask(null)
+      setActiveTaskInMainThread(null)
       break
     default:
       return

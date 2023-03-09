@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { queryClient } from '../context'
 import { getPeriodToday } from './misc'
 import { getSequence, setSequence } from './sequence'
-import { requestActiveTask } from './timerWorker'
+import { getActiveTask } from './timerWorker'
 
 export const taskKeys = {
   all: ['tasks'] as const,
@@ -43,7 +43,7 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
 
     if (!data) return
 
-    requestActiveTask()
+    getActiveTask()
 
     let tempResult: Task[] = []
 
