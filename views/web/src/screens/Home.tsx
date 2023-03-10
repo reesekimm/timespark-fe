@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Empty,
@@ -14,16 +14,16 @@ import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  setQueryDataForTasks,
   useCreateTask,
   useDeleteTask,
   useTasks,
   useUpdateTask
 } from '../utils/query-tasks'
-import { getPeriodToday, useLocalStorageState } from '../utils/misc'
+import { getPeriodToday } from '../utils/misc'
 import { Task } from '@timespark/domain/models'
 import { useCategories } from '../utils/query-categories'
 import { setSequence } from '../utils/sequence'
+import { removeActiveTask, setActiveTask } from '../utils/timerWorker'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -43,22 +43,17 @@ function Home() {
 
   const categories = useCategories()
 
-  const [activeTask, setActiveTask] = useLocalStorageState('activeTask', null)
-  const [timerId, setTimerId] = useLocalStorageState('timerId', 0)
-
   const createTask = useCreateTask()
   const tasks = useTasks(getPeriodToday())
-  const {
-    mutate: deleteTask,
-    isSuccess: deleteSuccess,
-    reset: resetDeleteState
-  } = useDeleteTask()
+  const { mutate: deleteTask } = useDeleteTask()
   const {
     mutate: update,
     data: updatedTask,
     isSuccess: updateSuccess,
     reset: resetUpdateState
   } = useUpdateTask()
+
+  const [activeId, setActiveId] = useState<string>('')
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
@@ -73,13 +68,6 @@ function Home() {
     deleteTask({ id })
   }
 
-  useEffect(() => {
-    if (deleteSuccess) {
-      setActiveTask(null)
-      resetDeleteState()
-    }
-  }, [deleteSuccess, resetDeleteState, setActiveTask])
-
   const onStart = (id: string) => {
     const task = tasks?.find((task) => task.id === id)
     if (!task) return
@@ -92,13 +80,11 @@ function Home() {
   }
 
   const onPause = (id: string) => {
-    if (activeTask?.id === id) {
-      update({
-        id,
-        state: 'pause',
-        time: new Date().toISOString()
-      })
-    }
+    update({
+      id,
+      state: 'pause',
+      time: new Date().toISOString()
+    })
   }
 
   const onComplete = (id: string) => {
@@ -114,41 +100,18 @@ function Home() {
       const state = updatedTask.state
 
       if (state === 'start' || state === 'continue') {
-        let time = updatedTask.actualDuration
-        const id = setInterval(() => {
-          const newTask = {
-            ...updatedTask,
-            actualDuration: time + 1
-          }
-
-          setQueryDataForTasks(newTask)
-          setActiveTask(newTask)
-
-          time += 1
-        }, 1000)
-
-        setTimerId(id)
-        setActiveTask(updatedTask) // disable other tasks immediately
+        setActiveTask(updatedTask)
+        setActiveId(updatedTask.id)
       }
 
       if (state === 'pause' || state === 'complete') {
-        clearInterval(timerId)
-        setTimerId(0)
-        setActiveTask(null)
+        removeActiveTask()
+        setActiveId('')
       }
 
       resetUpdateState()
     }
-  }, [
-    activeTask,
-    setActiveTask,
-    resetUpdateState,
-    updateSuccess,
-    tasks,
-    setTimerId,
-    timerId,
-    updatedTask
-  ])
+  }, [resetUpdateState, updateSuccess, tasks, updatedTask])
 
   const onDrop = (tasks: Task[]) => {
     setSequence(tasks.map((task) => task.id))
@@ -198,7 +161,7 @@ function Home() {
             onStart={onStart}
             onPause={onPause}
             onComplete={onComplete}
-            activeTaskId={activeTask?.id ?? ''}
+            activeTaskId={activeId}
           />
         </TaskListContextProvider>
       ) : (

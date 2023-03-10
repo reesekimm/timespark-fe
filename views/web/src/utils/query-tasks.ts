@@ -11,11 +11,14 @@ import { useEffect, useState } from 'react'
 import { queryClient } from '../context'
 import { getPeriodToday } from './misc'
 import { getSequence, setSequence } from './sequence'
+import { getActiveTask } from './timerWorker'
 
 export const taskKeys = {
   all: ['tasks'] as const,
   lists: ({ from, to }: GetTasksDto) => [...taskKeys.all, { from, to }] as const
 }
+
+let activeTask: Task | null = null
 
 export const useCreateTask = () =>
   useMutation({
@@ -38,22 +41,30 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
   useEffect(() => {
     if (!data) return
 
-    const sequence = getSequence()
+    getActiveTask()
 
+    let tempResult: Task[] = []
+
+    const sequence = getSequence()
     const validSequence = data.every((task) => sequence.includes(task.id))
 
     if (validSequence) {
-      const temp = []
       for (const id of sequence) {
         const matchTask = data.find((task) => task.id === id)
-        if (matchTask) temp.push(matchTask)
+        if (matchTask) tempResult.push(matchTask)
       }
-      setResult(temp)
-      setSequence(temp.map((task) => task.id))
     } else {
-      setResult(data)
-      setSequence(data.map((task) => task.id))
+      tempResult = data
     }
+
+    if (activeTask) {
+      tempResult = tempResult.map((task) =>
+        task.id === activeTask?.id ? activeTask : task
+      )
+    }
+
+    setResult(tempResult)
+    setSequence(tempResult.map((task) => task.id))
   }, [data])
 
   return result
@@ -94,4 +105,8 @@ export const setQueryDataForTasks = (taskData: Task | Task[]) => {
   }
 
   queryClient.setQueryData<Task[]>(taskKeys.lists(getPeriodToday()), updater)
+}
+
+export const setActiveTask = (task: Task | null) => {
+  activeTask = task
 }
