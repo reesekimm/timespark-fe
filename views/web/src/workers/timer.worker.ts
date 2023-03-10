@@ -8,7 +8,7 @@ let db: IDBDatabase
 
 let timerId: number
 
-DBOpenRequest.onupgradeneeded = function (event) {
+DBOpenRequest.onupgradeneeded = function () {
   console.log('[ObjectStore created]')
 
   db = DBOpenRequest.result
@@ -42,7 +42,7 @@ function set(task: Task) {
         timerId
       })
 
-    updateRequest.onsuccess = function (event) {
+    updateRequest.onsuccess = function () {
       self.postMessage({ action: 'setActiveTask', data: taskObj })
     }
 
@@ -62,7 +62,7 @@ function get() {
     .objectStore(storeName)
     .getAll()
 
-  getRequest.onsuccess = function (event) {
+  getRequest.onsuccess = function () {
     self.postMessage({
       action: 'getActiveTask',
       data: getRequest.result[0]
