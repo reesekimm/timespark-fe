@@ -31,7 +31,7 @@ export const useCreateTask = () =>
   })
 
 export const useTasks = ({ from, to }: GetTasksDto) => {
-  const queryResult = useQuery({
+  const { data } = useQuery({
     queryKey: taskKeys.lists({ from, to }),
     queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
   })
@@ -39,8 +39,6 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
   const [result, setResult] = useState<Task[]>([])
 
   useEffect(() => {
-    const data = queryResult.data
-
     if (!data) return
 
     getActiveTask()
@@ -67,9 +65,9 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
 
     setResult(tempResult)
     setSequence(tempResult.map((task) => task.id))
-  }, [queryResult.data])
+  }, [data])
 
-  return { ...queryResult, data: { tasks: result, activeTask } }
+  return result
 }
 
 export const useDeleteTask = () =>

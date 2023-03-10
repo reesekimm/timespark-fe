@@ -44,9 +44,7 @@ function Home() {
   const categories = useCategories()
 
   const createTask = useCreateTask()
-  const {
-    data: { tasks, activeTask }
-  } = useTasks(getPeriodToday())
+  const tasks = useTasks(getPeriodToday())
   const { mutate: deleteTask } = useDeleteTask()
   const {
     mutate: update,
@@ -56,10 +54,6 @@ function Home() {
   } = useUpdateTask()
 
   const [activeId, setActiveId] = useState<string>('')
-
-  useEffect(() => {
-    setActiveId(activeTask?.id ?? '')
-  }, [activeTask])
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
@@ -112,6 +106,7 @@ function Home() {
 
       if (state === 'pause' || state === 'complete') {
         removeActiveTask()
+        setActiveId('')
       }
 
       resetUpdateState()
