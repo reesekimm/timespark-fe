@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout'
 import { RequireAuth } from './context/auth-context'
@@ -6,6 +7,7 @@ import Dashboard from './screens/Dashboard'
 import FullPageError from './screens/FullPageError'
 import Home from './screens/Home'
 import Settings from './screens/Settings'
+import { removeActiveTask } from './utils/timerWorker'
 
 export const routeConfig = [
   {
@@ -40,6 +42,10 @@ export const routeConfig = [
 const router = createBrowserRouter(routeConfig)
 
 function App() {
+  useEffect(() => {
+    removeActiveTask()
+  }, [])
+
   return <RouterProvider router={router} />
 }
 
