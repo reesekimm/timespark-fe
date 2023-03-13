@@ -6,6 +6,7 @@ export { Footer } from './Footer/footer'
 export { Progress } from './Progress/progress'
 export { Select } from './Select/select'
 export { Spinner } from './Spinner/spinner'
+export { Tag } from './Tag/tag'
 export { TaskList } from './TaskList/task-list'
 export { TextInput } from './TextInput/text-input'
 

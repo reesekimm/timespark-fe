@@ -69,9 +69,9 @@ export const handlers = [
     }
   }),
   rest.post('/category', async (req, res, ctx) => {
-    const { name } = await req.json()
+    const categoryData = await req.json()
     try {
-      const result = categoriesDB.create({ name })
+      const result = categoriesDB.create(categoryData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =

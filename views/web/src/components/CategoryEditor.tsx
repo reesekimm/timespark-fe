@@ -1,4 +1,5 @@
-import { Button, TextInput } from '@timespark/components'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Tag, TextInput } from '@timespark/components'
 import { Category } from '@timespark/domain/models'
 import {
   CreateCategoryDto,
@@ -8,6 +9,7 @@ import {
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { z } from 'zod'
 
 type Common = {
   state: 'collapsed' | 'expanded'
@@ -15,65 +17,96 @@ type Common = {
 
 type CreateMode = Common & {
   onCancel: () => void
-  onCreate: ({ name }: CreateCategoryDto) => void
+  onCreate: (categoryData: CreateCategoryDto) => void
 }
 
 type EditMode = Common & {
   category: Category
-  onUpdate: (dategoryData: UpdateCategoryDto) => void
+  onUpdate: (categoryData: UpdateCategoryDto) => void
   onDelete: ({ id }: DeleteCategoryDto) => void
 }
 
 type CategoryEditorProps = CreateMode | EditMode
 
+const schema = z
+  .object({
+    name: z.string().min(1).max(20),
+    color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
+  })
+  .required()
+
 function CategoryEditor(props: CategoryEditorProps) {
   const [collapsed, setCollapsed] = useState(props.state === 'collapsed')
-  const [categoryPreview, setCategoryPreview] = useState(
-    'category' in props ? props.category.name : 'Category Preview'
-  )
-
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: { name: 'category' in props ? props.category.name : '' }
+  const [categoryPreview, setCategoryPreview] = useState({
+    name: 'category' in props ? props.category.name : 'Category Preview',
+    color: 'category' in props ? props.category.color : '#ADB6BF'
   })
 
-  const { onChange } = register('name')
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid }
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: 'category' in props ? props.category.name : '',
+      color: 'category' in props ? props.category.color : '#ADB6BF'
+    }
+  })
 
   const { submitButtonLabel, onSubmit, onCancel } = useMemo(() => {
     if ('category' in props) {
       return {
         submitButtonLabel: 'Save',
-        onSubmit: ({ name }: Pick<UpdateCategoryDto, 'name'>) => {
-          props.onUpdate({ id: props.category.id, name })
+        onSubmit: (data: Omit<UpdateCategoryDto, 'id'>) => {
+          props.onUpdate({ id: props.category.id, ...data })
           setCollapsed(true)
         },
         onCancel: () => {
-          reset({ name: props.category.name })
-          setCategoryPreview(props.category.name)
+          setCategoryPreview({ ...categoryPreview, name: props.category.name })
           setCollapsed(true)
         }
       }
     } else {
       return {
         submitButtonLabel: 'Create',
-        onSubmit: ({ name }: CreateCategoryDto) => {
-          props.onCreate({ name })
-          reset({ name: '' })
-          setCategoryPreview('Category preview')
+        onSubmit: (data: CreateCategoryDto) => {
+          console.log('[data]', data)
+          props.onCreate(data)
+          setCategoryPreview({
+            ...categoryPreview,
+            name: 'Category preview',
+            color: '#ADB6BF'
+          })
         },
         onCancel: () => props.onCancel()
       }
     }
-  }, [props, reset])
+  }, [categoryPreview, props])
 
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e)
-    setCategoryPreview(e.target.value ? e.target.value : 'Category Preview')
+  const { onChange: onChangeName } = register('name')
+  const { onChange: onChangeColor } = register('color')
+
+  const onChangeNameField = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeName(e)
+    setCategoryPreview({
+      ...categoryPreview,
+      name: e.target.value ? e.target.value : 'Category Preview'
+    })
+  }
+
+  const onChangeColorField = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeColor(e)
+    setCategoryPreview({
+      ...categoryPreview,
+      color: e.target.value
+    })
   }
 
   return (
     <div>
       <PreviewWrapper>
-        <Preview>{categoryPreview}</Preview>
+        <Tag value={categoryPreview.name} color={categoryPreview.color} />
         <ButtonWrapper>
           {collapsed ? (
             <Button
@@ -100,9 +133,15 @@ function CategoryEditor(props: CategoryEditorProps) {
           <TextInput
             {...register('name')}
             label='Category name'
-            onChange={onChangeName}
+            onChange={onChangeNameField}
             inputSize='small'
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginRight: '1.3rem' }}
+          />
+          <TextInput
+            {...register('color')}
+            label='Color'
+            onChange={onChangeColorField}
+            inputSize='small'
           />
           <Button
             label='Cancel'
@@ -115,6 +154,7 @@ function CategoryEditor(props: CategoryEditorProps) {
             size='small'
             variant='primary'
             type='submit'
+            disabled={!isValid}
           />
         </Form>
       )}
@@ -128,11 +168,6 @@ const PreviewWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
-
-const Preview = styled.div`
-  padding: 1rem;
-  border: ${({ theme }) => `2px solid ${theme.palette.secondary}`};
 `
 
 const ButtonWrapper = styled.div`

@@ -8,8 +8,8 @@ import {
 export const categoryPort = (
   repository: CategoryRepository
 ): CategoryRepository => ({
-  createCategory: ({ name }: CreateCategoryDto) =>
-    repository.createCategory({ name }),
+  createCategory: (categoryData: CreateCategoryDto) =>
+    repository.createCategory(categoryData),
   getCategories: () => repository.getCategories(),
   updateCategory: (categoryData: UpdateCategoryDto) =>
     repository.updateCategory(categoryData),

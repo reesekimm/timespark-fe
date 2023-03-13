@@ -10,10 +10,11 @@ import { removeByCategory } from './tasks'
 
 let categories: Category[] = [...categoriesData]
 
-function create({ name }: CreateCategoryDto) {
+function create({ name, color }: CreateCategoryDto) {
   const newCategory = {
     id: uuidv4(),
-    name
+    name,
+    color
   }
 
   categories.push(newCategory)
@@ -25,12 +26,13 @@ function get() {
   return categories
 }
 
-function update({ id, name }: UpdateCategoryDto) {
+function update({ id, name, color }: UpdateCategoryDto) {
   validateCategory(id)
   const categoryIndex = categories.findIndex((category) => category.id === id)
   const newCategory = {
     ...categories[categoryIndex],
-    name
+    name,
+    color
   }
 
   categories[categoryIndex] = newCategory
