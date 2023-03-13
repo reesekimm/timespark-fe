@@ -7,15 +7,13 @@ export type Props = LabelHTMLAttributes<HTMLLabelElement> & {
   size?: 'small' | 'medium' | 'large'
 }
 
-const Label = ({ htmlFor, label, size = 'medium' }: Props) => {
+export const Label = ({ htmlFor, label, size = 'medium' }: Props) => {
   return (
     <StyledLabel htmlFor={htmlFor} size={size}>
       {label}
     </StyledLabel>
   )
 }
-
-export default Label
 
 const StyledLabel = styled.label<Pick<Props, 'size'>>`
   display: inline-block;

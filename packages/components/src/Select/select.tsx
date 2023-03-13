@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import styled, { useTheme } from 'styled-components'
 import { styleMap } from '../TextInput/text-input'
 import { Icons } from '@timespark/styles'
-import Label from '../Label/label'
+import { Label } from '../Label/label'
 
 type Option = {
   value: string | number
