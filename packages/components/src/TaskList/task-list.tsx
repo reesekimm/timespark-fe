@@ -21,15 +21,13 @@ export type Task = {
   actualDuration: number
 }
 
-type TaskForOnDrop = Omit<Task, 'category'> & { categoryId: string }
-
 export type TaskListProps = {
   data: Task[]
   onStart: (id: string) => void
   onPause: (id: string) => void
   onComplete: (id: string) => void
   onDelete: (id: string) => void
-  onDrop: (tasks: TaskForOnDrop[]) => void
+  onDrop: (tasks: Task[]) => void
   activeTaskId: string
   style?: CSSProperties
 }

@@ -93,7 +93,7 @@ export const TaskListItem = ({
           max={estimatedDuration}
           color={
             (estimatedDuration - actualDuration) / estimatedDuration < 0.3
-              ? 'RGBA(239,83,80,0.3)'
+              ? theme.palette.danger
               : category.color
           }
           backgroundColor='transparent'

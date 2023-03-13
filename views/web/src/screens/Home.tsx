@@ -113,8 +113,19 @@ function Home() {
     }
   }, [resetUpdateState, updateSuccess, tasks, updatedTask])
 
-  const onDrop = (tasks: Task[]) => {
+  const onDrop = (tasks: Omit<Task, 'categoryId'>[]) => {
     setSequence(tasks.map((task) => task.id))
+  }
+
+  const setCategory = (tasks: Task[]) => {
+    return tasks.map((task) => ({
+      ...task,
+      category: categories.find((c) => c.id === task.categoryId) ?? {
+        id: '',
+        name: 'None',
+        color: '#ADB6BF'
+      }
+    }))
   }
 
   return (
@@ -151,14 +162,7 @@ function Home() {
         <TaskListContextProvider backend={TaskListDnDBackend}>
           <TaskList
             aria-label='tasks'
-            data={tasks.map((task) => ({
-              ...task,
-              category: categories.find((c) => c.id === task.categoryId) ?? {
-                id: '',
-                name: 'None',
-                color: '#ADB6BF'
-              }
-            }))}
+            data={setCategory(tasks)}
             onDrop={onDrop}
             onDelete={(id) => onDelete({ id })}
             onStart={onStart}
