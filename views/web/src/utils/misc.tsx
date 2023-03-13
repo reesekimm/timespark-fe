@@ -21,8 +21,25 @@ const getPeriodToday = () => {
 
 /**
  * @param {String} date A date string in ISO format
- * @returns formatted date string
+ * @returns Formatted date string
  */
 const formatDate = (date: string) => format(parseISO(date), 'yyyy.MM.dd HH:mm')
 
-export { getPeriodToday, formatDate }
+/**
+ *
+ * @returns Randomly generated hexadecimal color code
+ *
+ * @example
+ * #586BBE
+ *
+ * Ref) https://stackoverflow.com/a/58326357/12220184
+ */
+const generateRandomColorCode = () => {
+  const code = [...Array(6)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join('')
+    .toUpperCase()
+  return `#${code}`
+}
+
+export { getPeriodToday, formatDate, generateRandomColorCode }

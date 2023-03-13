@@ -6,10 +6,12 @@ import {
   DeleteCategoryDto,
   UpdateCategoryDto
 } from '@timespark/domain/repositories'
+import { Icons } from '@timespark/styles'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
+import { generateRandomColorCode } from '../utils/misc'
 
 type Common = {
   state: 'collapsed' | 'expanded'
@@ -45,7 +47,8 @@ function CategoryEditor(props: CategoryEditorProps) {
   const {
     register,
     handleSubmit,
-    formState: { isValid }
+    formState: { isValid },
+    setValue
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -103,6 +106,12 @@ function CategoryEditor(props: CategoryEditorProps) {
     })
   }
 
+  const generateColor = () => {
+    const color = generateRandomColorCode()
+    setCategoryPreview({ ...categoryPreview, color })
+    setValue('color', color)
+  }
+
   return (
     <div>
       <PreviewWrapper>
@@ -137,25 +146,36 @@ function CategoryEditor(props: CategoryEditorProps) {
             inputSize='small'
             style={{ flex: 1, marginRight: '1.3rem' }}
           />
-          <TextInput
-            {...register('color')}
-            label='Color'
-            onChange={onChangeColorField}
-            inputSize='small'
-          />
-          <Button
-            label='Cancel'
-            size='small'
-            onClick={onCancel}
-            type='button'
-          />
-          <Button
-            label={submitButtonLabel}
-            size='small'
-            variant='primary'
-            type='submit'
-            disabled={!isValid}
-          />
+          <Field>
+            <TextInput
+              {...register('color')}
+              label='Color'
+              onChange={onChangeColorField}
+              inputSize='small'
+            />
+            <RandomColorGenButton
+              type='button'
+              color={categoryPreview.color}
+              onClick={generateColor}
+            >
+              <Icons.GrUpdate />
+            </RandomColorGenButton>
+          </Field>
+          <SubmitButtonWrapper>
+            <Button
+              label='Cancel'
+              size='small'
+              onClick={onCancel}
+              type='button'
+            />
+            <Button
+              label={submitButtonLabel}
+              size='small'
+              variant='primary'
+              type='submit'
+              disabled={!isValid}
+            />
+          </SubmitButtonWrapper>
         </Form>
       )}
     </div>
@@ -183,4 +203,30 @@ const Form = styled.form`
   button {
     margin-left: 1.3rem;
   }
+`
+
+const Field = styled.fieldset`
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+`
+
+const RandomColorGenButton = styled.button`
+  padding: 1rem;
+  background-color: ${({ color }) => color};
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  path {
+    stroke: ${({ theme }) => theme.palette.white};
+  }
+`
+
+const SubmitButtonWrapper = styled.div`
+  display: flex;
+  margin-left: 30rem;
 `
