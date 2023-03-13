@@ -14,13 +14,14 @@ export type Task = {
   startTime: string
   endTime: string
   state: TaskState
-  categoryId: string
-  categoryName: string
+  category: { id: string; name: string; color: string }
   tags: string[]
   title: string
   estimatedDuration: number
   actualDuration: number
 }
+
+type TaskForOnDrop = Omit<Task, 'category'> & { categoryId: string }
 
 export type TaskListProps = {
   data: Task[]
@@ -28,7 +29,7 @@ export type TaskListProps = {
   onPause: (id: string) => void
   onComplete: (id: string) => void
   onDelete: (id: string) => void
-  onDrop: (tasks: Task[]) => void
+  onDrop: (tasks: TaskForOnDrop[]) => void
   activeTaskId: string
   style?: CSSProperties
 }

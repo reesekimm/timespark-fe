@@ -7,8 +7,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'created',
-    categoryId: 'c685bce6-2ac6-418b-bcaa-cbe148e0eb0b',
-    categoryName: 'Category',
+    category: {
+      id: 'c685bce6-2ac6-418b-bcaa-cbe148e0eb0b',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task1 (created)',
     estimatedDuration: 10 * 60,
@@ -20,8 +23,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'start',
-    categoryId: '4823dd18-62d2-4276-b491-f73bad958898',
-    categoryName: 'Category',
+    category: {
+      id: 'c685bce6-2ac6-418b-bcaa-cbe148e0eb0b',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task2 (start)',
     estimatedDuration: 10 * 60,
@@ -33,8 +39,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'pause',
-    categoryId: '3c8c5bcf-4361-421b-9328-ef318067750a',
-    categoryName: 'Category',
+    category: {
+      id: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task3 (pause)',
     estimatedDuration: 10 * 60,
@@ -46,8 +55,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'continue',
-    categoryId: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
-    categoryName: 'Category',
+    category: {
+      id: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task4 (continue)',
     estimatedDuration: 10 * 60,
@@ -59,8 +71,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'continue',
-    categoryId: '8fc15534-55ad-43f1-ab40-c753d5298a91',
-    categoryName: 'Category',
+    category: {
+      id: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task5 (continue - almost reached the estimated time)',
     estimatedDuration: 10 * 60,
@@ -72,8 +87,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'complete',
-    categoryId: 'e969c905-4815-49a0-b13f-c18559699536',
-    categoryName: 'Category',
+    category: {
+      id: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task6 (end)',
     estimatedDuration: 10 * 60,
@@ -85,8 +103,11 @@ export const data: Task[] = [
     startTime: '',
     endTime: '',
     state: 'continue',
-    categoryId: '92134bdc-fc6a-483b-b343-f8d6179719c4',
-    categoryName: 'Category',
+    category: {
+      id: '68eb14e1-7fdc-44e7-8a39-0dfc8eabd4a5',
+      name: 'Category',
+      color: '#EEA282'
+    },
     tags: [],
     title: 'task7 (time over)',
     estimatedDuration: 10 * 60,

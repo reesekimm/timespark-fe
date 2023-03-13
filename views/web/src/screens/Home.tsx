@@ -153,8 +153,11 @@ function Home() {
             aria-label='tasks'
             data={tasks.map((task) => ({
               ...task,
-              categoryName:
-                categories.find((c) => c.id === task.categoryId)?.name ?? 'None'
+              category: categories.find((c) => c.id === task.categoryId) ?? {
+                id: '',
+                name: 'None',
+                color: '#ADB6BF'
+              }
             }))}
             onDrop={onDrop}
             onDelete={(id) => onDelete({ id })}

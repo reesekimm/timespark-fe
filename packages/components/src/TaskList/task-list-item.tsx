@@ -5,6 +5,7 @@ import { Task as TaskType } from './task-list'
 import { Progress } from '../Progress/progress'
 import { Clock } from '../Clock/clock'
 import { Button } from '../Button/button'
+import { Tag } from '../Tag/tag'
 
 export const itemType = 'row'
 
@@ -22,7 +23,7 @@ export type TaskListItemProps = TaskType & {
 export const TaskListItem = ({
   id,
   state,
-  categoryName,
+  category,
   title,
   estimatedDuration,
   actualDuration,
@@ -78,9 +79,14 @@ export const TaskListItem = ({
       <TaskWrapper>
         <Task>
           <DragIcon />
-          <div>
-            [{categoryName}] {title}
-          </div>
+          <Title>
+            <Tag
+              value={category.name}
+              color={category.color}
+              style={{ marginRight: '1rem' }}
+            />{' '}
+            {title}
+          </Title>
         </Task>
         <Progress
           value={estimatedDuration - actualDuration}
@@ -88,13 +94,14 @@ export const TaskListItem = ({
           color={
             (estimatedDuration - actualDuration) / estimatedDuration < 0.3
               ? 'RGBA(239,83,80,0.3)'
-              : 'RGBA(107,72,255,0.3)'
+              : category.color
           }
           backgroundColor='transparent'
           style={{
             height: '7rem',
             borderTopLeftRadius: '10px',
-            borderBottomLeftRadius: '10px'
+            borderBottomLeftRadius: '10px',
+            opacity: 0.5
           }}
         />
       </TaskWrapper>
@@ -220,8 +227,13 @@ const Task = styled.div`
   align-items: center;
   position: absolute;
   left: 0;
-  top: 2.8rem;
+  top: 1.8rem;
   color: ${({ theme }) => theme.palette.gray[500]};
+`
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const Td = styled.td`
