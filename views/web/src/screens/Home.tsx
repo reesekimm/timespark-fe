@@ -44,7 +44,9 @@ function Home() {
   const categories = useCategories()
 
   const createTask = useCreateTask()
-  const tasks = useTasks(getPeriodToday())
+  const {
+    data: { tasks, activeTask }
+  } = useTasks(getPeriodToday())
   const { mutate: deleteTask } = useDeleteTask()
   const {
     mutate: update,
@@ -54,6 +56,11 @@ function Home() {
   } = useUpdateTask()
 
   const [activeId, setActiveId] = useState<string>('')
+
+  // Disable inactive tasks after routing
+  useEffect(() => {
+    setActiveId(activeTask?.id ?? '')
+  }, [activeTask])
 
   const onSubmit = (data: CreateTaskDto) => {
     createTask.mutate({
