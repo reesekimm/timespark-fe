@@ -14,8 +14,7 @@ export type Task = {
   startTime: string
   endTime: string
   state: TaskState
-  categoryId: string
-  categoryName: string
+  category: { id: string; name: string; color: string }
   tags: string[]
   title: string
   estimatedDuration: number

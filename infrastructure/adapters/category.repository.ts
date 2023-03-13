@@ -8,8 +8,8 @@ import { httpAxios } from '../utils/http'
 const client = httpAxios
 
 export const categoryRepository: CategoryRepository = {
-  createCategory: async ({ name }: CreateCategoryDto) =>
-    await client('/category', { data: { name } }),
+  createCategory: async (categoryData: CreateCategoryDto) =>
+    await client('/category', { data: categoryData }),
   getCategories: async () => await client('/categories'),
   updateCategory: async (categoryData: UpdateCategoryDto) =>
     await client(`/category/${categoryData.id}`, {

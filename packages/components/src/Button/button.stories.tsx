@@ -61,7 +61,6 @@ export const Loading: Story = {
   render: ({ ...args }) => (
     <div style={{ display: 'flex' }}>
       <Button {...args} />
-      <Button {...args} loading={false} />
     </div>
   )
 }

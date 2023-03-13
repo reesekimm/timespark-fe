@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import styled, { css } from 'styled-components'
-import Label from '../Label/label'
+import { Label } from '../Label/label'
 
 type InputSize = 'small' | 'medium' | 'large'
 

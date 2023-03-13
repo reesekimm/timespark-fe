@@ -13,8 +13,10 @@ export const categoryKeys = {
 
 export const useCreateCategory = () =>
   useMutation({
-    mutationFn: ({ name }: CreateCategoryDto) =>
-      port.categoryPort(adapter.categoryRepository).createCategory({ name }),
+    mutationFn: (categoryData: CreateCategoryDto) =>
+      port
+        .categoryPort(adapter.categoryRepository)
+        .createCategory(categoryData),
     onSuccess: () => queryClient.invalidateQueries(categoryKeys.all)
   })
 
