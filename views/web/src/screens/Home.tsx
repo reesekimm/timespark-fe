@@ -23,6 +23,7 @@ import { getPeriodToday } from '../utils/misc'
 import { useCategories } from '../utils/query-categories'
 import { setSequence } from '../utils/sequence'
 import { removeActiveTask, setActiveTask } from '../utils/timerWorker'
+import TodaysDate from '../components/TodaysDate'
 
 const schema = z.object({
   categoryId: z.string(),
@@ -136,6 +137,7 @@ function Home() {
 
   return (
     <>
+      <TodaysDate style={{ marginBottom: '4rem' }} />
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
           {...register('categoryId')}
