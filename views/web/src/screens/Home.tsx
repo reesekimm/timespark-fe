@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { CreateTaskDto, DeleteTaskDto, Task } from '@timespark/domain'
 import {
   Button,
   Empty,
@@ -8,7 +9,6 @@ import {
   TaskList,
   TextInput
 } from '@timespark/components'
-import { CreateTaskDto, DeleteTaskDto } from '@timespark/domain/repositories'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
@@ -20,14 +20,14 @@ import {
   useUpdateTask
 } from '../utils/query-tasks'
 import { getPeriodToday } from '../utils/misc'
-import { Task } from '@timespark/domain/models'
 import { useCategories } from '../utils/query-categories'
 import { setSequence } from '../utils/sequence'
 import { removeActiveTask, setActiveTask } from '../utils/timerWorker'
+import TodaysDate from '../components/TodaysDate'
 
 const schema = z.object({
   categoryId: z.string(),
-  title: z.string().min(1),
+  title: z.string().min(1).max(30),
   estimatedDuration: z.number()
 })
 
@@ -55,7 +55,7 @@ function Home() {
     reset: resetUpdateState
   } = useUpdateTask()
 
-  const [activeId, setActiveId] = useState<string>('')
+  const [activeId, setActiveId] = useState('')
 
   // Disable inactive tasks after routing
   useEffect(() => {
@@ -137,6 +137,7 @@ function Home() {
 
   return (
     <>
+      <TodaysDate style={{ marginBottom: '4rem' }} />
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginBottom: '6rem' }}>
         <Select
           {...register('categoryId')}

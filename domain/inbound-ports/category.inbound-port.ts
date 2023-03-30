@@ -1,4 +1,4 @@
-import { Category } from '../models'
+import { Category } from '../models/category.model'
 
 export interface CreateCategoryDto {
   name: string
@@ -15,7 +15,7 @@ export interface DeleteCategoryDto {
   id: string
 }
 
-export interface CategoryRepository {
+export interface CategoryInboundPort {
   createCategory: (categoryData: CreateCategoryDto) => Promise<Category>
   getCategories: () => Promise<Category[]>
   updateCategory: (categoryData: UpdateCategoryDto) => Promise<Category>

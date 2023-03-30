@@ -1,4 +1,4 @@
-import { Task } from '@timespark/domain/models'
+import { Task } from '@timespark/domain'
 import TimerWorker from '../workers/timer.worker?worker'
 import {
   setActiveTask as setActiveTaskInMainThread,

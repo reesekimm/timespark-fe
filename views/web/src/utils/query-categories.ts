@@ -3,8 +3,8 @@ import {
   CreateCategoryDto,
   DeleteCategoryDto,
   UpdateCategoryDto
-} from '@timespark/domain/repositories'
-import { adapter, port } from '@timespark/infrastructure'
+} from '@timespark/domain'
+import { categoryClient } from '@timespark/infrastructure'
 import { queryClient } from '../context'
 
 export const categoryKeys = {
@@ -14,16 +14,14 @@ export const categoryKeys = {
 export const useCreateCategory = () =>
   useMutation({
     mutationFn: (categoryData: CreateCategoryDto) =>
-      port
-        .categoryPort(adapter.categoryRepository)
-        .createCategory(categoryData),
+      categoryClient.createCategory(categoryData),
     onSuccess: () => queryClient.invalidateQueries(categoryKeys.all)
   })
 
 export const useCategories = () => {
   const { data } = useQuery({
     queryKey: categoryKeys.all,
-    queryFn: () => port.categoryPort(adapter.categoryRepository).getCategories()
+    queryFn: () => categoryClient.getCategories()
   })
 
   return data ?? []
@@ -32,15 +30,13 @@ export const useCategories = () => {
 export const useUpdateCategory = () =>
   useMutation({
     mutationFn: (categoryData: UpdateCategoryDto) =>
-      port
-        .categoryPort(adapter.categoryRepository)
-        .updateCategory(categoryData),
+      categoryClient.updateCategory(categoryData),
     onSuccess: () => queryClient.invalidateQueries(categoryKeys.all)
   })
 
 export const useDeleteCategory = () =>
   useMutation({
     mutationFn: ({ id }: DeleteCategoryDto) =>
-      port.categoryPort(adapter.categoryRepository).deleteCategory({ id }),
+      categoryClient.deleteCategory({ id }),
     onSuccess: () => queryClient.invalidateQueries(categoryKeys.all)
   })

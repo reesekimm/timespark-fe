@@ -4,6 +4,11 @@
     "noEmit": true,
     "types": ["vite/client", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["src", "jest.setup.ts", "../../packages/styles/@types"],
+  "include": [
+    "src",
+    "jest.setup.ts",
+    "../../packages/styles/@types",
+    "../../infrastructure/lib/http.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

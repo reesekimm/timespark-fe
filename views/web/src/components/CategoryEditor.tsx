@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Tag, TextInput } from '@timespark/components'
-import { Category } from '@timespark/domain/models'
 import {
+  Category,
   CreateCategoryDto,
   DeleteCategoryDto,
   UpdateCategoryDto
-} from '@timespark/domain/repositories'
+} from '@timespark/domain'
 import { Icons } from '@timespark/styles'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,7 +32,7 @@ type CategoryEditorProps = CreateMode | EditMode
 
 const schema = z
   .object({
-    name: z.string().min(1).max(20),
+    name: z.string().min(1).max(15),
     color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
   })
   .required()

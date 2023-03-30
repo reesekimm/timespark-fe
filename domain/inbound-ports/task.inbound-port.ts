@@ -1,4 +1,4 @@
-import { Task, TaskState } from '../models'
+import { Task, TaskState } from '../models/task.model'
 
 export interface CreateTaskDto {
   categoryId: string
@@ -21,7 +21,9 @@ export interface UpdateTaskDto {
   time: string
 }
 
-export interface TaskRepository {
+export interface TaskInboundPort {
+  resetTasks: () => void
+  clearTasks: () => void
   createTask: (taskData: CreateTaskDto) => Promise<Task>
   getTasks: (period: GetTasksDto) => Promise<Task[]>
   deleteTask: ({ id }: DeleteTaskDto) => Promise<{ id: string }>

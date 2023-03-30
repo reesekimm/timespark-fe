@@ -1,14 +1,39 @@
-import { HttpError } from '@timespark/infrastructure'
 import { rest } from 'msw'
-import * as tasksDB from '../tasks'
-import * as categoriesDB from '../categories'
+import { DeleteCategoryDto, DeleteTaskDto } from '@timespark/domain'
+import {
+  categoryService,
+  HttpError,
+  taskService
+} from '@timespark/infrastructure'
 
+// handler: inbound adapter (controller) 역할 수행
 export const handlers = [
-  rest.get('/tasks', (req, res, ctx) => {
+  rest.put('/tasks/reset', async (req, res, ctx) => {
+    try {
+      await taskService.resetTasks()
+      return res(ctx.status(200))
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : 'Unknown Error'
+      return res(ctx.json({ message }))
+    }
+  }),
+  rest.put('/tasks/clear', async (req, res, ctx) => {
+    try {
+      await taskService.clearTasks()
+      return res(ctx.status(200))
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : 'Unknown Error'
+      return res(ctx.json({ message }))
+    }
+  }),
+  rest.get('/tasks', async (req, res, ctx) => {
     const from = req.url.searchParams.get('from') as string
     const to = req.url.searchParams.get('to') as string
+
     try {
-      const result = tasksDB.get({ from, to })
+      const result = await taskService.getTasks({ from, to })
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -18,8 +43,9 @@ export const handlers = [
   }),
   rest.post('/task', async (req, res, ctx) => {
     const taskData = await req.json()
+
     try {
-      const result = tasksDB.create(taskData)
+      const result = await taskService.createTask(taskData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -28,9 +54,10 @@ export const handlers = [
     }
   }),
   rest.delete('/task/:id', async (req, res, ctx) => {
-    const { id } = req.params
+    const { id } = req.params as unknown as DeleteTaskDto
+
     try {
-      const result = tasksDB.remove(id as string)
+      const result = await taskService.deleteTask({ id })
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -43,14 +70,7 @@ export const handlers = [
     let result
 
     try {
-      if (taskData.state === 'start' || taskData.state === 'continue') {
-        result = tasksDB.start(taskData)
-      } else if (taskData.state === 'pause') {
-        result = tasksDB.pause(taskData)
-      } else {
-        result = tasksDB.complete(taskData)
-      }
-
+      result = await taskService.updateTask(taskData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -58,9 +78,9 @@ export const handlers = [
       return res(ctx.json({ message }))
     }
   }),
-  rest.get('/categories', (req, res, ctx) => {
+  rest.get('/categories', async (req, res, ctx) => {
     try {
-      const result = categoriesDB.get()
+      const result = await categoryService.getCategories()
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -71,7 +91,7 @@ export const handlers = [
   rest.post('/category', async (req, res, ctx) => {
     const categoryData = await req.json()
     try {
-      const result = categoriesDB.create(categoryData)
+      const result = await categoryService.createCategory(categoryData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -82,7 +102,7 @@ export const handlers = [
   rest.put('/category/:id', async (req, res, ctx) => {
     const categoryData = await req.json()
     try {
-      const result = categoriesDB.update(categoryData)
+      const result = await categoryService.updateCategory(categoryData)
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =
@@ -91,9 +111,9 @@ export const handlers = [
     }
   }),
   rest.delete('/category/:id', async (req, res, ctx) => {
-    const { id } = req.params
+    const { id } = req.params as unknown as DeleteCategoryDto
     try {
-      const result = categoriesDB.remove(id as string)
+      const result = await categoryService.deleteCategory({ id })
       return res(ctx.status(200), ctx.json(result))
     } catch (error) {
       const message =

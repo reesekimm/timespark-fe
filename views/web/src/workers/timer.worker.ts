@@ -1,4 +1,4 @@
-import { Task } from '@timespark/domain/models'
+import { Task } from '@timespark/domain'
 
 const dbName = 'timeSpark'
 const storeName = 'activeTasks'

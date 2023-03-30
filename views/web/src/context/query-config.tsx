@@ -3,10 +3,10 @@ import {
   QueryCache,
   QueryClientConfig
 } from '@tanstack/react-query'
-import { HttpError } from '@timespark/infrastructure'
 import { toast } from 'react-toastify'
 import { ERROR_MESSAGES } from '../utils/constants'
 import { queryClient } from '.'
+import { HttpError } from '@timespark/infrastructure'
 
 const onErrorCallback = (error: unknown) => {
   const err = error as HttpError

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
+import { taskClient } from '@timespark/infrastructure'
 import { server } from './src/mock/server/test-server'
-import * as tasksDB from './src/mock/tasks'
 import { testQueryClient } from './src/utils/rtl-utils'
 
 jest.mock('./src/utils/timerWorker')
@@ -13,7 +13,7 @@ afterEach(() => server.resetHandlers())
 
 afterEach(() => {
   testQueryClient.clear()
-  tasksDB.clear()
+  taskClient.clearTasks()
   window.localStorage.clear()
 })
 
