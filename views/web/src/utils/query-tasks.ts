@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Task } from '@timespark/domain/models'
 import {
   CreateTaskDto,
   DeleteTaskDto,
   GetTasksDto,
+  Task,
   UpdateTaskDto
-} from '@timespark/domain/repositories'
-import { port, adapter } from '@timespark/infrastructure'
+} from '@timespark/domain'
+import { taskClient } from '@timespark/infrastructure'
 import { useEffect, useState } from 'react'
 import { queryClient } from '../context'
 import { getPeriodToday } from './misc'
@@ -22,8 +22,7 @@ let activeTask: Task | null = null
 
 export const useCreateTask = () =>
   useMutation({
-    mutationFn: (taskData: CreateTaskDto) =>
-      port.taskPort(adapter.taskRepository).createTask(taskData),
+    mutationFn: (taskData: CreateTaskDto) => taskClient.createTask(taskData),
     onSuccess: (data) => {
       setSequence(getSequence().concat(data.id))
       queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
@@ -33,7 +32,7 @@ export const useCreateTask = () =>
 export const useTasks = ({ from, to }: GetTasksDto) => {
   const queryResult = useQuery({
     queryKey: taskKeys.lists({ from, to }),
-    queryFn: () => port.taskPort(adapter.taskRepository).getTasks({ from, to })
+    queryFn: () => taskClient.getTasks({ from, to })
   })
 
   const [result, setResult] = useState<Task[]>([])
@@ -74,8 +73,7 @@ export const useTasks = ({ from, to }: GetTasksDto) => {
 
 export const useDeleteTask = () =>
   useMutation({
-    mutationFn: ({ id }: DeleteTaskDto) =>
-      port.taskPort(adapter.taskRepository).deleteTask({ id }),
+    mutationFn: ({ id }: DeleteTaskDto) => taskClient.deleteTask({ id }),
     onSuccess: ({ id }) => {
       setSequence(getSequence().filter((taskId) => taskId !== id))
       queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
@@ -84,8 +82,7 @@ export const useDeleteTask = () =>
 
 export const useUpdateTask = () =>
   useMutation({
-    mutationFn: (taskData: UpdateTaskDto) =>
-      port.taskPort(adapter.taskRepository).updateTask(taskData),
+    mutationFn: (taskData: UpdateTaskDto) => taskClient.updateTask(taskData),
     onSuccess: () => {
       queryClient.invalidateQueries(taskKeys.lists(getPeriodToday()))
     }

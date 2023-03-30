@@ -2,11 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { AppProviders } from './context'
 import App from './App'
-import { worker } from './mock/server/dev-server'
+import { worker as devServer } from './mock/server/dev-server'
 
 async function prepareMockServer() {
   // if (import.meta.env.DEV) {
-  return worker.start({ onUnhandledRequest: 'bypass' })
+  return devServer.start({ onUnhandledRequest: 'bypass' })
   // }
 }
 

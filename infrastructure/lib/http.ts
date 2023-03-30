@@ -1,7 +1,11 @@
 import axios, { AxiosRequestConfig, isAxiosError } from 'axios'
-import { CustomError } from '../types'
 
-export async function httpAxios(
+export interface CustomError extends Error {
+  status?: number
+  code?: string
+}
+
+export async function httpClient(
   endpoint: string,
   options: AxiosRequestConfig = {}
 ) {

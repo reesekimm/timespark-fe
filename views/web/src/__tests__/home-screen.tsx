@@ -2,8 +2,8 @@ import { render, screen, user, waitFor, within } from '../utils/rtl-utils'
 import { server } from '../mock/server/test-server'
 import { rest } from 'msw'
 import { ERROR_MESSAGES } from '../utils/constants'
-import * as tasksDB from '../mock/tasks'
 import Home from '../screens/Home'
+import { taskClient } from '@timespark/infrastructure'
 
 function renderHomeScreen() {
   return render(<Home />)
@@ -86,7 +86,7 @@ describe('[CREATE TASK]', () => {
 describe('[RENDER TASKS]', () => {
   describe('if there is any task', () => {
     beforeEach(() => {
-      tasksDB.reset()
+      taskClient.resetTasks()
     })
 
     it('renders all tasks in the table', async () => {
@@ -129,7 +129,7 @@ describe('[RENDER TASKS]', () => {
 
 describe('[DELETE TASK]', () => {
   beforeEach(() => {
-    tasksDB.reset()
+    taskClient.resetTasks()
   })
 
   it('can delete task from the table', async () => {
@@ -174,12 +174,12 @@ describe('[DELETE TASK]', () => {
 describe('[START TASK]', () => {
   describe('on click start button', () => {
     beforeEach(() => {
-      tasksDB.create({
+      taskClient.createTask({
         categoryId: '',
         title: 'title1',
         estimatedDuration: 30
       })
-      tasksDB.create({
+      taskClient.createTask({
         categoryId: '',
         title: 'title2',
         estimatedDuration: 30
@@ -266,12 +266,12 @@ describe('[START TASK]', () => {
 describe('[PAUSE TASK]', () => {
   describe('on click pause button', () => {
     beforeEach(() => {
-      tasksDB.create({
+      taskClient.createTask({
         categoryId: '',
         title: 'title1',
         estimatedDuration: 30
       })
-      tasksDB.create({
+      taskClient.createTask({
         categoryId: '',
         title: 'title2',
         estimatedDuration: 30
