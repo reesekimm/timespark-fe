@@ -26,7 +26,7 @@ import { removeActiveTask, setActiveTask } from '../utils/timerWorker'
 
 const schema = z.object({
   categoryId: z.string(),
-  title: z.string().min(1),
+  title: z.string().min(1).max(30),
   estimatedDuration: z.number()
 })
 

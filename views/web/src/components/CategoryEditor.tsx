@@ -32,7 +32,7 @@ type CategoryEditorProps = CreateMode | EditMode
 
 const schema = z
   .object({
-    name: z.string().min(1).max(20),
+    name: z.string().min(1).max(15),
     color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
   })
   .required()
