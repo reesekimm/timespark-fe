@@ -2,16 +2,16 @@
   {
     "id": "638092b7-0693-4494-9e2e-62e58b399e03",
     "name": "Category 1",
-    "color": "#EEA282"
+    "color": "#ff5b5e"
   },
   {
     "id": "4d1a061e-f976-445a-8f1b-c2811829912e",
     "name": "Category 2",
-    "color": "#A39391"
+    "color": "#6B778D"
   },
   {
     "id": "84cbe7a4-54ef-4c71-8810-ca2ba957f47a",
     "name": "Category 3",
-    "color": "#6B778D"
+    "color": "#4da3f9"
   }
 ]

@@ -9,7 +9,7 @@ import {
   TaskList,
   TextInput
 } from '@timespark/components'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -36,7 +36,8 @@ function Home() {
     register,
     handleSubmit,
     formState: { isValid },
-    reset
+    reset,
+    control
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   })
@@ -130,7 +131,7 @@ function Home() {
       category: categories.find((c) => c.id === task.categoryId) ?? {
         id: '',
         name: 'None',
-        color: '#ADB6BF'
+        color: '#795bff'
       }
     }))
   }
@@ -146,11 +147,19 @@ function Home() {
           options={categories.map((c) => ({ value: c.id, label: c.name }))}
           style={{ minWidth: '20rem' }}
         />
-        <TextInput
-          {...register('title')}
-          label='Task'
-          placeholder="Let's dive in!"
-          style={{ minWidth: '68rem' }}
+        <Controller
+          control={control}
+          name='title'
+          render={({ field: { value, onChange } }) => (
+            <TextInput
+              value={value ? value.slice(0, 30) : ''}
+              label='Task'
+              placeholder="Let's dive in!"
+              onChange={(e) => onChange(e.target.value.slice(0, 30))}
+              maxLength={30}
+              style={{ minWidth: '68rem' }}
+            />
+          )}
         />
         <Select
           {...register('estimatedDuration', { valueAsNumber: true })}

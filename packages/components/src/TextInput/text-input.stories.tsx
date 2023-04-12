@@ -11,6 +11,10 @@ const meta: Meta<TextInputProps> = {
     }
   },
   args: {
+    value: '',
+    onChange: () => {
+      return
+    },
     label: 'Task',
     placeholder: "Let's dive in!",
     inputSize: 'medium'
@@ -22,5 +26,13 @@ export default meta
 type Story = StoryObj<TextInputProps>
 
 export const Default: Story = {
+  render: ({ ...args }) => <TextInput {...args} />
+}
+
+export const MaxLength: Story = {
+  args: {
+    value: 'hello',
+    maxLength: 15
+  },
   render: ({ ...args }) => <TextInput {...args} />
 }

@@ -7,8 +7,8 @@ import {
   UpdateCategoryDto
 } from '@timespark/domain'
 import { Icons } from '@timespark/styles'
-import { ChangeEvent, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { generateRandomColorCode } from '../utils/misc'
@@ -41,19 +41,19 @@ function CategoryEditor(props: CategoryEditorProps) {
   const [collapsed, setCollapsed] = useState(props.state === 'collapsed')
   const [categoryPreview, setCategoryPreview] = useState({
     name: 'category' in props ? props.category.name : 'Category Preview',
-    color: 'category' in props ? props.category.color : '#ADB6BF'
+    color: 'category' in props ? props.category.color : '#795bff'
   })
 
   const {
-    register,
     handleSubmit,
     formState: { isValid },
-    setValue
+    setValue,
+    control
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: 'category' in props ? props.category.name : '',
-      color: 'category' in props ? props.category.color : '#ADB6BF'
+      color: 'category' in props ? props.category.color : '#795bff'
     }
   })
 
@@ -62,7 +62,11 @@ function CategoryEditor(props: CategoryEditorProps) {
       return {
         submitButtonLabel: 'Save',
         onSubmit: (data: Omit<UpdateCategoryDto, 'id'>) => {
-          props.onUpdate({ id: props.category.id, ...data })
+          props.onUpdate({
+            id: props.category.id,
+            ...data,
+            name: data.name.slice(0, 15)
+          })
           setCollapsed(true)
         },
         onCancel: () => {
@@ -74,37 +78,17 @@ function CategoryEditor(props: CategoryEditorProps) {
       return {
         submitButtonLabel: 'Create',
         onSubmit: (data: CreateCategoryDto) => {
-          console.log('[data]', data)
           props.onCreate(data)
           setCategoryPreview({
             ...categoryPreview,
             name: 'Category preview',
-            color: '#ADB6BF'
+            color: '#795bff'
           })
         },
         onCancel: () => props.onCancel()
       }
     }
   }, [categoryPreview, props])
-
-  const { onChange: onChangeName } = register('name')
-  const { onChange: onChangeColor } = register('color')
-
-  const onChangeNameField = (e: ChangeEvent<HTMLInputElement>) => {
-    onChangeName(e)
-    setCategoryPreview({
-      ...categoryPreview,
-      name: e.target.value ? e.target.value : 'Category Preview'
-    })
-  }
-
-  const onChangeColorField = (e: ChangeEvent<HTMLInputElement>) => {
-    onChangeColor(e)
-    setCategoryPreview({
-      ...categoryPreview,
-      color: e.target.value
-    })
-  }
 
   const generateColor = () => {
     const color = generateRandomColorCode()
@@ -139,19 +123,46 @@ function CategoryEditor(props: CategoryEditorProps) {
       </PreviewWrapper>
       {collapsed ? null : (
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <TextInput
-            {...register('name')}
-            label='Category name'
-            onChange={onChangeNameField}
-            inputSize='small'
-            style={{ flex: 1, marginRight: '1.3rem' }}
+          <Controller
+            control={control}
+            name='name'
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                value={value ? value.slice(0, 15) : ''}
+                label='Category name'
+                onChange={(e) => {
+                  onChange(e.target.value.slice(0, 15))
+                  setCategoryPreview({
+                    ...categoryPreview,
+                    name: e.target.value
+                      ? e.target.value.slice(0, 15)
+                      : 'Category Preview'
+                  })
+                }}
+                inputSize='small'
+                maxLength={15}
+                style={{ flex: 1, marginRight: '1.3rem' }}
+              />
+            )}
           />
           <Field>
-            <TextInput
-              {...register('color')}
-              label='Color'
-              onChange={onChangeColorField}
-              inputSize='small'
+            <Controller
+              control={control}
+              name='color'
+              render={({ field: { value, onChange } }) => (
+                <TextInput
+                  value={value ?? ''}
+                  label='Color'
+                  onChange={(e) => {
+                    onChange(e)
+                    setCategoryPreview({
+                      ...categoryPreview,
+                      color: e.target.value
+                    })
+                  }}
+                  inputSize='small'
+                />
+              )}
             />
             <RandomColorGenButton
               type='button'
