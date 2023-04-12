@@ -131,7 +131,7 @@ function Home() {
       category: categories.find((c) => c.id === task.categoryId) ?? {
         id: '',
         name: 'None',
-        color: '#ADB6BF'
+        color: '#795bff'
       }
     }))
   }

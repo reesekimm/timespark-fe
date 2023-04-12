@@ -41,7 +41,7 @@ function CategoryEditor(props: CategoryEditorProps) {
   const [collapsed, setCollapsed] = useState(props.state === 'collapsed')
   const [categoryPreview, setCategoryPreview] = useState({
     name: 'category' in props ? props.category.name : 'Category Preview',
-    color: 'category' in props ? props.category.color : '#ADB6BF'
+    color: 'category' in props ? props.category.color : '#795bff'
   })
 
   const {
@@ -53,7 +53,7 @@ function CategoryEditor(props: CategoryEditorProps) {
     resolver: zodResolver(schema),
     defaultValues: {
       name: 'category' in props ? props.category.name : '',
-      color: 'category' in props ? props.category.color : '#ADB6BF'
+      color: 'category' in props ? props.category.color : '#795bff'
     }
   })
 
@@ -82,7 +82,7 @@ function CategoryEditor(props: CategoryEditorProps) {
           setCategoryPreview({
             ...categoryPreview,
             name: 'Category preview',
-            color: '#ADB6BF'
+            color: '#795bff'
           })
         },
         onCancel: () => props.onCancel()
